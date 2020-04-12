@@ -6,7 +6,8 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private BASE_URL = "http://localhost:8080";
+  //private BASE_URL = "http://localhost:8080";
+  private BASE_URL = "https://quiz-api-netcracker.herokuapp.com";
   private LOGIN_API_URL = `${this.BASE_URL}\\auth\\login`;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -17,7 +18,10 @@ export class AuthenticationService {
 
         this.router.navigate(['/']);
         localStorage.setItem('auth_token', resp);
-      });
+      },
+        error => {
+        console.log(error);
+        });
   }
 
 
