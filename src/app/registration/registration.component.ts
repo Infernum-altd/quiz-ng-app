@@ -3,6 +3,7 @@ import {RegistrationService} from "../service/registrationService/registration.s
 import {User} from "../models/user";
 import {AuthenticationService} from "../service/loginService/authentication.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -22,6 +23,7 @@ export class RegistrationComponent implements OnInit {
 
 
   constructor(
+    private router : Router,
     public service : RegistrationService,
     public authService: AuthenticationService,
     private formBuilder: FormBuilder) { }
@@ -29,7 +31,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")]],
+      password: ['', [Validators.required, Validators.minLength(8)]],   ///("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')
@@ -52,10 +54,11 @@ export class RegistrationComponent implements OnInit {
   register(): void{
     this.service.postRegisterInfo(this.model).subscribe(
       res =>{
-        console.log(res);
+        this.router.navigate(['/']);
+        alert("You registered");
       },
       error => {
-        alert("An error has occurred on registration process");
+        alert(error.error['message']);
       }
     );
   }
