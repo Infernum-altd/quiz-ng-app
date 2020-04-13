@@ -7,8 +7,7 @@ import {User} from "../../models/user";
   providedIn: 'root'
 })
 export class RegistrationService {
-  private BASE_URL = "http://localhost:8080";
-  //private BASE_URL = "https://quiz-api-netcracker.herokuapp.com";
+  private BASE_URL = window["configureApiBaseUrl"];
   private REGISTRATION_URL = `${this.BASE_URL}\\auth\\register`;
 
   constructor(private http: HttpClient) { }
