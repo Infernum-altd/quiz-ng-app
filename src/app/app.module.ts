@@ -12,6 +12,12 @@ import { NavigationComponent } from './navigation/navigation.component';
 import {Router, RouterModule, Routes} from "@angular/router";
 import { CloseComponent } from './close/close.component';
 import {AuthGuardService} from "./_helpers/auth-guard.service";
+import { QuestionComponent } from './question/question.component';
+import { OptionalAnswerComponent } from './optional-answer/optional-answer.component';
+import { BooleanAnswerComponent } from './boolean-answer/boolean-answer.component';
+import { StringAnswerComponent } from './string-answer/string-answer.component';
+import { SequenceAnswerComponent } from './sequence-answer/sequence-answer.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 const appRoutes: Routes = [
   {
@@ -21,6 +27,10 @@ const appRoutes: Routes = [
   {
     path:'login',
     component:LoginComponent
+  },
+  {
+    path: 'question',
+    component: QuestionComponent
   },
   {
     path:'close', canActivate:[AuthGuardService],
@@ -40,6 +50,12 @@ const appRoutes: Routes = [
     LoginComponent,
     NavigationComponent,
     CloseComponent,
+    QuestionComponent,
+    OptionalAnswerComponent,
+    BooleanAnswerComponent,
+    StringAnswerComponent,
+    SequenceAnswerComponent,
+    ImageUploadComponent,
   ],
   imports: [
     BrowserModule,

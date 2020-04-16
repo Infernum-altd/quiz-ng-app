@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form [formGroup]="questionForm">
+                <div class="form-group row">
+                    <label for="text">Question Text</label>
+                    <textarea id="text" type="text" formControlName="text" class="form-control" required></textarea>
+                </div>
+                <app-image-upload></app-image-upload>
+                <div class="form-group row">
+                    <label for="type">Answer type</label>
+                    <select id="type" class="form-control">
+                        <option *ngFor='let type of questionTypes' value="type" onselect="">{{type | titlecase}}
+                        </option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
