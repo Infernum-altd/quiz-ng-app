@@ -5,13 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import {Router, RouterModule, Routes} from "@angular/router";
-import { CloseComponent } from './close/close.component';
 import {AuthGuardService} from "./_helpers/auth-guard.service";
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileNavigationComponent } from './profile/profile-navigation/profile-navigation.component';
+import { LeftBarComponent } from './profile/left-bar/left-bar.component';
+import { UserInformationComponent } from './profile/user-information/user-information.component';
+import {JwtInterceptor} from "./_helpers/jwt.interceptor";
+
 
 const appRoutes: Routes = [
   {
@@ -23,8 +28,12 @@ const appRoutes: Routes = [
     component:LoginComponent
   },
   {
-    path:'close', canActivate:[AuthGuardService],
-    component:CloseComponent
+    path:'profile', canActivate:[AuthGuardService],
+    component: ProfileComponent
+  },
+  {
+    path: 'userinfo', canActivate:[AuthGuardService],
+    component: UserInformationComponent
   },
   {
     path: '',
@@ -39,7 +48,10 @@ const appRoutes: Routes = [
     RegistrationComponent,
     LoginComponent,
     NavigationComponent,
-    CloseComponent,
+    ProfileComponent,
+    ProfileNavigationComponent,
+    LeftBarComponent,
+    UserInformationComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +61,9 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+   {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

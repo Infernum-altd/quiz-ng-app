@@ -12,26 +12,26 @@ export class AuthenticationService {
   constructor(private http: HttpClient, private router: Router) { }
 
   login(email: string, password: string) {
+
+
     this.http.post(this.LOGIN_API_URL, {email: email,password: password})
       .subscribe((resp : any) => {
 
+        localStorage.setItem('currentUser', JSON.stringify(resp));
         this.router.navigate(['/']);
-        localStorage.setItem('auth_token', resp);
       },
         error => {
           alert(error.error['message']);
         });
-
-
   }
 
 
   logout() {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('currentUser');
   }
 
   public get logIn(): boolean {
-    return (localStorage.getItem('auth_token') != null);
+    return (localStorage.getItem('currentUser') != null);
   }
 
 }

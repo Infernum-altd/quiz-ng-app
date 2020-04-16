@@ -12,4 +12,7 @@ export class ProfileNavigationComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  showProfile() {
+
+  }
 }
