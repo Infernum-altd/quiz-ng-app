@@ -9,11 +9,13 @@
                 <app-image-upload></app-image-upload>
                 <div class="form-group row">
                     <label for="type">Answer type</label>
-                    <select id="type" class="form-control">
-                        <option *ngFor='let type of questionTypes' value="type" onselect="">{{type | titlecase}}
+                    <select id="type" class="form-control" (change)="onOptionSelected($event.target.value)">
+                        <option *ngFor='let type of questionTypes'>
+                            {{type | titlecase}}
                         </option>
                     </select>
                 </div>
+                <ng-template #dynamicComponent></ng-template>
             </form>
         </div>
     </div>
