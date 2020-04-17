@@ -1,1 +1,8 @@
-<p>boolean-answer works!</p>
+<div class="container">
+    <form [formGroup]="answerForm">
+        <div class="form-check">
+            <input class="form-check-input" id="boolean-answer" type="checkbox" [(ngModel)]="model">
+            <label class="form-check-label" for="boolean-answer">Is answer true?</label>
+        </div>
+    </form>
+</div>
