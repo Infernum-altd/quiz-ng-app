@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserInformationComponent} from "../user-information/user-information.component";
 
 @Component({
   selector: 'app-profile-navigation',
@@ -13,6 +14,7 @@ export class ProfileNavigationComponent implements OnInit {
   }
 
   showProfile() {
-
+    UserInformationComponent.isShowComponent = true;
   }
+
 }

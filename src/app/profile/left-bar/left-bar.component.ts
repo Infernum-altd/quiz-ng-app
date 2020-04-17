@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserInformationComponent} from "../user-information/user-information.component";
 
 @Component({
   selector: 'app-left-bar',
@@ -12,4 +13,7 @@ export class LeftBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  changePassword() {
+    UserInformationComponent.isShowComponent = false;
+  }
 }

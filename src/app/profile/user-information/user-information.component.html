@@ -1,89 +1,121 @@
-<div class="container">
-  <form (ngSubmit)="saveProfile()">
-    <div class="form-group p-0">
-      <label for="name">Name</label>
-      <input type="text"
-             class="form-control"
-             id="name"
-             placeholder="Enter name"
-             name="name"
-            [(ngModel)]="profile.name"/>
-    </div>
-    <div class="form-group p-0">
-      <label for="surname">Surname</label>
-      <input type="text"
-             class="form-control"
-             id="surname"
-             placeholder="Surname"
-             name="surname"
-             [(ngModel)]="profile.surname"/>
-    </div>
+<div *ngIf="!isVisableComponent()">
+  <div class="container" *ngIf="!isEditForm">
+    <p>Name: {{profile.name}}</p>
+    <p>Surname: {{profile.surname}}</p>
+    <p>Gender: {{profile.gender}}</p>
+    <p>Birthdate: {{profile.birthdate}}</p>
+    <p>City: {{profile.city}}</p>
+    <p>About me: {{profile.about}}</p>
 
-<!--    <div id="gender" class="btn-group btn-group-toggle p-0" data-toggle="buttons">
-      <label class="btn btn-secondary">
-        <input type="radio" name="gender" >
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" name="gender" > <br>
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" name="gender" [(ngModel)]="profile.gender" value="NOT_MENTIONED"> Not mentioned
-      </label>
-    </div>-->
-    <label for="gender">Gender</label>
-    <div class="form-group p-0" id="gender">
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-               [(ngModel)]="profile.gender" value="MALE">
-        <label class="custom-control-label" for="customRadioInline1">Male</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-               [(ngModel)]="profile.gender" value="FEMALE">
-        <label class="custom-control-label" for="customRadioInline2">Female</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input"
-               [(ngModel)]="profile.gender" value="NOT_MENTIONED">
-        <label class="custom-control-label" for="customRadioInline3">Not mentioned</label>
+    <div class="p-2 bd-highlight align-self-center" (click)="isEditForm=true">
+      <div id="change-password-button">
+        <button type="button" class="btn btn-secondary btn-block">Edit profile</button>
       </div>
     </div>
+  </div>
 
 
-<!--    <div class="col-sm-10">
-      <input type="radio" name="gender" [(ngModel)]="profile.gender" value="MALE"> Male
-      <input type="radio" name="gender" [(ngModel)]="profile.gender" value="FEMALE"> Female<br>
-    </div>-->
 
+  <div class="container" *ngIf="isEditForm">
+    <form (ngSubmit)="ngSubmit()">
+      <div class="form-group p-0">
+        <label for="name">Name</label>
+        <input type="text"
+               class="form-control"
+               id="name"
+               placeholder="Enter name"
+               name="name"
+               [(ngModel)]="profile.name"/>
+      </div>
+      <div class="form-group p-0">
+        <label for="surname">Surname</label>
+        <input type="text"
+               class="form-control"
+               id="surname"
+               placeholder="Surname"
+               name="surname"
+               [(ngModel)]="profile.surname"/>
+      </div>
 
-    <div class="form-group p-0">
-      <label for="birthdate">Birtdate</label>
-      <input type="date"
-             class="form-control"
-             id="birthdate"
-             placeholder="Birthdate"
-             name="birthdate"
-             [(ngModel)]="profile.birthdate">
-    </div>
-    <div class="form-group p-0">
-      <label for="city">City</label>
-      <input type="text"
-             class="form-control"
-             id="city"
-             placeholder="City"
-             name="city"
-             [(ngModel)]="profile.city">
-    </div>
-    <div class="form-group p-0">
-      <label for="about">About</label>
-      <textarea type="text"
-             class="form-control"
-             id="about"
-             placeholder="About"
-                name="about"
-             [(ngModel)]="profile.about">
+      <label for="gender">Gender</label>
+      <div class="form-group p-0" id="gender">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="MALE">
+          <label class="custom-control-label" for="customRadioInline1">Male</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="FEMALE">
+          <label class="custom-control-label" for="customRadioInline2">Female</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="NOT_MENTIONED">
+          <label class="custom-control-label" for="customRadioInline3">Not mentioned</label>
+        </div>
+      </div>
+
+      <div class="form-group p-0">
+        <label for="birthdate">Birtdate</label>
+        <input type="date"
+               class="form-control"
+               id="birthdate"
+               placeholder="Birthdate"
+               name="birthdate"
+               [(ngModel)]="profile.birthdate">
+      </div>
+      <div class="form-group p-0">
+        <label for="city">City</label>
+        <input type="text"
+               class="form-control"
+               id="city"
+               placeholder="City"
+               name="city"
+               [(ngModel)]="profile.city">
+      </div>
+      <div class="form-group p-0">
+        <label for="about">About</label>
+        <textarea type="text"
+                  class="form-control"
+                  id="about"
+                  placeholder="About"
+                  name="about"
+                  [(ngModel)]="profile.about">
       </textarea>
+      </div>
+      <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password"
+           formControlName="password"
+           class="form-control"
+           [(ngModel)]="newPassword"
+           [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+           required/>
+    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+      <div *ngIf="f.password.errors.required">Password is required</div>
+      <div *ngIf="f.password.errors.pattern">-Must contain at least 8 or more characters</div>  <!--Must contain one number and one uppercase and lowercase letter, and at least 8 or more characters -->
     </div>
-    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+  </div>
+  <div class="form-group">
+    <label>Confirm Password</label>
+    <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+    <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+      <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+      <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary">Register</button>
+  </div>
   </form>
 </div>
+
+

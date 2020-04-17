@@ -25,4 +25,8 @@ export class ProfileService {
     user.id = JSON.parse(localStorage.getItem('currentUser')).id;
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
+
+  updatePassword(newPassword: string): Observable<any>{
+    return this.http.post(this.UPDATE_PASSWORD_URL + JSON.parse(localStorage.getItem('currentUser')).id, newPassword);
+  }
 }

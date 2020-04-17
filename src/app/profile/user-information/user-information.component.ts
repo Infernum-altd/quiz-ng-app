@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {User} from "../../models/user";
 import {ProfileService} from "../../service/profileService/profile.service";
 import {Gender} from "../../models/gender.enum";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -11,17 +12,41 @@ import {Gender} from "../../models/gender.enum";
 })
 
 export class UserInformationComponent implements OnInit {
+  public changePasswordForm: FormGroup;
   public profile: User;
-  genders = Gender;
+  public genders = Gender;
+  public static isShowComponent: boolean = false;
+  public isEditForm = false;
+  submitted = false;
+  newPassword: string;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService,
+              private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getProfile();
+
+    this.changePasswordForm = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: MustMatch('password', 'confirmPassword')
+    });
   }
 
-  public changeGender(value : any){
-    console.log(value);
+  get f() { return this.changePasswordForm.controls; }
+
+  public isVisableComponent(){
+    return UserInformationComponent.isShowComponent;
+  }
+
+  closeEditForm() {
+    this.isEditForm = false;
+  }
+
+  ngSubmit(){
+    this.closeEditForm();
+    this.saveProfile();
   }
 
   public getProfile(){
@@ -45,5 +70,33 @@ export class UserInformationComponent implements OnInit {
         alert("Something wrong while updating profile");
       }
     );
+  }
+
+  changePassword() {
+    this.profileService.updatePassword(this.newPassword).subscribe(
+      (resp: any) => {
+        alert("Password was changed")
+      },
+      error => {
+        alert("Something wrong while save password")
+      }
+    );
+  }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      return;
+    }
+
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
   }
 }
