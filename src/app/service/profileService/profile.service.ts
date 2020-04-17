@@ -20,4 +20,9 @@ export class ProfileService {
   getProfile(userId: string): Observable<User>{
     return this.http.get<User>(this.PROFILE_URL + userId);
   }
+
+  updateProfile(user: User): Observable<User>{
+    user.id = JSON.parse(localStorage.getItem('currentUser')).id;
+    return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
+  }
 }
