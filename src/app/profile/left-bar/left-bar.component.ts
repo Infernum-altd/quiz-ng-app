@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {UserInformationComponent} from "../user-information/user-information.component";
 
 @Component({
   selector: 'app-left-bar',
@@ -7,14 +6,14 @@ import {UserInformationComponent} from "../user-information/user-information.com
   styleUrls: ['./left-bar.component.css']
 })
 export class LeftBarComponent implements OnInit {
-
+  selectedFile: File;
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  changePassword() {
-    UserInformationComponent.isShowComponent = true;
-    UserInformationComponent.isChangingPassForm = true;
+  //TODO::upload image and change it
+  changeImg(event) {
+    this.selectedFile = event.target.files[0];
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UserInformationComponent} from "../user-information/user-information.component";
+import { Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile-navigation',
@@ -8,12 +8,9 @@ import {UserInformationComponent} from "../user-information/user-information.com
 })
 export class ProfileNavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  showProfile() {
-    UserInformationComponent.isShowComponent = true;
-  }
 }

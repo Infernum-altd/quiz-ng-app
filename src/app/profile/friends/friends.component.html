@@ -1,0 +1,23 @@
+<table class="table table-sm">
+  <thead class="thead-dark">
+  <tr>
+    <th class="text-center" scope="col">#</th>
+    <th class="text-center" scope="col">Name</th>
+    <th class="text-center" scope="col">Surname</th>
+    <th class="text-center" scope="col">Rating</th>
+    <th class="text-center" scope="col">Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let fried of friends; let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td class="text-center">{{fried.name}}</td>
+    <td class="text-center">{{fried.surname}}</td>
+    <td class="text-center">{{fried.rating}}</td>
+    <td class="text-center"\>
+      <button type="button" class="btn btn-secondary m-1">Chat</button>
+      <button type="button" class="btn btn-secondary">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
