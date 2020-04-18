@@ -1,24 +1,19 @@
 <div class="container">
     <form [formGroup]="answerForm">
-        <div class="row">
-            <input class="form-check-input" id="id" type="checkbox" value="" id="checkbox1">
-            <input type="text">
+        <div formArrayName="items" *ngFor="let item of items.controls; let i=index">
+            <div class="input-group mb-3" [formGroupName]="i">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" data-md-icheck aria-label="Checkbox for following text input"
+                            id="checkbox" formControlName="isCorrect">
+                    </div>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox" formControlName="text"
+                    id="text1">
+            </div>
+            <app-image-upload></app-image-upload>
+            <hr class="my-4">
         </div>
-        <app-image-upload></app-image-upload>
-        <div class="row">
-            <input class="form-check-input" id="id" type="checkbox" value="" id="checkbox1">
-            <input type="text">
-        </div>
-        <app-image-upload></app-image-upload>
-        <div class="row">
-            <input class="form-check-input" id="id" type="checkbox" value="" id="checkbox1">
-            <input type="text">
-        </div>
-        <app-image-upload></app-image-upload>
-        <div class="row">
-            <input class="form-check-input" id="id" type="checkbox" value="" id="checkbox1">
-            <input type="text">
-        </div>
-        <app-image-upload></app-image-upload>
+        <button (click)="onClick()">Button</button>
     </form>
 </div>

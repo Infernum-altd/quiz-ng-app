@@ -1,22 +1,15 @@
 <div class="container">
     <form [formGroup]="answerForm">
-        <ol>
-            <li>
-                <input type="text"><br>
+        <ol formArrayName="items">
+            <li *ngFor="let item of items.controls; let i=index">
+                <div class="form-group mb-3" [formGroupName]="i">
+                    <input type="text" class="form-control" placeholder="Answer" aria-label="Answer"
+                        aria-describedby="basic-addon1" formControlName="text">
+                </div>
                 <app-image-upload></app-image-upload>
-            </li>
-            <li>
-                <input type="text"><br>
-                <app-image-upload></app-image-upload>
-            </li>
-            <li>
-                <input type="text"><br>
-                <app-image-upload></app-image-upload>
-            </li>
-            <li>
-                <input type="text"><br>
-                <app-image-upload></app-image-upload>
+                <hr class="my-4">
             </li>
         </ol>
+        <button (click)="onClick()">Button</button>
     </form>
 </div>

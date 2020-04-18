@@ -9,10 +9,14 @@ class ImageSnippet {
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css']
 })
-export class ImageUploadComponent {
-  selectedFile: ImageSnippet
+export class ImageUploadComponent implements OnInit {
+  selectedFile: ImageSnippet;
+  name: String;
 
   constructor() { }
+  ngOnInit(): void {
+    this.name = "Choose file";
+  }
 
   processFile(imageInput: any) {
     const file: File = imageInput.files[0]
@@ -20,6 +24,7 @@ export class ImageUploadComponent {
 
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
+      this.name = file.name;
     })
 
     reader.readAsDataURL(file);

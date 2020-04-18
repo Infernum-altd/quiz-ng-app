@@ -1,6 +1,14 @@
 <div class="container">
-    <form [formGroup]="answerForm">
-        <label for="string-answer">Enter the answer:</label>
-        <input type="text" id="string-answer">
-    </form>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Enter the answer:</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Answer" aria-label="Answer" aria-describedby="basic-addon1"
+            [formControl]="text" required>
+    </div>
+    <div *ngIf="text.invalid && (text.dirty || text.touched)" class="alert alert-danger">
+        <div *ngIf="text.errors.required">
+            Answer is required.
+        </div>
+    </div>
 </div>

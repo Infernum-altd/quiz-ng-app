@@ -3,12 +3,12 @@ import { StringAnswerComponent } from './../string-answer/string-answer.componen
 import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
 import { OptionalAnswerComponent } from './../optional-answer/optional-answer.component';
 import { AnswerComponent } from './../answer/answer.component';
-import { Validators } from '@angular/forms';
 import { QuestionService } from './../service/questionService/question.service';
 import { Router } from '@angular/router';
 import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Answer } from '../models/answer.model';
 
 @Component({
   selector: 'app-question',
@@ -19,7 +19,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   questionForm: FormGroup;
   submitted = false;
   questionTypes = Object.keys(QuestionType)
-  answer: AnswerComponent
+  componentRef: ComponentRef<AnswerComponent>
 
   model: Question = {
     id: null,
@@ -29,6 +29,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     active: true
   };
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
+  @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
 
   constructor(private router: Router,
     public service: QuestionService,
@@ -39,7 +40,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionForm = this.formBuilder.group({
       text: [''],
       type: [''],
-      image: [null]
+      questionImage: [null]
     });
   }
 
@@ -65,8 +66,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     }
 
     this.answerHost.clear();
-    const componentRef = this.answerHost.createComponent(componentFactory);
-    componentRef.changeDetectorRef.detectorChanges();
+    this.componentRef = this.answerHost.createComponent(componentFactory);
+    this.componentRef.changeDetectorRef.detectChanges();
   }
 
   isValid(): boolean {
@@ -81,6 +82,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     }
 
     let input: Question = JSON.parse(JSON.stringify(this.questionForm.value));
+    let answer: Answer[] = this.componentRef.instance.getResult();
     //TODO: put data from form to model
     this.save();
   }

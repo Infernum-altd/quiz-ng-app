@@ -2,20 +2,23 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <form [formGroup]="questionForm">
-                <div class="form-group row">
+                <div class="form-group mb-3 row">
                     <label for="text">Question Text</label>
                     <textarea id="text" type="text" formControlName="text" class="form-control" required></textarea>
                 </div>
-                <app-image-upload></app-image-upload>
+                <app-image-upload class="row mb-3"></app-image-upload>
                 <div class="form-group row">
                     <label for="type">Answer type</label>
-                    <select id="type" class="form-control" (change)="onOptionSelected($event.target.value)">
+                    <select id="type" formControlName="type" class="form-control btn-secondary"
+                        (change)="onOptionSelected($event.target.value)" value="questionTypes[0]">
                         <option *ngFor='let type of questionTypes'>
                             {{type | titlecase}}
                         </option>
                     </select>
                 </div>
-                <ng-template #dynamicComponent></ng-template>
+                <div class="jumbotron">
+                    <ng-template #dynamicComponent></ng-template>
+                </div>
             </form>
         </div>
     </div>
