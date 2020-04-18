@@ -16,5 +16,4 @@ export class ProfileNavigationComponent implements OnInit {
   showProfile() {
     UserInformationComponent.isShowComponent = true;
   }
-
 }

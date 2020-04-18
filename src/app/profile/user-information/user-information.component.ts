@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user";
 import {ProfileService} from "../../service/profileService/profile.service";
-import {Gender} from "../../models/gender.enum";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -14,14 +14,15 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class UserInformationComponent implements OnInit {
   public changePasswordForm: FormGroup;
   public profile: User;
-  public genders = Gender;
   public static isShowComponent: boolean = false;
   public isEditForm = false;
   submitted = false;
   newPassword: string;
+  public static isChangingPassForm: boolean = false;
 
   constructor(private profileService: ProfileService,
-              private formBuilder: FormBuilder) {}
+              private formBuilder: FormBuilder,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.getProfile();
@@ -38,6 +39,23 @@ export class UserInformationComponent implements OnInit {
 
   public isVisableComponent(){
     return UserInformationComponent.isShowComponent;
+  }
+
+  public changingPassFormValidation(){
+    this.submitted = true;
+
+    if (this.changePasswordForm.invalid) {
+      return;
+    }
+    this.newPassword = this.changePasswordForm.value;
+    this.changePassword();
+    UserInformationComponent.isChangingPassForm = false;
+    UserInformationComponent.isShowComponent = false;
+    //this.router.navigateByUrl('profile');
+  }
+
+  isChangingPassForm(){
+    return UserInformationComponent.isChangingPassForm;
   }
 
   closeEditForm() {
@@ -64,6 +82,7 @@ export class UserInformationComponent implements OnInit {
   saveProfile() {
     this.profileService.updateProfile(this.profile).subscribe(
       (resp:any) => {
+        this.router.navigate(['/profile']);
         this.profile = resp;
       },
       error =>{

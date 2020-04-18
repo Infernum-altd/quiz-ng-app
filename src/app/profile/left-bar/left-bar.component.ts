@@ -14,6 +14,7 @@ export class LeftBarComponent implements OnInit {
   }
 
   changePassword() {
-    UserInformationComponent.isShowComponent = false;
+    UserInformationComponent.isShowComponent = true;
+    UserInformationComponent.isChangingPassForm = true;
   }
 }
