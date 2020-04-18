@@ -11,9 +11,9 @@ import { Question } from '../models/question.model';
   styleUrls: ['./string-answer.component.css']
 })
 export class StringAnswerComponent implements OnInit, AnswerComponent {
+  submitted: boolean = false;
   answer: Answer[] = [];
   text: FormControl;
-  submitted: boolean = false;
 
   constructor() { }
 

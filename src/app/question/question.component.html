@@ -6,6 +6,11 @@
                     <label for="text">Question Text</label>
                     <textarea id="text" type="text" formControlName="text" class="form-control" required></textarea>
                 </div>
+                <div
+                    *ngIf="questionForm.get('text').invalid && (submitted ||questionForm.get('text').touched || questionForm.get('text').dirty)">
+                    <div *ngIf="questionForm.get('text').errors.required" class="alert alert-danger">Should have at
+                        least two answers.</div>
+                </div>
                 <app-image-upload class="row mb-3"></app-image-upload>
                 <div class="form-group row">
                     <label for="type">Answer type</label>

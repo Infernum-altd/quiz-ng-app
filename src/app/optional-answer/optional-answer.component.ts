@@ -12,6 +12,7 @@ import { ImageUploadComponent } from '../image-upload/image-upload.component';
 export class OptionalAnswerComponent implements OnInit, AnswerComponent {
   @ViewChildren(ImageUploadComponent) images!: QueryList<ImageUploadComponent>;
 
+  submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
   answer: Answer[] = [];
@@ -64,9 +65,5 @@ export class OptionalAnswerComponent implements OnInit, AnswerComponent {
       }
     }
     return this.answer;
-  }
-
-  onClick() {
-    alert(this.isValid())
   }
 }

@@ -1,7 +1,8 @@
 import { Answer } from './../models/answer.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList } from '@angular/core';
 import { FormGroup, ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
 import { Question } from '../models/question.model';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
   selector: 'app-answer',
@@ -9,6 +10,7 @@ import { Question } from '../models/question.model';
   styleUrls: ['./answer.component.css']
 })
 export class AnswerComponent implements OnInit {
+  submitted: boolean = false;
   answer: Answer[]
 
   constructor() { }

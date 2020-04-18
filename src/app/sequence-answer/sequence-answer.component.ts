@@ -12,6 +12,7 @@ import { Answer } from '../models/answer.model';
 export class SequenceAnswerComponent implements OnInit, AnswerComponent {
   @ViewChildren(ImageUploadComponent) images!: QueryList<ImageUploadComponent>;
 
+  submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
   answer: Answer[] = [];
@@ -62,10 +63,5 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
       }
     }
     return this.answer;
-  }
-
-  onClick() {
-    alert(this.isValid())
-    //alert(this.getResult()[0].text)
   }
 }

@@ -1,3 +1,4 @@
+import { Validators } from '@angular/forms';
 import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
 import { StringAnswerComponent } from './../string-answer/string-answer.component';
 import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
@@ -16,12 +17,12 @@ import { Answer } from '../models/answer.model';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit, AfterViewInit {
+  submitted: boolean = false;
   questionForm: FormGroup;
-  submitted = false;
   questionTypes = Object.keys(QuestionType)
   componentRef: ComponentRef<AnswerComponent>
 
-  model: Question = {
+  question: Question = {
     id: null,
     type: QuestionType.OPTION,
     image: null,
@@ -38,9 +39,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
-      text: [''],
-      type: [''],
-      questionImage: [null]
+      text: [this.question.text, Validators.required],
+      type: [this.question.type],
+      questionImage: [this.question.image]
     });
   }
 
@@ -75,23 +76,20 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   add() {
-    this.submitted = true;
-
     if (this.questionForm.invalid) {
       return;
     }
-
-    let input: Question = JSON.parse(JSON.stringify(this.questionForm.value));
-    let answer: Answer[] = this.componentRef.instance.getResult();
-    //TODO: put data from form to model
-    this.save();
+    if (this.componentRef.instance.isValid()) {
+      let answer: Answer[] = this.componentRef.instance.getResult();
+      this.save(answer);
+    }
   }
 
   onOptionSelected(value: String) {
     this.loadComponent(value);
   }
 
-  save() {
+  save(answer: Answer[]) {
     //TODO: add service to send question
   }
 

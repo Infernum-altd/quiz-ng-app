@@ -11,6 +11,7 @@ import { Question } from '../models/question.model';
   styleUrls: ['./boolean-answer.component.css']
 })
 export class BooleanAnswerComponent implements OnInit, AnswerComponent {
+  submitted: boolean = false;
   answer: Answer[] = [];
 
   constructor() { }
