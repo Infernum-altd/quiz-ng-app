@@ -35,7 +35,7 @@ export class OptionalAnswerComponent implements OnInit, AnswerComponent {
       let correctControl = new FormControl(this.answer[_i].isCorrect, []);
       let textControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
-        textControl.setValidators(Validators.required);
+        textControl.setValidators([Validators.required, Validators.maxLength(30)]);
       }
       this.items = this.answerForm.get('items') as FormArray;
       this.items.push(

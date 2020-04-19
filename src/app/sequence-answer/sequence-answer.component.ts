@@ -37,7 +37,7 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
       });
       let formControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
-        formControl.setValidators(Validators.required);
+        formControl.setValidators([Validators.required, Validators.maxLength(30)]);
       }
       this.items = this.answerForm.get('items') as FormArray;
       this.items.push(

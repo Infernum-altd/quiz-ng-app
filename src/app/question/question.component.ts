@@ -39,7 +39,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
-      text: [this.question.text, Validators.required],
+      text: [this.question.text, [Validators.required, Validators.maxLength(360)]],
       type: [this.question.type],
       questionImage: [this.question.image]
     });
