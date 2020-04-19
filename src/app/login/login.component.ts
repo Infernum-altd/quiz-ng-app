@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 
 export class LoginComponent implements OnInit {
   model: User = {
+    image: undefined, notificationStatus: undefined,
     about: "",
     birthdate: undefined,
     city: "",

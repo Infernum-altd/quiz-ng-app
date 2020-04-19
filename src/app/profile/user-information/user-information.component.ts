@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user";
 import {ProfileService} from "../../service/profileService/profile.service";
-import {Router} from "@angular/router";
 
 
 @Component({
@@ -15,8 +14,7 @@ export class UserInformationComponent implements OnInit {
   public isEditForm = false;
 
 
-  constructor(private profileService: ProfileService,
-              private router: Router) {}
+  constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
     this.getProfile();

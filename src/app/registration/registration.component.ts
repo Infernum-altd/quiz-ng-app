@@ -15,6 +15,7 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
 
   model:User = {
+    image: undefined, notificationStatus: undefined,
     about: "",
     birthdate: undefined,
     city: "",
