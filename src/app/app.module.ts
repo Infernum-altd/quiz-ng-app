@@ -12,6 +12,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import {Router, RouterModule, Routes} from "@angular/router";
 import { CloseComponent } from './close/close.component';
 import {AuthGuardService} from "./_helpers/auth-guard.service";
+import { QuizComponent } from './quiz/quiz.component';
 
 const appRoutes: Routes = [
   {
@@ -21,6 +22,10 @@ const appRoutes: Routes = [
   {
     path:'login',
     component:LoginComponent
+  },
+  {
+    path:'quiz',
+    component:QuizComponent
   },
   {
     path:'close', canActivate:[AuthGuardService],
@@ -40,6 +45,7 @@ const appRoutes: Routes = [
     LoginComponent,
     NavigationComponent,
     CloseComponent,
+    QuizComponent,
   ],
   imports: [
     BrowserModule,
