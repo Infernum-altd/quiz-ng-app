@@ -1,3 +1,9 @@
+<div class="p-2 bd-highlight align-self-center" >
+  <div id="change-password-button">
+    <button type="button" class="btn btn-secondary btn-block m-lg-auto-3" [routerLink]="[{outlets: {profilenav: 'changePass'}}]">Add game</button>
+  </div>
+</div>
+
 <table class="table table-sm">
   <thead class="thead-dark">
   <tr>
@@ -18,10 +24,10 @@
     <td class="text-center">{{quiz.date}}</td>
     <td class="text-center">{{quiz.description}}</td>
     <td class="text-center">{{quiz.modificationTime}}</td>
-    <td>
-      <button type="button" class="btn btn-secondary m-1">Play</button>
-      <button type="button" class="btn btn-secondary m-1">Edit</button>
-      <button type="button" class="btn btn-secondary">Delete</button>
+    <td class="text-center btn-group">
+      <button type="button" class="btn btn-secondary ml-1">Play</button>
+      <button type="button" class="btn btn-secondary ml-1">Edit</button>
+      <button type="button" class="btn btn-secondary ml-1">Delete</button>
     </td>
   </tr>
   </tbody>

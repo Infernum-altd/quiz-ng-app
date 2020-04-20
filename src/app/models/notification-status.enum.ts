@@ -1,3 +1,6 @@
 export enum NotificationStatus {
-  ON,OFF,FRIENDS_ONLY,SYSTEM_ONLY
+  ON,
+  OFF,
+  FRIENDS_ONLY,
+  SYSTEM_ONLY
 }

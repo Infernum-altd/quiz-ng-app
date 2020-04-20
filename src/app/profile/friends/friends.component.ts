@@ -18,6 +18,7 @@ export class FriendsComponent implements OnInit {
   public getFriends(){
     this.profileService.getFriends().subscribe(
       resp =>{
+        console.log(resp);
         this.friends = resp;
       },
       error => {
