@@ -14,6 +14,7 @@ import { CloseComponent } from './close/close.component';
 import {AuthGuardService} from "./_helpers/auth-guard.service";
 import { QuizComponent } from './quiz/quiz.component';
 
+
 const appRoutes: Routes = [
   {
     path:'registration',
@@ -24,7 +25,7 @@ const appRoutes: Routes = [
     component:LoginComponent
   },
   {
-    path:'quiz',
+    path:'quizzes/:id',
     component:QuizComponent
   },
   {
