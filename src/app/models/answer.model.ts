@@ -2,9 +2,9 @@ import { Question } from './question.model';
 
 export interface Answer {
     id: number,
-    question: Question,
+    questionId: number,
     text: string,
-    image: File,
-    isCorrect: boolean,
-    answer: Answer
+    correct: boolean,
+    nextAnswerId: number
+    //TODO: add image
 }

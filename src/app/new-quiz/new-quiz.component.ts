@@ -89,7 +89,6 @@ export class NewQuizComponent implements OnInit {
 
   saveQuiz(): void {
 
-    console.log(this.quiz);
     this.newQuizService.postQuiz(this.quiz).subscribe(
       res => {
         console.log('Quiz added');

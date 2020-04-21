@@ -1,3 +1,4 @@
+import { AnswerService } from './../service/answerService/answer.service';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { AnswerComponent } from './../answer/answer.component';
 import { Component, OnInit, Input } from '@angular/core';
@@ -13,18 +14,20 @@ import { Question } from '../models/question.model';
 export class BooleanAnswerComponent implements OnInit, AnswerComponent {
   submitted: boolean = false;
   answer: Answer[] = [];
+  checkBox: boolean = false;
 
-  constructor() { }
+  constructor(private answerService: AnswerService) { }
 
+  questionId: number;
+  send: boolean;
 
   ngOnInit(): void {
     let result: Answer = {
       id: null,
-      question: null,
-      text: '',
-      image: null,
-      isCorrect: true,
-      answer: null
+      questionId: 0,
+      text: "",
+      correct: true,
+      nextAnswerId: null
     };
     this.answer.push(result);
   }
@@ -33,7 +36,20 @@ export class BooleanAnswerComponent implements OnInit, AnswerComponent {
     return true
   }
 
-  getResult(): Answer[] {
-    return this.answer;
+  save(): void {
+    this.submitted = true;
+    if (this.isValid()) {
+      this.answer[0].questionId = this.questionId;
+      this.answer[0].text = this.checkBox ? "true" : "false";
+      this.answerService.postAnswer(this.answer[0]).subscribe(
+        res => {
+          console.log('Boolean answer added');
+          this.send = true;
+        },
+        err => {
+          alert(err.error['message']);
+        }
+      )
+    }
   }
 }

@@ -26,24 +26,24 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   question: Question = {
     id: null,
+    quizId: null,
     type: QuestionType.OPTION,
-    image: null,
-    text: '',
+    text: "",
     active: true
   };
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
   @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
 
   constructor(private router: Router,
-    public service: QuestionService,
+    public questionService: QuestionService,
     private formBuilder: FormBuilder,
     private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
       text: [this.question.text, [Validators.required, Validators.maxLength(360)]],
-      type: [this.question.type],
-      questionImage: [this.question.image]
+      type: [this.question.type]
+      // , questionImage: [this.question.image]
     });
   }
 
@@ -77,22 +77,45 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     return this.questionForm.valid
   }
 
-  add() {
+  save() {
     if (this.questionForm.invalid) {
       return;
     }
-    if (this.componentRef.instance.isValid()) {
-      let answer: Answer[] = this.componentRef.instance.getResult();
-      this.save(answer);
+
+    this.submitted = true;
+    let answer = this.componentRef.instance;
+    if (answer.isValid()) {
+      this.question.quizId = this.quizId;
+      this.question.type = this.question.type.toUpperCase();
+      this.question.text = this.questionForm.get('text').value;
+      this.question.type = this.questionForm.get('type').value.toUpperCase();
+
+      console.log(this.question);
+
+      this.questionService.postQuestion(this.question)
+        .subscribe(
+          res => {
+            console.log('Question added');
+            this.question.id = res.id;
+            answer.questionId = this.question.id;
+
+            if (answer.isValid()) {
+              answer.save();
+
+              if (answer.submitted && answer.send) {
+                this.send = true;
+              }
+            }
+          },
+          err => {
+            alert(err.error['message']);
+          }
+        );
     }
   }
 
   onOptionSelected(value: String) {
     this.loadComponent(value);
-  }
-
-  save(answer: Answer[]) {
-    //TODO: add service to send question
   }
 
 }

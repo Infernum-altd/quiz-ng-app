@@ -1,3 +1,4 @@
+import { AnswerService } from './../service/answerService/answer.service';
 import { ImageUploadComponent } from './../image-upload/image-upload.component';
 import { Validators, FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AnswerComponent, SequenceValidator } from './../answer/answer.component';
@@ -12,6 +13,9 @@ import { Answer } from '../models/answer.model';
 export class SequenceAnswerComponent implements OnInit, AnswerComponent {
   @ViewChildren(ImageUploadComponent) images!: QueryList<ImageUploadComponent>;
 
+  send: boolean;
+  questionId: number;
+
   submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
@@ -19,7 +23,8 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
   maxAnswer = 4;
   minRequired = 2;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private answerService: AnswerService) { }
 
   ngOnInit(): void {
     this.answerForm = new FormGroup({
@@ -29,11 +34,10 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
     for (var _i = 0; _i < this.maxAnswer; _i++) {
       this.answer.push({
         id: null,
-        question: null,
-        text: '',
-        image: null,
-        isCorrect: true,
-        answer: null
+        questionId: 0,
+        text: "",
+        correct: true,
+        nextAnswerId: null
       });
       let formControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
@@ -54,14 +58,42 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
     return this.answerForm.valid;
   }
 
-  getResult(): Answer[] {
-    let answerImages = this.images.toArray();
-    for (var _i in answerImages) {
-      let file = answerImages[_i].selectedFile.file;
-      if (file != null) {
-        this.answer[_i].image = file;
+  save(): void {
+    this.submitted = true;
+    if (this.isValid()) {
+      let flag = true;
+      for (var i = 0; i < this.answer.length; i++) {
+
+        this.answer[i].text = (this.answerForm.get('items') as FormArray).at(i).get("text").value;
+
+        console.log(this.answer[i]);
+
+        if (this.answer[i].text === "" || this.answer[i].text == null)
+          break;
+
+        this.answer[i].questionId = this.questionId;
+
+        this.answerService.postAnswer(this.answer[i]).subscribe(
+          res => {
+            console.log('Sequence answer added');
+            this.answer[i].id = res.id;
+            flag = true;
+          },
+          err => {
+            alert(err.error['message']);
+            flag = false;
+          }
+        )
       }
+      this.send = flag;
     }
-    return this.answer;
+  }
+
+  update(): void {
+    for (var i = 0; i < this.answer.length - 1; i++) {
+      this.answer[i].nextAnswerId = this.answer[i + 1].id;
+      console.log(this.answer[i]);
+      this.answerService.updateAnswer(this.answer[i]);
+    }
   }
 }

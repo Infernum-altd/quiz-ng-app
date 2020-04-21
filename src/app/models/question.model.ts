@@ -7,10 +7,9 @@ export enum QuestionType {
 
 export interface Question {
     id: number,
-    //TODO: add quiz object
-    type: QuestionType,
-    image: File,
+    quizId: number,
+    type: String,
     text: string,
     active: boolean
-    //TODO: add language
+    //TODO: add language and image
 } 

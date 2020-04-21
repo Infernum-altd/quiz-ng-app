@@ -1,3 +1,4 @@
+import { AnswerService } from './../service/answerService/answer.service';
 import { Answer } from './../models/answer.model';
 import { Component, OnInit, QueryList } from '@angular/core';
 import { FormGroup, ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
@@ -11,7 +12,10 @@ import { ImageUploadComponent } from '../image-upload/image-upload.component';
 })
 export class AnswerComponent implements OnInit {
   submitted: boolean = false;
+  send: boolean = false;
   answer: Answer[]
+
+  questionId: number
 
   constructor() { }
 
@@ -22,8 +26,8 @@ export class AnswerComponent implements OnInit {
     return true
   }
 
-  getResult(): Answer[] {
-    return this.answer;
+  save(): void {
+
   }
 
 }

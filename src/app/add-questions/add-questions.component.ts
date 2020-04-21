@@ -11,7 +11,7 @@ import { Question, QuestionType } from '../models/question.model';
 export class AddQuestionsComponent implements OnInit {
   @ViewChildren(QuestionComponent) questionComponents!: QueryList<QuestionComponent>;
 
-  questionId: number;
+  quizId: number;
   name: string;
 
   questions: Question[] = [];
@@ -19,7 +19,7 @@ export class AddQuestionsComponent implements OnInit {
 
   constructor(router: Router) {
     let state = router.getCurrentNavigation().extras.state;
-    this.questionId = state.id;
+    this.quizId = state.id;
     this.name = state.name;
   }
 
@@ -29,8 +29,8 @@ export class AddQuestionsComponent implements OnInit {
   addQuestion() {
     this.questions.push({
       id: null,
-      type: QuestionType.OPTION,
-      image: null,
+      quizId: this.quizId,
+      type: 'OPTION',
       text: '',
       active: true
     });
@@ -38,5 +38,15 @@ export class AddQuestionsComponent implements OnInit {
 
   removeQuestion(i: number) {
     this.questions.splice(i, 1);
+  }
+
+  onSubmit() {
+    console.log("submit")
+    this.questionComponents.toArray().forEach(el => {
+      el.quizId = this.quizId;
+      el.save();
+    })
+
+    alert("Success!");
   }
 }
