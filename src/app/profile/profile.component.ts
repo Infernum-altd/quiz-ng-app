@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
+import {ProfileService} from "../service/profileService/profile.service";
+import {Subscription} from "rxjs";
+import {ShareIdService} from "../service/profileService/share-id.service";
 
 @Component({
   selector: 'app-profile',
@@ -6,8 +10,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
-  constructor() { }
+  private subscription: Subscription;
+  id: string;
+  constructor(private activateRoute: ActivatedRoute,
+              private router: Router,
+              private shareId: ShareIdService) {
+    this.subscription = this.activateRoute.params.subscribe(
+      params => {
+        this.id = params.id;
+      }
+    );
+    this.shareId.setId(this.id);
+    this.router.navigate([{outlets: {profilenav: 'profinfo'}}]);
+  }
 
   ngOnInit(): void {
   }

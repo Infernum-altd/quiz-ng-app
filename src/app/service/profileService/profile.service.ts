@@ -59,8 +59,8 @@ export class ProfileService {
     return this.http.post(this.UPDATE_USER_IMAGE + this.userId, uploadImg);
   }
 
-  getProfileImage(): Observable<any> {
-    return this.http.get(this.GET_USER_IMAGE_BY_USER_ID + this.userId);
+  getProfileImage(id: string): Observable<any> {
+    return this.http.get(this.GET_USER_IMAGE_BY_USER_ID + id);
   }
 
   updateNotificationStatus(status: NotificationStatus): Observable<any> {

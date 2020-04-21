@@ -15,7 +15,7 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (localStorage.getItem('currentUser') == null){
-      console.log(null);
+      //console.log(null);
       return next.handle(request);
     }
 

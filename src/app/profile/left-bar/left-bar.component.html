@@ -5,36 +5,48 @@
         <img [src]="file" height="400" width="400" class="img-thumbnail" *ngIf="file!=null">
         <img [src]="file" height="400" width="400" class="img-thumbnail" *ngIf="file==null">
         <input style="display: none" type="file" accept="image/*" (change)="fileProgress($event)" #image>
-        <button id="changeImg" class="btn" (click)="image.click()">
-          <svg class="bi bi-upload" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M.5 8a.5.5 0 01.5.5V12a1 1 0 001 1h12a1 1 0 001-1V8.5a.5.5 0 011 0V12a2 2 0 01-2 2H2a2 2 0 01-2-2V8.5A.5.5 0 01.5 8zM5 4.854a.5.5 0 00.707 0L8 2.56l2.293 2.293A.5.5 0 1011 4.146L8.354 1.5a.5.5 0 00-.708 0L5 4.146a.5.5 0 000 .708z" clip-rule="evenodd"/>
+        <button id="changeImg" class="btn" (click)="image.click()" *ngIf="currentUserId==id">
+          <svg class="bi bi-upload" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M.5 8a.5.5 0 01.5.5V12a1 1 0 001 1h12a1 1 0 001-1V8.5a.5.5 0 011 0V12a2 2 0 01-2 2H2a2 2 0 01-2-2V8.5A.5.5 0 01.5 8zM5 4.854a.5.5 0 00.707 0L8 2.56l2.293 2.293A.5.5 0 1011 4.146L8.354 1.5a.5.5 0 00-.708 0L5 4.146a.5.5 0 000 .708z"
+                  clip-rule="evenodd"/>
             <path fill-rule="evenodd" d="M8 2a.5.5 0 01.5.5v8a.5.5 0 01-1 0v-8A.5.5 0 018 2z" clip-rule="evenodd"/>
           </svg>
         </button>
       </div>
     </div>
-    <div class="p-2 bd-highlight align-self-center" >
-      <div id="user-name">
-        <p >{{username}}</p>
-      </div>
-    </div>
-
-    <div class="p-2 bd-highlight align-self-center" >
-      <div id="change-password-button">
-        <button type="button" class="btn btn-secondary btn-block" [routerLink]="[{outlets: {profilenav: 'changePass'}}]">Change password</button>
-      </div>
-    </div>
-
     <div class="p-2 bd-highlight align-self-center">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Notification setting
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <div id="user-name">
+        <p>{{username}}</p>
+      </div>
+    </div>
+
+    <div class="p-2 bd-highlight align-self-center" *ngIf="currentUserId==id">
+
+      <div class="p-2 bd-highlight align-self-center">
+        <div id="change-password-button">
+          <button type="button" class="btn btn-secondary btn-block"
+                  [routerLink]="[{outlets: {profilenav: 'changePass'}}]">Change password
+          </button>
+        </div>
+      </div>
+
+      <div class="p-2 bd-highlight align-self-center">
+
+
+
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            Notification setting
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
             <div class="custom-control custom-radio ml-3">
               <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-                      [(ngModel)]="notificationStatus" value="ON" (change)="change()">
+                     [(ngModel)]="notificationStatus" value="ON" (change)="change()">
               <label class="custom-control-label" for="customRadioInline1">On</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline ml-3">
@@ -53,11 +65,19 @@
               <label class="custom-control-label" for="customRadioInline4">System only</label>
             </div>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    </div>
+
+
+
 </div>
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router} from "@angular/router";
+import {ShareIdService} from "../../service/profileService/share-id.service";
 
 @Component({
   selector: 'app-profile-navigation',
@@ -7,8 +7,11 @@ import { Router} from "@angular/router";
   styleUrls: ['./profile-navigation.component.css']
 })
 export class ProfileNavigationComponent implements OnInit {
-
-  constructor(private router: Router) { }
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  id:any;
+  constructor(private shareId: ShareIdService) {
+    this.id = shareId.shareId();
+  }
 
   ngOnInit(): void {
   }

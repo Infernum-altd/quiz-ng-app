@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../models/user";
 import {ProfileService} from "../../service/profileService/profile.service";
+import {ShareIdService} from "../../service/profileService/share-id.service";
+import {PlatformLocation} from "@angular/common";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -12,12 +15,29 @@ import {ProfileService} from "../../service/profileService/profile.service";
 export class UserInformationComponent implements OnInit {
   public profile: User;
   public isEditForm = false;
+  currentUserId :string;
+  id: string;
 
-
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService,
+              private shareId: ShareIdService,
+              private location: PlatformLocation,
+              private router: Router){
+    this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
+    this.id = shareId.shareId();
+    this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);
+  }
 
   ngOnInit(): void {
-    this.getProfile();
+    this.getProfile(this.id);
+
+    this.location.onPopState(()=> {
+      this.shareId.setId(this.currentUserId);
+      this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);
+
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'profinfo'}}]);
+      });
+    });
   }
 
   closeEditForm() {
@@ -29,8 +49,8 @@ export class UserInformationComponent implements OnInit {
     this.closeEditForm();
   }
 
-  public getProfile(){
-    this.profileService.getProfile(JSON.parse(localStorage.getItem('currentUser')).id).subscribe(
+  public getProfile(id: string){
+    this.profileService.getProfile(id).subscribe(
       (resp:any) => {
         this.profile = resp;
       },

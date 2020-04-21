@@ -7,8 +7,15 @@ import {AuthenticationService} from "../service/loginService/authentication.serv
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  username = JSON.parse(localStorage.getItem('currentUser')).email;
-  constructor(public authService: AuthenticationService) { }
+  currentUser = JSON.parse(localStorage.getItem('currentUser'))
+  username: string = 'menu';
+  id = '0';
+  constructor(public authService: AuthenticationService) {
+    if (this.currentUser != null){
+      this.username = this.currentUser.email;
+      this.id = this.currentUser.id;
+    }
+  }
 
   ngOnInit(): void {
   }

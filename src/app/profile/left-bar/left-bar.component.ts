@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ProfileService} from "../../service/profileService/profile.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {NotificationStatus} from "../../models/notification-status.enum";
+import {ShareIdService} from "../../service/profileService/share-id.service";
 
 @Component({
   selector: 'app-left-bar',
@@ -10,11 +11,20 @@ import {NotificationStatus} from "../../models/notification-status.enum";
 })
 export class LeftBarComponent implements OnInit {
   username = JSON.parse(localStorage.getItem('currentUser')).email;
+  currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
   notificationStatus: NotificationStatus;
   progressImage: any;
   file: SafeResourceUrl;
+  id : string;
   constructor(private profileService: ProfileService,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private shareId: ShareIdService) {
+    this.id = shareId.shareId();
+
+    if (shareId.shareEmail() != undefined){
+      this.username = shareId.shareEmail();
+    }
+  }
 
   ngOnInit(): void {
     this.uploadFile();
@@ -39,7 +49,7 @@ export class LeftBarComponent implements OnInit {
   }
 
   uploadFile(){
-    this.profileService.getProfileImage().subscribe(
+    this.profileService.getProfileImage(this.id).subscribe(
       resp => {
         this.file = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text);
       },

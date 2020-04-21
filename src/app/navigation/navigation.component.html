@@ -1,4 +1,5 @@
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">QUIZ</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -27,12 +28,14 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class ="nav-link" routerLink="" (click)="authService.logout()" *ngIf="authService.logIn">Logout</a>
-            <a class="nav-link" routerLink="/profile"  routerLinkActive="active" *ngIf="authService.logIn">Profile</a>
+            <a class="nav-link" [routerLink]="['profile', id, {outlets: {profilenav: 'profinfo'}}]"  routerLinkActive="active" *ngIf="authService.logIn">Profile</a>
           </div>
         </div>
       </form>
     </div>
   </nav>
+</div>
+
 
 
 

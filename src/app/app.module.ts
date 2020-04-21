@@ -59,9 +59,9 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'profile', canActivate: [AuthGuardService],
+    path: 'profile/:id', canActivate: [AuthGuardService],
     component: ProfileComponent,
-    children: profileRoutes
+    children: profileRoutes,
   },
   {
     path: 'friends', canActivate: [AuthGuardService],

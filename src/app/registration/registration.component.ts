@@ -64,7 +64,9 @@ export class RegistrationComponent implements OnInit {
   register(): void{
     this.service.postRegisterInfo(this.model).subscribe(
       res =>{
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate(['/']);
+        });
         alert("You registered");
       },
       error => {
