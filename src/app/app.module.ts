@@ -9,7 +9,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { Router, RouterModule, Routes } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
 import { CloseComponent } from './close/close.component';
 import { AuthGuardService } from "./_helpers/auth-guard.service";
 import { QuestionComponent } from './question/question.component';
@@ -19,6 +19,7 @@ import { StringAnswerComponent } from './string-answer/string-answer.component';
 import { SequenceAnswerComponent } from './sequence-answer/sequence-answer.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { AnswerComponent } from './answer/answer.component';
+import { NewQuizComponent } from './new-quiz/new-quiz.component';
 
 const appRoutes: Routes = [
   {
@@ -32,6 +33,10 @@ const appRoutes: Routes = [
   {
     path: 'question',
     component: QuestionComponent
+  },
+  {
+    path: 'quiz',
+    component: NewQuizComponent
   },
   {
     path: 'close', canActivate: [AuthGuardService],
@@ -57,7 +62,8 @@ const appRoutes: Routes = [
     StringAnswerComponent,
     SequenceAnswerComponent,
     ImageUploadComponent,
-    AnswerComponent
+    AnswerComponent,
+    NewQuizComponent
   ],
   imports: [
     BrowserModule,

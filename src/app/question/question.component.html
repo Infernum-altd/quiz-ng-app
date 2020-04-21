@@ -10,7 +10,7 @@
                 <div *ngIf="questionForm.get('text').errors?.required && (submitted ||questionForm.get('text').touched || questionForm.get('text').dirty)"
                     class="alert alert-danger">Question
                     cannot be empty. </div>
-                <div *ngIf="questionForm.get('text').errors?.maxlength">Question can be
+                <div *ngIf="questionForm.get('text').errors?.maxlength" class="alert alert-danger">Question can be
                     max
                     30 characters long.</div>
                 <app-image-upload class="row mb-3">
