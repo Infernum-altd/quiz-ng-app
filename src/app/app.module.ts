@@ -11,6 +11,8 @@ import {LoginComponent} from './login/login.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {Router, RouterModule, Routes} from "@angular/router";
 import {AuthGuardService} from "./_helpers/auth-guard.service";
+import { QuizComponent } from './quiz/quiz.component';
+
 import {ProfileComponent} from './profile/profile.component';
 import {ProfileNavigationComponent} from './profile/profile-navigation/profile-navigation.component';
 import {LeftBarComponent} from './profile/left-bar/left-bar.component';
@@ -68,6 +70,10 @@ const appRoutes: Routes = [
     component: FriendsComponent
   },
   {
+    path:'quizzes/:id',
+    component:QuizComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -88,6 +94,7 @@ const appRoutes: Routes = [
     MyQuizzesComponent,
     FavoriteComponent,
     ChangePasswordComponent,
+    QuizComponent,
   ],
   imports: [
     BrowserModule,
