@@ -148,10 +148,6 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent],
   entryComponents: [OptionalAnswerComponent, BooleanAnswerComponent, StringAnswerComponent, SequenceAnswerComponent],
-  providers: [],
-  bootstrap: [
-    AppComponent
-  ]
 })
 export class AppModule {
 }
