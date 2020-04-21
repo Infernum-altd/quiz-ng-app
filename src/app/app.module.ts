@@ -3,14 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {RegistrationComponent} from './registration/registration.component';
-import {LoginComponent} from './login/login.component';
-import {NavigationComponent} from './navigation/navigation.component';
-import {Router, RouterModule, Routes} from "@angular/router";
-import {AuthGuardService} from "./_helpers/auth-guard.service";
+import {HTTP_INTERCEPTORS, } from "@angular/common/http";
+import {Router} from "@angular/router";
 import { QuizComponent } from './quiz/quiz.component';
 
 import {ProfileComponent} from './profile/profile.component';
@@ -56,7 +50,6 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule, Routes } from "@angular/router";
-import { CloseComponent } from './close/close.component';
 import { AuthGuardService } from "./_helpers/auth-guard.service";
 import { QuestionComponent } from './question/question.component';
 import { OptionalAnswerComponent } from './optional-answer/optional-answer.component';
@@ -124,7 +117,6 @@ const appRoutes: Routes = [
     FavoriteComponent,
     ChangePasswordComponent,
     QuizComponent,
-    CloseComponent,
     QuestionComponent,
     OptionalAnswerComponent,
     BooleanAnswerComponent,
