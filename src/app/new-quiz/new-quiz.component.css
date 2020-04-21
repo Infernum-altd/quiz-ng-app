@@ -1,0 +1,19 @@
+.tag {
+    margin: 5px 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.remove-tag {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.card {
+    margin: 0 auto;
+    float: none;
+    margin-bottom: 10px;
+    align-self: center;
+    width: 60%;
+    padding: 0;
+}

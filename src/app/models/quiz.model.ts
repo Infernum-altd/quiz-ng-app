@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {Category} from "./category.model";
 
+
 export enum StatusType {
   PENDING = "Pending",
   ACTIVE = "Active",
