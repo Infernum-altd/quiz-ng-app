@@ -7,7 +7,7 @@ import { AnswerComponent } from './../answer/answer.component';
 import { QuestionService } from './../service/questionService/question.service';
 import { Router } from '@angular/router';
 import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
+import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Answer } from '../models/answer.model';
 
@@ -17,7 +17,9 @@ import { Answer } from '../models/answer.model';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit, AfterViewInit {
+  quizId: number;
   submitted: boolean = false;
+  send: boolean = false;
   questionForm: FormGroup;
   questionTypes = Object.keys(QuestionType)
   componentRef: ComponentRef<AnswerComponent>

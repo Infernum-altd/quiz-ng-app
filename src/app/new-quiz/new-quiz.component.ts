@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { NewQuizService } from './../service/newQuizService/new-quiz.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from './../service/categoryService/category.service';
@@ -36,7 +37,8 @@ export class NewQuizComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private newQuizService: NewQuizService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
 
   ngOnInit(): void {
@@ -90,7 +92,13 @@ export class NewQuizComponent implements OnInit {
     console.log(this.quiz);
     this.newQuizService.postQuiz(this.quiz).subscribe(
       res => {
-        console.log('Posted quiz');
+        console.log('Quiz added');
+        this.router.navigateByUrl('/add_questions', {
+          state: {
+            id: res.id,
+            name: res.name
+          }
+        });
       },
       err => {
         alert(err.error['message']);

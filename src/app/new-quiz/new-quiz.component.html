@@ -1,50 +1,56 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
-                <div class="form-group mb-3 row">
-                    <label for="text">Quiz Name</label>
-                    <input id="text" type="text" formControlName="name" class="form-control" maxlength="30" required>
-                </div>
-                <div *ngIf="quizForm.get('name').errors?.required && (submitted || quizForm.get('name').touched || quizForm.get('name').dirty)"
-                    class="alert alert-danger">
-                    Quiz cannot be empty.
-                </div>
-                <div *ngIf="quizForm.get('name').errors?.maxlength" class="alert alert-danger">Quiz name can be
-                    max
-                    30 characters long.</div>
-                <app-image-upload class="row mb-3"></app-image-upload>
-                <div class="form-group mb-3 row">
-                    <select id="category" formControlName="category" class="form-control btn-secondary"
-                        value="questionTypes[0]">
-                        <option *ngFor='let category of categories'>
-                            {{category.name | titlecase}}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group mb-3 row">
-                    <label for="tags">Tags</label>
-                    <input class="form-control" type="text" id="tags" placeholder="Enter tags"
-                        (keydown.enter)="addTag()" [(ngModel)]="tagRef" [ngModelOptions]="{standalone: true}" #tagsRef>
-                </div>
-                <div class=" form-group mb-3 row">
-                    <div *ngFor="let tag of tags; let i = index" class="badge badge-pill badge-secondary tag">
-                        {{tag}}
-                        <i class="remove-tag" (click)="removeTag(i)">x</i>
+<div class="card md-6">
+    <div class="card-header">
+        New Quiz
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group mb-3 row">
+                        <label for="text">Quiz Name</label>
+                        <input id="text" type="text" formControlName="name" class="form-control" maxlength="30"
+                            required>
                     </div>
-                </div>
-                <div class="form-group mb-3 row">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" formControlName="description"
-                        maxlength="360"></textarea>
-                </div>
-                <div *ngIf="quizForm.get('name').errors?.maxlength" class="alert alert-danger">Quiz name can be
-                    max
-                    30 characters long.</div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-secondary float-right">Next</button>
-                </div>
-            </form>
+                    <div *ngIf="quizForm.get('name').errors?.required && (submitted || quizForm.get('name').touched || quizForm.get('name').dirty)"
+                        class="alert alert-danger">
+                        Quiz cannot be empty.
+                    </div>
+                    <div *ngIf="quizForm.get('name').errors?.maxlength" class="alert alert-danger">Quiz name can be
+                        max
+                        30 characters long.</div>
+                    <app-image-upload class="row mb-3"></app-image-upload>
+                    <div class="form-group mb-3 row">
+                        <select id="category" formControlName="category" class="form-control btn-secondary"
+                            value="questionTypes[0]">
+                            <option *ngFor='let category of categories'>
+                                {{category.name | titlecase}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="tags">Tags</label>
+                        <input class="form-control" type="text" id="tags" placeholder="Enter tags"
+                            (keydown.enter)="addTag()" [(ngModel)]="tagRef" [ngModelOptions]="{standalone: true}"
+                            #tagsRef>
+                    </div>
+                    <div class=" form-group mb-3 row">
+                        <div *ngFor="let tag of tags; let i = index" class="badge badge-pill badge-secondary tag">
+                            {{tag}}
+                            <i class="remove-tag" (click)="removeTag(i)">x</i>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" formControlName="description"
+                            maxlength="360"></textarea>
+                    </div>
+                    <div *ngIf="quizForm.get('name').errors?.maxlength" class="alert alert-danger">Quiz name can be
+                        max
+                        30 characters long.</div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary float-right">Next</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>

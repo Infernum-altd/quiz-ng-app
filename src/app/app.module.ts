@@ -20,6 +20,7 @@ import { SequenceAnswerComponent } from './sequence-answer/sequence-answer.compo
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { AnswerComponent } from './answer/answer.component';
 import { NewQuizComponent } from './new-quiz/new-quiz.component';
+import { AddQuestionsComponent } from './add-questions/add-questions.component';
 
 const appRoutes: Routes = [
   {
@@ -35,8 +36,12 @@ const appRoutes: Routes = [
     component: QuestionComponent
   },
   {
-    path: 'quiz',
+    path: 'new_quiz',
     component: NewQuizComponent
+  },
+  {
+    path: 'add_questions',
+    component: AddQuestionsComponent
   },
   {
     path: 'close', canActivate: [AuthGuardService],
@@ -63,7 +68,8 @@ const appRoutes: Routes = [
     SequenceAnswerComponent,
     ImageUploadComponent,
     AnswerComponent,
-    NewQuizComponent
+    NewQuizComponent,
+    AddQuestionsComponent
   ],
   imports: [
     BrowserModule,
