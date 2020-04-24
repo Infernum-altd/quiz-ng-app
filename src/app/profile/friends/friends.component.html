@@ -1,24 +1,43 @@
-<table class="table table-sm">
+<form>
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">
+        <i class="glyphicon glyphicon-search"></i>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="searchString"
+        placeholder="Type to search..."
+        [(ngModel)]="searchString"
+      />
+    </div>
+  </div>
+</form>
+
+
+<table class="table table-striped table-dark">
   <thead class="thead-dark">
   <tr>
-    <th class="text-center" scope="col">#</th>
     <th class="text-center" scope="col">Name</th>
-    <th class="text-center" scope="col">Surname</th>
     <th class="text-center" scope="col">Rating</th>
     <th class="text-center" scope="col">Action</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let fried of friends; let i = index">
-    <th scope="row">{{i+1}}</th>
-    <td class="text-center">{{fried.name}}</td>
-    <td class="text-center">{{fried.surname}}</td>
-    <td class="text-center">{{fried.rating}}</td>
+  <tr *ngFor="let fried of friends | filter : 'name' : searchString; let i = index">
+    <td><a class="nav-link badge badge-secondary"
+           (click)="checkOut(fried.id, fried.email)">{{fried.name + " " + fried.surname}}</a></td>
+    <td>{{fried.rating}}</td>
     <td class="text-center">
-      <button type="button" class="btn btn-secondary m-1" (click)="checkOut(fried.id, fried.email)">Checkout</button>
       <button type="button" class="btn btn-secondary m-1">Chat</button>
       <button type="button" class="btn btn-secondary">Delete</button>
     </td>
   </tr>
   </tbody>
 </table>
+<ngb-pagination class="d-flex justify-content-center secondary" [collectionSize]="collectionSize" [(page)]="page"
+                [maxSize]="5" [boundaryLinks]="true" (pageChange)="onPageChanged()"></ngb-pagination>
+
+
+

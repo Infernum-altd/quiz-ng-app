@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {User} from "../../models/user";
-import {Quiz} from "../../models/quiz";
-import {NotificationStatus} from "../../models/notification-status.enum";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {User} from '../../models/user';
+import {Quiz} from '../../models/quiz';
+import {NotificationStatus} from '../../models/notification-status.enum';
+import {TablePage} from '../../profile/friends/table-page';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  private BASE_URL = window["configureApiBaseUrl"];
+  private BASE_URL = window['configureApiBaseUrl'];
   private PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\`;
   private FRIEND_LIST_URL = `${this.BASE_URL}\\profile\\myfriends\\`;
   private UPDATE_PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\update`;
@@ -37,20 +39,35 @@ export class ProfileService {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
 
-  getFriends(): Observable<any[]>{
-    return this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
+  getAllFriends(): Observable<TablePage>{
+    const allfriends = this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
+    return this.getPageItems(allfriends, 1, 1000);
   }
 
-  getUserQuizzes(): Observable<any[]>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
+  getFriends(page: number, itemsPerPage: number): Observable<TablePage>{
+    const friends = this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
+    return this.getPageItems(friends, page, itemsPerPage);
+  }
+
+  private getPageItems(friends: Observable<Array<any>>, page: number, itemsPerPage: number): Observable<TablePage>{
+    return friends.pipe(
+      map( u => {
+        const startIndex = itemsPerPage * (page - 1);
+        return new TablePage(u.length, u.slice(startIndex, startIndex + itemsPerPage));
+      }));
+  }
+
+  getUserQuizzes(page: number, itemsPerPage: number): Observable<TablePage>{
+    const quizzes = this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
+    return this.getPageItems(quizzes, page, itemsPerPage);
   }
 
   getFavoriteGames(): Observable<any[]>{
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId);
   }
 
-  getCategoryName(categoryId : string): Observable<any>{
-    return this.http.get(this.GET_CATEGORY_NAME + categoryId)
+  getCategoryName(categoryId: string): Observable<any>{
+    return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
 
   updateImage(image: File): Observable<any>{

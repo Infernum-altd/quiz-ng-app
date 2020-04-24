@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ProfileService} from "../../service/profileService/profile.service";
-import {Quiz} from "../../models/quiz";
+import {ProfileService} from '../../service/profileService/profile.service';
 
 @Component({
   selector: 'app-my-quizzes',
@@ -8,13 +7,18 @@ import {Quiz} from "../../models/quiz";
   styleUrls: ['./my-quizzes.component.css']
 })
 export class MyQuizzesComponent implements OnInit {
-  constructor(private profileService: ProfileService) { }
-  userQuizzes: Quiz[] = [];
-
-  ngOnInit(): void {
-    this.getUserQuizzes();
+  public page: number;
+  public collectionSize: number;
+  public userQuizzes: Array<any>;
+  public itemsPerPage = 8;
+  constructor(private profileService: ProfileService) {
+    this.page = 1;
+    this.loadPage();
   }
 
+  ngOnInit(): void {}
+
+/*
   getUserQuizzes() {
     this.profileService.getUserQuizzes().subscribe(
       resp => {
@@ -25,14 +29,28 @@ export class MyQuizzesComponent implements OnInit {
         alert("Error while download quizzes")
       });
   }
+*/
 
   addCategoryToQuizzes() {
-    for (let quiz of this.userQuizzes){
+    for (const quiz of this.userQuizzes){
       this.profileService.getCategoryName(quiz.category_id).subscribe(
-        resp =>{
+        resp => {
           quiz.category = resp.text;
         }
       );
     }
+  }
+
+  private loadPage(){
+    this.profileService.getUserQuizzes(this.page, this.itemsPerPage)
+      .subscribe(p => {
+        this.userQuizzes = p.rows;
+        this.collectionSize = p.totalCount;
+        this.addCategoryToQuizzes();
+      });
+  }
+
+  onPageChanged() {
+    this.loadPage();
   }
 }

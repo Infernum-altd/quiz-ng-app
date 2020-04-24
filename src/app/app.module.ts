@@ -60,6 +60,8 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { AnswerComponent } from './answer/answer.component';
 import { NewQuizComponent } from './new-quiz/new-quiz.component';
 import { AddQuestionsComponent } from './add-questions/add-questions.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { FilterPipe } from './service/profileService/filter.pipe';
 
 const appRoutes: Routes = [
   {
@@ -125,16 +127,18 @@ const appRoutes: Routes = [
     ImageUploadComponent,
     AnswerComponent,
     NewQuizComponent,
-    AddQuestionsComponent
+    AddQuestionsComponent,
+    FilterPipe
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes),
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot(appRoutes),
+        ReactiveFormsModule,
+        NgbModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
   ],

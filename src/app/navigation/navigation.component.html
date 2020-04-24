@@ -27,7 +27,7 @@
             {{username}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class ="nav-link" routerLink="" (click)="authService.logout()" *ngIf="authService.logIn">Logout</a>
+            <a class ="nav-link" (click)="authService.logout()" *ngIf="authService.logIn" routerLink="/">Logout</a>
             <a class="nav-link" [routerLink]="['profile', id, {outlets: {profilenav: 'profinfo'}}]"  routerLinkActive="active" *ngIf="authService.logIn">Profile</a>
           </div>
         </div>

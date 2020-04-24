@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {ShareIdService} from "../profileService/share-id.service";
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {ShareIdService} from '../profileService/share-id.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,24 +17,23 @@ export class AuthenticationService {
   login(email: string, password: string) {
 
 
-    this.http.post(this.LOGIN_API_URL, {email: email,password: password})
-      .subscribe((resp : any) => {
+    this.http.post(this.LOGIN_API_URL, {email, password})
+        .subscribe((resp: any) => {
+              localStorage.setItem('currentUser', JSON.stringify(resp));
+              this.shareId.setId(JSON.parse(localStorage.getItem('currentUser')).id);
 
-        localStorage.setItem('currentUser', JSON.stringify(resp));
-        this.shareId.setId(JSON.parse(localStorage.getItem('currentUser')).id);
+              window.location.replace('/');
+            },
+            error => {
+              alert(error.error['message']);
+            });
 
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            this.router.navigate(['/']);
-          });
-      },
-        error => {
-          alert(error.error['message']);
-        });
   }
 
 
   logout() {
     localStorage.removeItem('currentUser');
+    window.location.replace('/');
   }
 
   public get logIn(): boolean {

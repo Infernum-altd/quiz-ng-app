@@ -1,0 +1,18 @@
+ngb-pagination ::ng-deep ul > li.active > a {
+  background-color: grey !important;
+}
+
+table{
+  width: 140%;
+  height: 40%;
+}
+
+#add-quiz-button{
+  width: 140%;
+}
+
+#row{
+  align-content: center;
+  vertical-align: center;
+  overflow: scroll;
+}

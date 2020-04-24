@@ -1,2 +1,4 @@
-
+ngb-pagination ::ng-deep ul > li.active > a {
+  background-color: grey !important;
+}
 
