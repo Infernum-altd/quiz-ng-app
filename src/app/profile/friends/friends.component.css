@@ -1,4 +1,16 @@
-ngb-pagination ::ng-deep ul > li.active > a {
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: grey !important;
+  size: 20px;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
   background-color: grey !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: grey !important;;
 }
 

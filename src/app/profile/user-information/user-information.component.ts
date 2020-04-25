@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user";
 import {ProfileService} from "../../service/profileService/profile.service";
 import {ShareIdService} from "../../service/profileService/share-id.service";
@@ -29,7 +29,6 @@ export class UserInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfile(this.id);
-
     this.location.onPopState(()=> {
       this.shareId.setId(this.currentUserId);
       this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);

@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from '../../service/profileService/profile.service';
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {Quiz} from "../../models/quiz";
 
 @Component({
   selector: 'app-my-quizzes',
@@ -7,18 +10,19 @@ import {ProfileService} from '../../service/profileService/profile.service';
   styleUrls: ['./my-quizzes.component.css']
 })
 export class MyQuizzesComponent implements OnInit {
-  public page: number;
-  public collectionSize: number;
-  public userQuizzes: Array<any>;
-  public itemsPerPage = 8;
+  userQuizzes: Quiz[];
+  displayedColumns: string[] = ['name', 'category', 'description', 'actions'];
+  dataSource: MatTableDataSource<Quiz>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   constructor(private profileService: ProfileService) {
-    this.page = 1;
-    this.loadPage();
+    this.getUserQuizzes();
+    this.dataSource = new MatTableDataSource<Quiz>(this.userQuizzes);
+    this.dataSource.paginator = this.paginator;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-/*
   getUserQuizzes() {
     this.profileService.getUserQuizzes().subscribe(
       resp => {
@@ -29,7 +33,6 @@ export class MyQuizzesComponent implements OnInit {
         alert("Error while download quizzes")
       });
   }
-*/
 
   addCategoryToQuizzes() {
     for (const quiz of this.userQuizzes){
@@ -41,16 +44,8 @@ export class MyQuizzesComponent implements OnInit {
     }
   }
 
-  private loadPage(){
-    this.profileService.getUserQuizzes(this.page, this.itemsPerPage)
-      .subscribe(p => {
-        this.userQuizzes = p.rows;
-        this.collectionSize = p.totalCount;
-        this.addCategoryToQuizzes();
-      });
-  }
-
-  onPageChanged() {
-    this.loadPage();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

@@ -1,7 +1,11 @@
 import {ProfileService} from '../../service/profileService/profile.service';
 import {ShareIdService} from '../../service/profileService/share-id.service';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
+import {User} from "../../models/user";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+
 
 
 @Component({
@@ -10,42 +14,38 @@ import {Router} from '@angular/router';
   styleUrls: ['./friends.component.css']
 })
 export class FriendsComponent implements OnInit {
-  searchString: string;
-  public allRecordOfFriends
-  public page: number;
-  public collectionSize: number;
-  public friends: Array<any>;
-  public itemsPerPage = 8;
+  friends: User[];
+  displayedColumns: string[] = ['name', 'rating', 'actions'];
+  dataSource: MatTableDataSource<User>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private profileService: ProfileService,
               private router: Router,
               private shareId: ShareIdService) {
-    this.allRecordOfFriends = profileService.getAllFriends();
-    this.page = 1;
-    this.loadPage();
 
+
+    profileService.getFriends().subscribe(resp => {
+
+      this.friends = resp;
+      this.dataSource = new MatTableDataSource(this.friends);
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
-  private loadPage(){
-    this.profileService.getFriends(this.page, this.itemsPerPage)
-      .subscribe(p => {
-        this.friends = p.rows;
-        this.collectionSize = p.totalCount;
-      });
-  }
+  ngOnInit(): void {}
 
-  onPageChanged() {
-    this.loadPage();
-  }
-
-  ngOnInit(): void {
-  }
-
-  checkOut(id: string, email: string){
+  checkOut(id: string, email: string) {
     this.shareId.setEmail(email);
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate(['profile', id, {outlets: {profilenav: 'profinfo'}}]);
     });
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }
+
 
