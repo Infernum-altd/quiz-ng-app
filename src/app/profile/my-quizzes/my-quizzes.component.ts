@@ -27,10 +27,6 @@ export class MyQuizzesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-/*    this.getUserQuizzes();
-    console.log(this.userQuizzes);
-    this.dataSource = new MatTableDataSource<Quiz>(this.userQuizzes);
-    this.dataSource.paginator = this.paginator;*/
   }
 
   getUserQuizzes() {
