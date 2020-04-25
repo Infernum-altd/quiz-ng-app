@@ -11,27 +11,37 @@ import {Quiz} from "../../models/quiz";
 })
 export class MyQuizzesComponent implements OnInit {
   userQuizzes: Quiz[];
-  displayedColumns: string[] = ['name', 'category', 'description', 'actions'];
+  displayedColumns: string[] = ['name', 'date', 'category', 'description', 'modificationTime', 'status', 'actions'];
   dataSource: MatTableDataSource<Quiz>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
   constructor(private profileService: ProfileService) {
-    this.getUserQuizzes();
-    this.dataSource = new MatTableDataSource<Quiz>(this.userQuizzes);
-    this.dataSource.paginator = this.paginator;
+
+    profileService.getUserQuizzes().subscribe(resp => {
+
+      this.userQuizzes = resp;
+      this.addCategoryToQuizzes();
+      this.dataSource = new MatTableDataSource(this.userQuizzes);
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   ngOnInit(): void {
+/*    this.getUserQuizzes();
+    console.log(this.userQuizzes);
+    this.dataSource = new MatTableDataSource<Quiz>(this.userQuizzes);
+    this.dataSource.paginator = this.paginator;*/
   }
 
   getUserQuizzes() {
     this.profileService.getUserQuizzes().subscribe(
       resp => {
         this.userQuizzes = resp;
-        this.addCategoryToQuizzes();
       },
         error => {
         alert("Error while download quizzes")
       });
+
   }
 
   addCategoryToQuizzes() {

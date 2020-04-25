@@ -12,15 +12,15 @@ export class NavigationComponent implements OnInit {
   username: string;
   id: string;
   constructor(public authService: AuthenticationService,
-              private router: Router) {}
-
-  ngOnInit(): void {
+              private router: Router) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (this.currentUser != null){
       this.username = this.currentUser.email;
       this.id = this.currentUser.id;
     }
   }
+
+  ngOnInit(): void {}
 
   toProfile(){
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
