@@ -1,10 +1,8 @@
-import { Observable } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { AnswerComponent } from './../answer/answer.component';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Answer } from '../models/answer.model';
-import { Question } from '../models/question.model';
 import { AnswerService } from '../service/answerService/answer.service';
 
 @Component({
@@ -12,14 +10,12 @@ import { AnswerService } from '../service/answerService/answer.service';
   templateUrl: './string-answer.component.html',
   styleUrls: ['./string-answer.component.css']
 })
-export class StringAnswerComponent implements OnInit, AnswerComponent {
-  submitted: boolean = false;
-  answer: Answer[] = [];
+export class StringAnswerComponent extends AnswerComponent implements OnInit {
   text: FormControl;
 
-  questionId: number;
-
-  constructor(private answerService: AnswerService) { }
+  constructor(answerService: AnswerService) {
+    super(answerService);
+  }
 
   ngOnInit(): void {
     let result: Answer = {
@@ -40,19 +36,8 @@ export class StringAnswerComponent implements OnInit, AnswerComponent {
     return this.text.valid;
   }
 
-  save(): Observable<any> {
-    this.submitted = true;
-    if (this.isValid()) {
-      return this.answerService.postAnswer(this.answer[0]);
-    }
-
-    return null;
-  }
-
   getData(): void {
     this.answer[0].questionId = this.questionId;
     this.answer[0].text = this.text.value;
   }
-
-
 }

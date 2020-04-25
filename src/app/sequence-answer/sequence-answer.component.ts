@@ -1,34 +1,32 @@
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { AnswerService } from './../service/answerService/answer.service';
 import { ImageUploadComponent } from './../image-upload/image-upload.component';
 import { Validators, FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AnswerComponent, SequenceValidator } from './../answer/answer.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { Answer } from '../models/answer.model';
-import { map, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sequence-answer',
   templateUrl: './sequence-answer.component.html',
   styleUrls: ['./sequence-answer.component.css']
 })
-export class SequenceAnswerComponent implements OnInit, AnswerComponent {
+export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
   @ViewChildren(ImageUploadComponent) imageComponents!: QueryList<ImageUploadComponent>;
 
-  questionId: number;
-
-  submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
-
-  answer: Answer[] = [];
-  images: File[] = [];
 
   maxAnswer = 4;
   minRequired = 2;
 
+  service: AnswerService;
+
   constructor(private formBuilder: FormBuilder,
-    private answerService: AnswerService) { }
+    answerService: AnswerService) {
+    super(answerService);
+    this.service = answerService;
+  }
 
   ngOnInit(): void {
     this.answerForm = new FormGroup({
@@ -79,38 +77,6 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
     );
   }
 
-  saveAnswers(): Observable<any> {
-    let observableBatch = [];
-
-    this.answer.forEach(
-      (item) => {
-        if (item.text != null && item.text !== "") {
-          observableBatch.push(
-            this.answerService.postAnswer(item).pipe(map(response => item.id = response.id))
-          );
-        }
-      }
-    );
-
-    return forkJoin(observableBatch);
-  }
-
-  saveImages(): Observable<any> {
-    let observableBatch = [];
-
-    this.answer.forEach(
-      (item, index) => {
-        if (item.text != null && item.text !== "" && this.images[index] != null) {
-          observableBatch.push(
-            this.answerService.updateImage(item.id, this.images[index])
-          );
-        }
-      }
-    );
-
-    return forkJoin(observableBatch);
-  }
-
   getData(): void {
     for (var i = 0; i < this.answer.length; i++) {
 
@@ -140,7 +106,7 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
         break;
       }
       this.answer[i].nextAnswerId = this.answer[i + 1].id;
-      observableBatch.push(this.answerService.updateAnswer(this.answer[i]));
+      observableBatch.push(this.service.updateAnswer(this.answer[i]));
     }
     return forkJoin(observableBatch);
   }

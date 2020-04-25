@@ -1,34 +1,26 @@
-import { map, mergeMap, concatMap, toArray } from 'rxjs/operators';
 import { AnswerService } from './../service/answerService/answer.service';
 import { AnswerComponent, SequenceValidator } from './../answer/answer.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormArray, Validators, FormControl, FormBuilder } from '@angular/forms';
-import { Answer } from '../models/answer.model';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
-import { Observable, forkJoin, of, from, concat } from 'rxjs';
 
 @Component({
   selector: 'app-optional-answer',
   templateUrl: './optional-answer.component.html',
   styleUrls: ['./optional-answer.component.css']
 })
-export class OptionalAnswerComponent implements OnInit, AnswerComponent {
+export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
   @ViewChildren(ImageUploadComponent) imageComponents!: QueryList<ImageUploadComponent>;
 
-  questionId: number;
-
-  submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
-
-  answer: Answer[] = [];
-  images: File[] = [];
 
   maxAnswer = 4;
   minRequired = 2;
 
   constructor(private formBuilder: FormBuilder,
-    private answerService: AnswerService) {
+    answerService: AnswerService) {
+    super(answerService);
     this.answerForm = new FormGroup({
       items: this.formBuilder.array([])
     });
@@ -62,51 +54,6 @@ export class OptionalAnswerComponent implements OnInit, AnswerComponent {
   isValid(): boolean {
     this.items.setValidators(SequenceValidator());
     return this.answerForm.valid;
-  }
-
-  save(): Observable<any> {
-    this.submitted = true;
-    this.getData();
-    this.getImages();
-
-    return this.saveAnswers().pipe(
-      mergeMap(
-        () => this.saveImages()
-      )
-    );
-
-  }
-
-  saveAnswers(): Observable<any> {
-    let observableBatch = [];
-
-    this.answer.forEach(
-      (item) => {
-        if (item.text != null && item.text !== "") {
-          observableBatch.push(
-            this.answerService.postAnswer(item).pipe(map(response => item.id = response.id))
-          );
-        }
-      }
-    );
-
-    return forkJoin(observableBatch);
-  }
-
-  saveImages(): Observable<any> {
-    let observableBatch = [];
-
-    this.answer.forEach(
-      (item, index) => {
-        if (item.text != null && item.text !== "" && this.images[index] != null) {
-          observableBatch.push(
-            this.answerService.updateImage(item.id, this.images[index])
-          );
-        }
-      }
-    );
-
-    return forkJoin(observableBatch);
   }
 
   getData(): void {

@@ -1,9 +1,7 @@
-import { Observable, of } from 'rxjs';
 import { AnswerService } from './../service/answerService/answer.service';
 import { AnswerComponent } from './../answer/answer.component';
 import { Component, OnInit } from '@angular/core';
 import { Answer } from '../models/answer.model';
-import { map, mergeMap } from 'rxjs/operators';
 
 
 @Component({
@@ -11,14 +9,12 @@ import { map, mergeMap } from 'rxjs/operators';
   templateUrl: './boolean-answer.component.html',
   styleUrls: ['./boolean-answer.component.css']
 })
-export class BooleanAnswerComponent implements OnInit, AnswerComponent {
-  submitted: boolean = false;
-  answer: Answer[] = [];
+export class BooleanAnswerComponent extends AnswerComponent implements OnInit {
   checkBox: boolean = false;
 
-  questionId: number;
-
-  constructor(private answerService: AnswerService) { }
+  constructor(answerService: AnswerService) {
+    super(answerService);
+  }
 
   ngOnInit(): void {
     let result: Answer = {
@@ -29,16 +25,6 @@ export class BooleanAnswerComponent implements OnInit, AnswerComponent {
       nextAnswerId: null
     };
     this.answer.push(result);
-  }
-
-  isValid(): boolean {
-    return true
-  }
-
-  save(): Observable<any> {
-    this.submitted = true;
-    this.getData();
-    return this.answerService.postAnswer(this.answer[0]);
   }
 
   getData(): void {
