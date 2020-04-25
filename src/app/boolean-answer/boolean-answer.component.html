@@ -1,12 +1,8 @@
 <div class="container">
-    <div class="form-check">
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-                <input type="checkbox" [checked]="checkBox" (change)="checkBox=!checkBox"
-                    aria-label=" Checkbox for following text input" id="checkbox">
-            </div>
-            <label type="text" aria-label="Text with checkbox" id="text" for="checkbox">Is
-                question true?</label>
-        </div>
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="checkbox custom-control-input" [checked]="checkBox" (change)="checkBox=!checkBox"
+            aria-label=" Checkbox for following text input" id="checkbox">
+        <label class="custom-control-label" type="text" aria-label="Text with checkbox" id="text" for="checkbox">Is
+            question true?</label>
     </div>
 </div>

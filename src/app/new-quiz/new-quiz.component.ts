@@ -7,7 +7,6 @@ import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Quiz } from '../models/add-quiz.model';
 import { StatusType } from '../models/quiz.model';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-new-quiz',
@@ -76,13 +75,7 @@ export class NewQuizComponent implements OnInit {
       return;
     }
 
-    let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
-    this.quiz.name = input.name;
-    let category = this.quizForm.get('category').value;
-    this.quiz.category_id = this.categories.find(function (el) { return el.name === category; }).id;
-    this.quiz.description = input.description;
-
-    this.quiz.status = this.quiz.status.toUpperCase();
+    this.getData()
 
     this.saveQuiz();
   }
@@ -103,5 +96,14 @@ export class NewQuizComponent implements OnInit {
         alert(err.error['message']);
       }
     );
+  }
+
+  getData(): void {
+    let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
+    this.quiz.name = input.name;
+    let category = this.quizForm.get('category').value;
+    this.quiz.category_id = this.categories.find(function (el) { return el.name === category; }).id;
+    this.quiz.description = input.description;
+    this.quiz.status = this.quiz.status.toUpperCase();
   }
 }

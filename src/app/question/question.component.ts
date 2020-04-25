@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { Validators, FormArray } from '@angular/forms';
 import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
 import { StringAnswerComponent } from './../string-answer/string-answer.component';
 import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
@@ -7,9 +7,11 @@ import { AnswerComponent } from './../answer/answer.component';
 import { QuestionService } from './../service/questionService/question.service';
 import { Router } from '@angular/router';
 import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, Input } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Answer } from '../models/answer.model';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
+import { map, mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-question',
@@ -20,6 +22,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   quizId: number;
   submitted: boolean = false;
   send: boolean = false;
+
   questionForm: FormGroup;
   questionTypes = Object.keys(QuestionType)
   componentRef: ComponentRef<AnswerComponent>
@@ -31,11 +34,13 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     text: "",
     active: true
   };
+  image: File = null;
+
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
   @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
+  @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
-  constructor(private router: Router,
-    public questionService: QuestionService,
+  constructor(public questionService: QuestionService,
     private formBuilder: FormBuilder,
     private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -43,7 +48,6 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionForm = this.formBuilder.group({
       text: [this.question.text, [Validators.required, Validators.maxLength(360)]],
       type: [this.question.type]
-      // , questionImage: [this.question.image]
     });
   }
 
@@ -77,7 +81,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     return this.questionForm.valid
   }
 
-  save() {
+  save(): void {
     if (this.questionForm.invalid) {
       return;
     }
@@ -85,33 +89,40 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.submitted = true;
     let answer = this.componentRef.instance;
     if (answer.isValid()) {
-      this.question.quizId = this.quizId;
-      this.question.type = this.question.type.toUpperCase();
-      this.question.text = this.questionForm.get('text').value;
-      this.question.type = this.questionForm.get('type').value.toUpperCase();
+      this.getData();
 
-      console.log(this.question);
-
-      this.questionService.postQuestion(this.question)
-        .subscribe(
-          res => {
-            console.log('Question added');
-            this.question.id = res.id;
-            answer.questionId = this.question.id;
-
-            if (answer.isValid()) {
-              answer.save();
-
-              if (answer.submitted && answer.send) {
-                this.send = true;
-              }
+      this.questionService.postQuestion(this.question).pipe(
+        map(result => {
+          this.question.id = result.id;
+          answer.questionId = result.id;
+          return this.question;
+        }),
+        mergeMap(
+          question => {
+            if (this.image != null) {
+              return this.questionService.updateImage(question.id, this.image);
             }
-          },
-          err => {
-            alert(err.error['message']);
+            return of(null)
           }
-        );
+        ),
+        mergeMap(() =>
+          this.componentRef.instance.save()
+        )
+      ).subscribe(
+        () => console.log("Question submitted"),
+        err => console.error(err)
+      )
     }
+  }
+
+  getData(): void {
+    this.question.quizId = this.quizId;
+    this.question.type = this.question.type.toUpperCase();
+    this.question.text = this.questionForm.get('text').value;
+    this.question.type = this.questionForm.get('type').value.toUpperCase();
+
+    if (this.imageComponent.selectedFile != null)
+      this.image = this.imageComponent.selectedFile.file;
   }
 
   onOptionSelected(value: String) {

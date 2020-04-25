@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { AnswerComponent } from './../answer/answer.component';
 import { Component, OnInit } from '@angular/core';
@@ -16,9 +17,9 @@ export class StringAnswerComponent implements OnInit, AnswerComponent {
   answer: Answer[] = [];
   text: FormControl;
 
-  constructor(private answerService: AnswerService) { }
-  send: boolean;
   questionId: number;
+
+  constructor(private answerService: AnswerService) { }
 
   ngOnInit(): void {
     let result: Answer = {
@@ -39,21 +40,18 @@ export class StringAnswerComponent implements OnInit, AnswerComponent {
     return this.text.valid;
   }
 
-  save(): void {
+  save(): Observable<any> {
     this.submitted = true;
     if (this.isValid()) {
-      this.answer[0].questionId = this.questionId;
-      this.answer[0].text = this.text.value;
-      this.answerService.postAnswer(this.answer[0]).subscribe(
-        res => {
-          console.log('String answer added');
-          this.send = true;
-        },
-        err => {
-          alert(err.error['message']);
-        }
-      )
+      return this.answerService.postAnswer(this.answer[0]);
     }
+
+    return null;
+  }
+
+  getData(): void {
+    this.answer[0].questionId = this.questionId;
+    this.answer[0].text = this.text.value;
   }
 
 

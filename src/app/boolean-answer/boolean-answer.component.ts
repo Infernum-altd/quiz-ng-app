@@ -1,10 +1,10 @@
+import { Observable, of } from 'rxjs';
 import { AnswerService } from './../service/answerService/answer.service';
-import { FormBuilder, FormControl } from '@angular/forms';
 import { AnswerComponent } from './../answer/answer.component';
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Answer } from '../models/answer.model';
-import { Question } from '../models/question.model';
+import { map, mergeMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-boolean-answer',
@@ -16,10 +16,9 @@ export class BooleanAnswerComponent implements OnInit, AnswerComponent {
   answer: Answer[] = [];
   checkBox: boolean = false;
 
-  constructor(private answerService: AnswerService) { }
-
   questionId: number;
-  send: boolean;
+
+  constructor(private answerService: AnswerService) { }
 
   ngOnInit(): void {
     let result: Answer = {
@@ -36,20 +35,14 @@ export class BooleanAnswerComponent implements OnInit, AnswerComponent {
     return true
   }
 
-  save(): void {
+  save(): Observable<any> {
     this.submitted = true;
-    if (this.isValid()) {
-      this.answer[0].questionId = this.questionId;
-      this.answer[0].text = this.checkBox ? "true" : "false";
-      this.answerService.postAnswer(this.answer[0]).subscribe(
-        res => {
-          console.log('Boolean answer added');
-          this.send = true;
-        },
-        err => {
-          alert(err.error['message']);
-        }
-      )
-    }
+    this.getData();
+    return this.answerService.postAnswer(this.answer[0]);
+  }
+
+  getData(): void {
+    this.answer[0].questionId = this.questionId;
+    this.answer[0].text = this.checkBox ? "true" : "false";
   }
 }
