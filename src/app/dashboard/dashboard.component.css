@@ -1,0 +1,68 @@
+.background {
+  background-color: gainsboro;
+  min-height: 50rem;
+  width: 100%;
+  padding: 1rem 0 5rem 0;
+}
+
+.row {
+  padding: 10px;
+}
+
+.dashboard-card {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  margin: 0px 10px 10px 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+h2, div {
+  margin: 0;
+}
+
+mat-card {
+  background-color: white;
+}
+
+#profile-card {
+  width: 10rem;
+  height: 10rem;
+}
+
+#profile-img {
+  border-radius: 50%;
+  background-color: aliceblue;
+  width: 5rem;
+  height: 5rem;
+  margin: 0;
+}
+
+#rating-card, #achievement-card {
+  width: 10rem;
+  height: 6rem;
+}
+
+.game-card {
+  width: 10rem;
+  height: 8rem;
+}
+
+.announcements {
+  width: 100%;
+  /* height: 50rem; */
+}
+
+.text {
+  color: #424242;
+  font-weight: bold;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 0.5rem;
+}
