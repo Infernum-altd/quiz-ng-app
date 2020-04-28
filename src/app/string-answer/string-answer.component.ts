@@ -33,6 +33,7 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
   }
 
   isValid(): boolean {
+    this.submitted = true;
     return this.text.valid;
   }
 

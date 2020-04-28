@@ -1,17 +1,21 @@
-import { Validators, FormArray } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
 import { StringAnswerComponent } from './../string-answer/string-answer.component';
 import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
 import { OptionalAnswerComponent } from './../optional-answer/optional-answer.component';
 import { AnswerComponent } from './../answer/answer.component';
 import { QuestionService } from './../service/questionService/question.service';
-import { Router } from '@angular/router';
 import { Question, QuestionType } from './../models/question.model';
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
-import { map, mergeMap } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
+import { map, mergeMap, defaultIfEmpty } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
+import { TitleCasePipe } from '@angular/common';
+
+interface QuestionTypeValue {
+  value: string
+}
 
 @Component({
   selector: 'app-question',
@@ -24,7 +28,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   send: boolean = false;
 
   questionForm: FormGroup;
-  questionTypes = Object.keys(QuestionType)
+  questionTypes: QuestionTypeValue[] = [];
   componentRef: ComponentRef<AnswerComponent>
 
   question: Question = {
@@ -42,7 +46,11 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   constructor(public questionService: QuestionService,
     private formBuilder: FormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver) { }
+    private componentFactoryResolver: ComponentFactoryResolver) {
+    Object.keys(QuestionType).forEach(
+      value => this.questionTypes.push({ value })
+    );
+  }
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
@@ -78,10 +86,12 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   isValid(): boolean {
-    return this.questionForm.valid
+    this.submitted = true;
+    this.questionForm.markAsTouched();
+    return this.questionForm.valid && this.componentRef.instance.isValid();
   }
 
-  save(): void {
+  save(): Observable<any> {
     if (this.questionForm.invalid) {
       return;
     }
@@ -91,7 +101,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     if (answer.isValid()) {
       this.getData();
 
-      this.questionService.postQuestion(this.question).pipe(
+      return this.questionService.postQuestion(this.question).pipe(
         map(result => {
           this.question.id = result.id;
           answer.questionId = result.id;
@@ -105,13 +115,11 @@ export class QuestionComponent implements OnInit, AfterViewInit {
             return of(null)
           }
         ),
+        defaultIfEmpty(),
         mergeMap(() =>
           this.componentRef.instance.save()
         )
-      ).subscribe(
-        () => console.log("Question submitted"),
-        err => console.error(err)
-      )
+      );
     }
   }
 
@@ -119,14 +127,14 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.question.quizId = this.quizId;
     this.question.type = this.question.type.toUpperCase();
     this.question.text = this.questionForm.get('text').value;
-    this.question.type = this.questionForm.get('type').value.toUpperCase();
+    this.question.type = this.questionForm.get('type').value.value.toUpperCase();
 
     if (this.imageComponent.selectedFile != null)
       this.image = this.imageComponent.selectedFile.file;
   }
 
-  onOptionSelected(value: String) {
-    this.loadComponent(value);
+  onOptionSelected(value: QuestionTypeValue) {
+    this.loadComponent(new TitleCasePipe().transform(value.value));
   }
 
 }

@@ -56,6 +56,7 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
   }
 
   isValid(): boolean {
+    this.submitted = true;
     this.items.setValidators(SequenceValidator());
     return this.answerForm.valid;
   }

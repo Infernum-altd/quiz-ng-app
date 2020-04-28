@@ -1,6 +1,6 @@
 import { AnswerService } from './../service/answerService/answer.service';
 import { AnswerComponent, SequenceValidator } from './../answer/answer.component';
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { FormGroup, FormArray, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
@@ -21,6 +21,10 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     answerService: AnswerService) {
     super(answerService);
+
+  }
+
+  ngOnInit(): void {
     this.answerForm = new FormGroup({
       items: this.formBuilder.array([])
     });
@@ -48,11 +52,10 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
     this.answerForm.get('items').setValidators([SequenceValidator()]);
   }
 
-  ngOnInit(): void {
-  }
-
   isValid(): boolean {
+    this.submitted = true;
     this.items.setValidators(SequenceValidator());
+    this.items.markAsTouched();
     return this.answerForm.valid;
   }
 

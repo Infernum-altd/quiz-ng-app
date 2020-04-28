@@ -2,7 +2,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { Answer } from './../models/answer.model';
 import { Component, OnInit } from '@angular/core';
 import { ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, defaultIfEmpty } from 'rxjs/operators';
 import { AnswerService } from '../service/answerService/answer.service';
 
 @Component({
@@ -35,7 +35,8 @@ export class AnswerComponent implements OnInit {
     return this.saveAnswers().pipe(
       mergeMap(
         () => this.saveImages()
-      )
+      ),
+      defaultIfEmpty()
     );
 
   }
