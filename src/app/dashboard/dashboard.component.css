@@ -62,7 +62,28 @@ mat-card {
   font-weight: bold;
 }
 
+.rating {
+  color: black;
+}
+
 sup {
   vertical-align: super;
   font-size: 0.5rem;
+}
+
+.quiz-name {
+  color: #424242;
+  padding-bottom: 1rem;
+  font-weight: bold;
+}
+
+.card-image {
+  height: 95%;
+  margin-bottom: 0;
+}
+
+#rating-card {
+  align-content: center;
+  text-align: center;
+  padding-bottom: 0;
 }

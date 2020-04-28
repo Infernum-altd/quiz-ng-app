@@ -9,60 +9,59 @@
           alt="Profile image" fxFlexAlign="end">
       </mat-card-content>
       <mat-card-actions fxLayoutAlign="space-around">
-        <button mat-raised-button fxFlexAlign="end">Go to Profile</button>
+        <button mat-raised-button class="text" fxFlexAlign="end" color="_blank">Go to Profile</button>
       </mat-card-actions>
     </mat-card>
     <mat-card id="rating-card">
-      <mat-card-content>
-        <h2 class="text">100500<sup>TH</sup></h2>
-      </mat-card-content>
+      <div>
+        <h2 class="text">{{rating}}<sup>TH</sup></h2>
+      </div>
+      <mat-card-footer class="rating">
+        <h3>Rating</h3>
+      </mat-card-footer>
     </mat-card>
     <mat-card id="achievement-card">
-
+      <div>
+        <h2 class="text">{{achievementsForUser}} / {{achievementsTotal}}<sup>TH</sup></h2>
+      </div>
+      <mat-card-footer class="rating">
+        <h3>Achievements</h3>
+      </mat-card-footer>
     </mat-card>
   </div>
-  <div fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="starts">
+  <div fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start">
     <h2>Recent activity</h2>
-    <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="center">
-      <mat-card class="game-card">
-
+    <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
+      <mat-card class="game-card" *ngFor="let quiz of recentQuizzes">
+        <img mat-card-image class="card-image" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+          alt="Profile image" fxFlexAlign="end">
+        <mat-card-content class="quiz-name" fxLayout="column" fxLayoutAlign="space-between" fxFlexAlign="center">
+          <h3>{{quiz.name}}</h3>
+        </mat-card-content>
       </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
+      <h3 *ngIf="recentQuizzes.length==0">No recent activity</h3>
     </div>
+
+
+
     <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="space-between">
       <h2>Top quizzes</h2>
       <mat-select placeholder="Categories" fxFlexAlign="end">
         View all
       </mat-select>
     </div>
-    <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="center">
-      <mat-card class="game-card">
 
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
-      </mat-card>
-      <mat-card class="game-card">
-
+    <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
+      <mat-card class="game-card" *ngFor="let quiz of topQuizzes">
+        <img mat-card-image class="card-image" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+          alt="Profile image" fxFlexAlign="end">
+        <mat-card-content class="quiz-name" fxLayout="column" fxLayoutAlign="space-between" fxFlexAlign="center">
+          <h3>{{quiz.name}}</h3>
+        </mat-card-content>
       </mat-card>
     </div>
+
+
     <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="space-between">
       <h2>Announcements</h2>
       <mat-select placeholder="Categories" fxFlexAlign="end">

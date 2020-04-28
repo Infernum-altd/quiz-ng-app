@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {User} from '../../models/user';
-import {Quiz} from '../../models/quiz';
-import {NotificationStatus} from '../../models/notification-status.enum';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../../models/user';
+import { Quiz } from '../../models/quiz';
+import { NotificationStatus } from '../../models/notification-status.enum';
 
 
 @Injectable({
@@ -23,38 +23,39 @@ export class ProfileService {
   private UPDATE_GET_NOTIFICATION = `${this.BASE_URL}\\profile\\status\\`;
   private userId = JSON.parse(localStorage.getItem('currentUser')).id;
 
+
   constructor(private http: HttpClient) { }
 
-  getProfile(userId: string): Observable<User>{
+  getProfile(userId: string): Observable<User> {
     return this.http.get<User>(this.PROFILE_URL + userId);
   }
 
-  updateProfile(user: User): Observable<User>{
+  updateProfile(user: User): Observable<User> {
     user.id = this.userId;
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
-  updatePassword(newPassword: string): Observable<any>{
+  updatePassword(newPassword: string): Observable<any> {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
 
-  getFriends(): Observable<User[]>{
+  getFriends(): Observable<User[]> {
     return this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
   }
 
-  getUserQuizzes(): Observable<Quiz[]>{
+  getUserQuizzes(): Observable<Quiz[]> {
     return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
   }
 
-  getFavoriteGames(): Observable<any[]>{
+  getFavoriteGames(): Observable<any[]> {
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId);
   }
 
-  getCategoryName(categoryId: string): Observable<any>{
+  getCategoryName(categoryId: string): Observable<any> {
     return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
 
-  updateImage(image: File): Observable<any>{
+  updateImage(image: File): Observable<any> {
     const uploadImg = new FormData();
     uploadImg.append('image', image);
     return this.http.post(this.UPDATE_USER_IMAGE + this.userId, uploadImg);
@@ -68,7 +69,7 @@ export class ProfileService {
     return this.http.post(this.UPDATE_GET_NOTIFICATION + this.userId, status);
   }
 
-  getUserNotificationStatus(): Observable<NotificationStatus>{
+  getUserNotificationStatus(): Observable<NotificationStatus> {
     return this.http.get<NotificationStatus>(this.UPDATE_GET_NOTIFICATION + this.userId);
   }
 }
