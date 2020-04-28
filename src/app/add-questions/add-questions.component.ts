@@ -1,3 +1,5 @@
+import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
 import { QuestionComponent } from './../question/question.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,32 +13,78 @@ import { Question, QuestionType } from '../models/question.model';
 export class AddQuestionsComponent implements OnInit {
   @ViewChildren(QuestionComponent) questionComponents!: QueryList<QuestionComponent>;
 
-  questionId: number;
+  quizId: number;
   name: string;
 
   questions: Question[] = [];
 
-
-  constructor(router: Router) {
+  constructor(private router: Router) {
     let state = router.getCurrentNavigation().extras.state;
-    this.questionId = state.id;
+    this.quizId = state.id;
     this.name = state.name;
   }
 
   ngOnInit(): void {
+    this.questions.push({
+      id: null,
+      quizId: this.quizId,
+      type: 'OPTION',
+      text: '',
+      active: true
+    });
   }
 
   addQuestion() {
     this.questions.push({
       id: null,
-      type: QuestionType.OPTION,
-      image: null,
+      quizId: this.quizId,
+      type: 'OPTION',
       text: '',
       active: true
     });
   }
 
   removeQuestion(i: number) {
-    this.questions.splice(i, 1);
+    if (this.questions.length > 1) {
+      this.questions.splice(i, 1);
+    }
+    else {
+      alert("Can't delete the only one question");
+    }
+  }
+
+  onSubmit() {
+    let isValid = true;
+
+    this.questionComponents.toArray().forEach(
+      value => {
+        if (!value.isValid()) {
+          isValid = false;
+        }
+      }
+    );
+
+    if (isValid) {
+      let observableBatch: Observable<any>[] = [];
+
+      console.log("submit")
+      this.questionComponents.toArray().forEach(el => {
+        el.quizId = this.quizId;
+        observableBatch.push(el.save());
+      })
+
+      forkJoin(observableBatch).subscribe(
+        () => {
+          console.log('Quiz added');
+          this.router.navigateByUrl('/submitted_quiz');
+        },
+        err => {
+          alert(err);
+        }
+      );
+    }
+    else {
+      alert("Error. Check your questions");
+    }
   }
 }

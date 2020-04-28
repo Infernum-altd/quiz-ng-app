@@ -5,11 +5,17 @@ import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.compo
 import { OptionalAnswerComponent } from './../optional-answer/optional-answer.component';
 import { AnswerComponent } from './../answer/answer.component';
 import { QuestionService } from './../service/questionService/question.service';
-import { Router } from '@angular/router';
 import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactory, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, Input } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Answer } from '../models/answer.model';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
+import { map, mergeMap, defaultIfEmpty } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
+import { TitleCasePipe } from '@angular/common';
+
+interface QuestionTypeValue {
+  value: string
+}
 
 @Component({
   selector: 'app-question',
@@ -20,30 +26,36 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   quizId: number;
   submitted: boolean = false;
   send: boolean = false;
+
   questionForm: FormGroup;
-  questionTypes = Object.keys(QuestionType)
+  questionTypes: QuestionTypeValue[] = [];
   componentRef: ComponentRef<AnswerComponent>
 
   question: Question = {
     id: null,
+    quizId: null,
     type: QuestionType.OPTION,
-    image: null,
-    text: '',
+    text: "",
     active: true
   };
+  image: File = null;
+
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
   @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
+  @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
-  constructor(private router: Router,
-    public service: QuestionService,
+  constructor(public questionService: QuestionService,
     private formBuilder: FormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver) { }
+    private componentFactoryResolver: ComponentFactoryResolver) {
+    Object.keys(QuestionType).forEach(
+      value => this.questionTypes.push({ value })
+    );
+  }
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
       text: [this.question.text, [Validators.required, Validators.maxLength(360)]],
-      type: [this.question.type],
-      questionImage: [this.question.image]
+      type: [this.question.type]
     });
   }
 
@@ -74,25 +86,55 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   isValid(): boolean {
-    return this.questionForm.valid
+    this.submitted = true;
+    this.questionForm.markAsTouched();
+    return this.questionForm.valid && this.componentRef.instance.isValid();
   }
 
-  add() {
+  save(): Observable<any> {
     if (this.questionForm.invalid) {
       return;
     }
-    if (this.componentRef.instance.isValid()) {
-      let answer: Answer[] = this.componentRef.instance.getResult();
-      this.save(answer);
+
+    this.submitted = true;
+    let answer = this.componentRef.instance;
+    if (answer.isValid()) {
+      this.getData();
+
+      return this.questionService.postQuestion(this.question).pipe(
+        map(result => {
+          this.question.id = result.id;
+          answer.questionId = result.id;
+          return this.question;
+        }),
+        mergeMap(
+          question => {
+            if (this.image != null) {
+              return this.questionService.updateImage(question.id, this.image);
+            }
+            return of(null)
+          }
+        ),
+        defaultIfEmpty(),
+        mergeMap(() =>
+          this.componentRef.instance.save()
+        )
+      );
     }
   }
 
-  onOptionSelected(value: String) {
-    this.loadComponent(value);
+  getData(): void {
+    this.question.quizId = this.quizId;
+    this.question.type = this.question.type.toUpperCase();
+    this.question.text = this.questionForm.get('text').value;
+    this.question.type = this.questionForm.get('type').value.value.toUpperCase();
+
+    if (this.imageComponent.selectedFile != null)
+      this.image = this.imageComponent.selectedFile.file;
   }
 
-  save(answer: Answer[]) {
-    //TODO: add service to send question
+  onOptionSelected(value: QuestionTypeValue) {
+    this.loadComponent(new TitleCasePipe().transform(value.value));
   }
 
 }

@@ -33,18 +33,28 @@ import { AnswerComponent } from './answer/answer.component';
 import { NewQuizComponent } from './new-quiz/new-quiz.component';
 import { AddQuestionsComponent } from './add-questions/add-questions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from "@angular/material/table";
-import {MatInputModule} from "@angular/material/input";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import { MatTableModule } from "@angular/material/table";
+import { MatInputModule } from "@angular/material/input";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LayoutModule } from '@angular/cdk/layout';
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { SubmittedQuizComponent } from './submitted-quiz/submitted-quiz.component';
 import {FlexModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatButtonModule} from "@angular/material/button";
 import {MatSortModule} from "@angular/material/sort";
-import {MatIconModule} from "@angular/material/icon";
-import {MatMenuModule} from "@angular/material/menu";
 import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
-import {MatCardModule} from "@angular/material/card";
-import {MatSelectModule} from "@angular/material/select";
+
 
 const profileRoutes: Routes = [
   {
@@ -110,6 +120,14 @@ const appRoutes: Routes = [
     component: AddQuestionsComponent
   },
   {
+    path: 'submitted_quiz',
+    component: SubmittedQuizComponent
+  },
+  {
+    path: 'close', canActivate: [AuthGuardService],
+    component: CloseComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -139,7 +157,8 @@ const appRoutes: Routes = [
     ImageUploadComponent,
     AnswerComponent,
     NewQuizComponent,
-    AddQuestionsComponent
+    AddQuestionsComponent,
+    SubmittedQuizComponent
   ],
   imports: [
     BrowserModule,
@@ -160,7 +179,24 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatRadioModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    LayoutModule,
+    FlexLayoutModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

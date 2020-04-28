@@ -1,25 +1,32 @@
+import { Observable, forkJoin } from 'rxjs';
+import { AnswerService } from './../service/answerService/answer.service';
 import { ImageUploadComponent } from './../image-upload/image-upload.component';
 import { Validators, FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AnswerComponent, SequenceValidator } from './../answer/answer.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { Answer } from '../models/answer.model';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sequence-answer',
   templateUrl: './sequence-answer.component.html',
   styleUrls: ['./sequence-answer.component.css']
 })
-export class SequenceAnswerComponent implements OnInit, AnswerComponent {
-  @ViewChildren(ImageUploadComponent) images!: QueryList<ImageUploadComponent>;
+export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
+  @ViewChildren(ImageUploadComponent) imageComponents!: QueryList<ImageUploadComponent>;
 
-  submitted: boolean = false;
   answerForm: FormGroup;
   items: FormArray;
-  answer: Answer[] = [];
+
   maxAnswer = 4;
   minRequired = 2;
 
-  constructor(private formBuilder: FormBuilder) { }
+  service: AnswerService;
+
+  constructor(private formBuilder: FormBuilder,
+    answerService: AnswerService) {
+    super(answerService);
+    this.service = answerService;
+  }
 
   ngOnInit(): void {
     this.answerForm = new FormGroup({
@@ -29,11 +36,10 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
     for (var _i = 0; _i < this.maxAnswer; _i++) {
       this.answer.push({
         id: null,
-        question: null,
-        text: '',
-        image: null,
-        isCorrect: true,
-        answer: null
+        questionId: 0,
+        text: "",
+        correct: true,
+        nextAnswerId: null
       });
       let formControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
@@ -50,18 +56,59 @@ export class SequenceAnswerComponent implements OnInit, AnswerComponent {
   }
 
   isValid(): boolean {
+    this.submitted = true;
     this.items.setValidators(SequenceValidator());
     return this.answerForm.valid;
   }
 
-  getResult(): Answer[] {
-    let answerImages = this.images.toArray();
-    for (var _i in answerImages) {
-      let file = answerImages[_i].selectedFile.file;
-      if (file != null) {
-        this.answer[_i].image = file;
-      }
+  save(): Observable<any> {
+    this.submitted = true;
+    this.getData();
+    this.getImages();
+
+    return this.saveAnswers().pipe(
+      mergeMap(
+        () =>
+          this.updateAnswers()
+      ),
+      mergeMap(
+        () =>
+          this.saveImages()
+      )
+    );
+  }
+
+  getData(): void {
+    for (var i = 0; i < this.answer.length; i++) {
+
+      this.answer[i].text = (this.answerForm.get('items') as FormArray).at(i).get("text").value;
+
+      if (this.answer[i].text === "" || this.answer[i].text == null)
+        break;
+
+      this.answer[i].questionId = this.questionId;
     }
-    return this.answer;
+  }
+
+  getImages(): void {
+    this.imageComponents.forEach(image => {
+      if (image.selectedFile != null) {
+        this.images.push(image.selectedFile.file);
+      } else {
+        this.images.push(null);
+      }
+    });
+  }
+
+  updateAnswers(): Observable<any> {
+    let observableBatch = [];
+    for (var i = 0; i < this.answer.length - 1; i++) {
+      if (this.answer[i + 1].text == null || this.answer[i + 1].text === "") {
+        break;
+      }
+      this.answer[i].nextAnswerId = this.answer[i + 1].id;
+      observableBatch.push(this.service.updateAnswer(this.answer[i]));
+    }
+    return forkJoin(observableBatch);
   }
 }
