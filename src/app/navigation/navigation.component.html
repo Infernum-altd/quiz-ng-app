@@ -1,6 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <a mat-button routerLink="/">QUIZ</a>
+    <a mat-button routerLink="/quizzes">Quizzes</a>
     <span class="spacer"></span>
     <a mat-button routerLink="/register" *ngIf="!authService.logIn">Register</a>
     <a mat-button routerLink="/login" *ngIf="!authService.logIn">Login</a>

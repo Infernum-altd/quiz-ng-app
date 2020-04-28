@@ -54,6 +54,9 @@ import {FlexModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSortModule} from "@angular/material/sort";
 import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
+import { QuizzesPageComponent } from './quizzes-page/quizzes-page.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
 
 
 const profileRoutes: Routes = [
@@ -124,8 +127,8 @@ const appRoutes: Routes = [
     component: SubmittedQuizComponent
   },
   {
-    path: 'close', canActivate: [AuthGuardService],
-    component: CloseComponent
+    path: 'quizzes',
+    component: QuizzesPageComponent
   },
   {
     path: '',
@@ -158,7 +161,8 @@ const appRoutes: Routes = [
     AnswerComponent,
     NewQuizComponent,
     AddQuestionsComponent,
-    SubmittedQuizComponent
+    SubmittedQuizComponent,
+    QuizzesPageComponent
   ],
   imports: [
     BrowserModule,
@@ -196,7 +200,9 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatCheckboxModule,
     LayoutModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
