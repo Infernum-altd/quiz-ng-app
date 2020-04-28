@@ -3,6 +3,7 @@ import {ProfileService} from '../../service/profileService/profile.service';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Quiz} from "../../models/quiz";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-my-quizzes',
@@ -14,6 +15,7 @@ export class MyQuizzesComponent implements OnInit {
   displayedColumns: string[] = ['name', 'date', 'category', 'description', 'modificationTime', 'status', 'actions'];
   dataSource: MatTableDataSource<Quiz>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private profileService: ProfileService) {
 
@@ -23,6 +25,7 @@ export class MyQuizzesComponent implements OnInit {
       this.addCategoryToQuizzes();
       this.dataSource = new MatTableDataSource(this.userQuizzes);
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 

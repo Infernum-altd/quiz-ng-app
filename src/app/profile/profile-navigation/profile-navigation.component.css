@@ -2,3 +2,16 @@
   padding-left:30px;
   padding-right:30px;
 }
+
+
+mat-toolbar {
+  background: white;
+  padding-left:30px;
+  padding-right:30px;
+  margin: 30px;
+}
+
+span {
+  padding-left:30px;
+  padding-right:30px;
+}

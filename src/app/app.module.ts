@@ -36,6 +36,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from "@angular/material/table";
 import {MatInputModule} from "@angular/material/input";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {FlexModule} from "@angular/flex-layout";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSortModule} from "@angular/material/sort";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
+import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
+import {MatCardModule} from "@angular/material/card";
+import {MatSelectModule} from "@angular/material/select";
 
 const profileRoutes: Routes = [
   {
@@ -142,7 +151,16 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MatTableModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FlexModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSortModule,
+    MatIconModule,
+    MatMenuModule,
+    MatRadioModule,
+    MatCardModule,
+    MatSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

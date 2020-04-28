@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {User} from "../../models/user";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
 
 
 
@@ -18,6 +19,7 @@ export class FriendsComponent implements OnInit {
   displayedColumns: string[] = ['name', 'rating', 'actions'];
   dataSource: MatTableDataSource<User>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private profileService: ProfileService,
               private router: Router,
@@ -29,6 +31,7 @@ export class FriendsComponent implements OnInit {
       this.friends = resp;
       this.dataSource = new MatTableDataSource(this.friends);
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 

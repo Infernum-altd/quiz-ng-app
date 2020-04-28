@@ -4,6 +4,7 @@ import {ProfileService} from "../../service/profileService/profile.service";
 import {ShareIdService} from "../../service/profileService/share-id.service";
 import {PlatformLocation} from "@angular/common";
 import {Router} from "@angular/router";
+import {FormControl} from "@angular/forms";
 
 
 @Component({
@@ -13,6 +14,7 @@ import {Router} from "@angular/router";
 })
 
 export class UserInformationComponent implements OnInit {
+  floatLabelControl = new FormControl('auto');
   public profile: User;
   public isEditForm = false;
   currentUserId :string;

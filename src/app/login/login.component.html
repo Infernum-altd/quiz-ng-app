@@ -1,4 +1,4 @@
- <div class="container">
+<!-- <div class="container">
       <div class="row">
         <div class="col-md-6 offset-md-3">
           <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && Login()">
@@ -16,7 +16,7 @@
               />
 
               <div *ngIf="f.submitted && email.invalid" class="invalid-input">
-                <!-- individual validation errors -->
+                &lt;!&ndash; individual validation errors &ndash;&gt;
                 <div *ngIf="email.errors?.required">Field is required</div>
                 <div *ngIf="email.errors?.email">Field is not a valid email</div>
               </div>
@@ -36,8 +36,39 @@
           <a class="nav-link p-5 text-center" routerLink="/registration">Registration<span class="sr-only">(current)</span></a>
         </div>
       </div>
-    </div>
+    </div>-->
 
+
+
+ <div fxLayout="row" class >
+   <div fxFlex="30"></div>
+   <div fxFlex="center center">
+     <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && Login()">
+       <mat-form-field class="full-width">
+         <mat-label>Email</mat-label>
+         <input  type="email" matInput
+                 name="login"
+                 [(ngModel)]="model.email"
+                 #email="ngModel"
+                 [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"/>
+         <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
+       </mat-form-field>
+       <br>
+
+       <mat-form-field class="full-width">
+         <mat-label>Password</mat-label>
+         <input type="password" matInput
+                name="password"
+                [(ngModel)]="model.password">
+       </mat-form-field>
+       <br>
+       <button mat-raised-button type="submit">Submit</button>
+     </form>
+
+     <a  routerLink="/registration">Registration<span class="sr-only">(current)</span></a>
+   </div>
+   <div fxFlex="30"></div>
+ </div>
 
 
 

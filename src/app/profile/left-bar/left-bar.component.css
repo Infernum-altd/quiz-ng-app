@@ -1,5 +1,12 @@
 #changeImg{
-  position: relative;
-  left: 215px;
-  bottom: 35px;
+  width: 30px;
+}
+
+.card {
+  margin-right: 50px;
+  margin-top: 200px;
+}
+
+button {
+ width: 150px;
 }

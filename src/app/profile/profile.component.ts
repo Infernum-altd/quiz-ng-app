@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
-import {ProfileService} from "../service/profileService/profile.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ShareIdService} from "../service/profileService/share-id.service";
 
