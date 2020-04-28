@@ -12,8 +12,8 @@ export enum StatusType {
 export interface Quiz {
   id:number;
   name:string;
-  author:string;
-  category:string;
+  author:User;
+  category:Category;
   date:string;
   description:string;
   status:StatusType;

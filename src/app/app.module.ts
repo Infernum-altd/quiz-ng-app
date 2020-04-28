@@ -108,6 +108,18 @@ const appRoutes: Routes = [
     component:QuizComponent
   },
   {
+    path:'quiz',
+    component:QuizComponent
+  },
+  {
+    path: 'friends', canActivate: [AuthGuardService],
+    component: FriendsComponent
+  },
+  {
+    path:'quizzes/:id',
+    component:QuizComponent
+  },
+  {
     path: 'question',
     component: QuestionComponent
   },
@@ -122,10 +134,6 @@ const appRoutes: Routes = [
   {
     path: 'submitted_quiz',
     component: SubmittedQuizComponent
-  },
-  {
-    path: 'close', canActivate: [AuthGuardService],
-    component: CloseComponent
   },
   {
     path: '',
