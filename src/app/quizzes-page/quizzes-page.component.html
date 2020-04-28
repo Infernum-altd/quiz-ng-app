@@ -6,19 +6,16 @@
     <h3 align="center"><b>Categories</b></h3>
     <mat-selection-list>
       <mat-list *ngFor="let category of categories">
-        <mat-list-item><button mat-raised-button type="submit">{{category.name}}</button></mat-list-item>
+        <mat-list-item><button mat-raised-button (click)="searchByCategory(category.id)">{{category.name}}</button></mat-list-item>
       </mat-list>
     </mat-selection-list>
   </div>
   <div fxFlex="70">
     <div fxLayout="column" fxLayoutAlign="space-evenly none">
       <div></div> <!--input field / dropdow sort selectors-->
-      <div>
-        <mat-grid-list cols="2" rowHeight="fit" gutterSize="1px" [style.height]="'200px'">
-          <mat-grid-tile *ngFor="let quiz of quizzes">
-
-          </mat-grid-tile>
-        </mat-grid-list>
+      <div *ngFor="let quiz of quizzes">
+        <app-quiz [quizData]="quiz">
+        </app-quiz>
       </div>
     </div>
   </div>

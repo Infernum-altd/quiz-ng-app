@@ -12,6 +12,7 @@ import {QuizService} from "../service/quizService/quiz.service";
 export class QuizzesPageComponent implements OnInit {
   categories: Category[];
   quizzes: Quiz[];
+  quizData: Quiz;
   constructor(private categoryService: CategoryService,
               private quizService: QuizService) { }
 
@@ -21,6 +22,12 @@ export class QuizzesPageComponent implements OnInit {
     );
 
     this.quizService.getQuizzes().subscribe(
+      resp => this.quizzes = resp
+    );
+  }
+
+  searchByCategory(categoryid: number){
+    this.quizService.getQuizzesByCategory(categoryid).subscribe(
       resp => this.quizzes = resp
     );
   }

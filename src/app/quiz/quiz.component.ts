@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {QuizService} from "../service/quizService/quiz.service";
 import {ActivatedRoute} from "@angular/router";
+import {Quiz} from "../models/quiz";
 
 @Component({
   selector: 'app-quiz',
@@ -8,21 +9,23 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  private quizzesData: any;
-  quizData: any;
+  @Input()
+  quizData: Quiz;
+  //quizData: any;
   constructor(private quizService:QuizService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getQuizzes();
+    //this.getQuizzes();
   }
 
-  getQuizzes() {
+/*  getQuizzes() {
        this.quizService.getQuizzes().subscribe(
             data => { this.quizzesData = data},
           err => console.error(err),
             () => console.log('done loading foods')
         );
-  }
+  }*/
+/*
 
   getPokemonDetails(): void {
     const id = this.route.snapshot.params['id'];
@@ -30,5 +33,6 @@ export class QuizComponent implements OnInit {
       this.quizData = data;
     });
   }
+*/
 
 }
