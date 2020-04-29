@@ -6,20 +6,22 @@
     <h3 align="center"><b>Categories</b></h3>
     <mat-selection-list>
       <mat-list *ngFor="let category of categories">
-        <mat-list-item><button mat-raised-button (click)="searchByCategory(category.id)">{{category.name}}</button></mat-list-item>
+        <mat-list-item><button mat-raised-button (click)="setCurrentCategory(category.id); onPageChanged($event)">{{category.name}}</button></mat-list-item>
       </mat-list>
     </mat-selection-list>
   </div>
-  <div fxFlex="70">
-    <div fxLayout="column" fxLayoutAlign="space-evenly none">
-      <div></div> <!--input field / dropdow sort selectors-->
-      <div *ngFor="let quiz of quizzes">
+  <div fxFlex="71">
+    <div></div> <!--input field / dropdow sort selectors-->
+    <div fxLayout="row wrap">
+      <div *ngFor="let quiz of quizzes" fxLayout="row wrap">
         <app-quiz [quizData]="quiz">
         </app-quiz>
       </div>
     </div>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChanged($event)">
+    </mat-paginator>
   </div>
-  <div class="sicde" fxFlex="15"></div>
+  <div class="sicde" fxFlex="14"></div>
 </div>
 
 

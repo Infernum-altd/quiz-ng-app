@@ -1,11 +1,11 @@
 <mat-card class="card" >
 
-  <img [src]="file" height="250" width="250" class="img-thumbnail" *ngIf="file!=null">
-  <img [src]="file" height="250" width="250" class="img-thumbnail" *ngIf="file==null">
+  <img [src]="file" height="250" width="250"  *ngIf="file!=null">
+  <img [src]="file" height="250" width="250"  *ngIf="file==null">
   <br>
   <div fxLayout="column">
     <div fxLayoutAlign="end">
-      <button mat-icon-button id="changeImg" class="btn" (click)="image.click()" *ngIf="currentUserId==id"  >
+      <button mat-icon-button id="changeImg" (click)="image.click()" *ngIf="currentUserId==id"  >
         <input style="display: none" type="file" accept="image/*" (change)="fileProgress($event)" #image>
         <mat-icon>cloud_upload</mat-icon>
       </button>

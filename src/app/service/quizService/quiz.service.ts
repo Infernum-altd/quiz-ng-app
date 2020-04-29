@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from "rxjs";
 import {Quiz} from "../../models/quiz.model";
+import {PageEvent} from "@angular/material/paginator";
 
 
 
@@ -16,16 +17,17 @@ export class QuizService {
 
   constructor(private http: HttpClient) { }
 
-  getQuizzes(): Observable<any> {
-    return this.http.get<Quiz[]>(this.QUIZZES_URL);
+  getQuizzes(pageSize: number, pageIndex: number): Observable<any> {
+    if (!pageIndex){ pageIndex = 0;}
+    return this.http.get<Quiz[]>(this.QUIZZES_URL + '/' + pageSize + '/' + pageIndex);
   }
 
   getQuizById(id: number){
     return this.http.get(`${this.QUIZZES_URL}\\${id}`);
   }
 
-  getQuizzesByCategory(categoryId: number): Observable<any> {
-    return this.http.get(this.GET_QUIZ_BY_CATEGORY + categoryId);
+  getQuizzesByCategory(categoryId: number, pageSize: number, pageIndex: number): Observable<any> {
+    return this.http.get(this.GET_QUIZ_BY_CATEGORY + categoryId + '/' + pageSize + '/' + pageIndex);
   }
 
 
