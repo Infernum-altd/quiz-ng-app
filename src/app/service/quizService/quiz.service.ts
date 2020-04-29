@@ -14,6 +14,7 @@ export class QuizService {
   private BASE_URL = window["configureApiBaseUrl"];
   private QUIZZES_URL = `${this.BASE_URL}\\quizzes`;
   private GET_QUIZ_BY_CATEGORY = `${this.QUIZZES_URL}\\categories\\`;
+  private GET_FILTERED_QUIZ = `${this.QUIZZES_URL}\\filter\\`;
 
   constructor(private http: HttpClient) { }
 
@@ -28,6 +29,10 @@ export class QuizService {
 
   getQuizzesByCategory(categoryId: number, pageSize: number, pageIndex: number): Observable<any> {
     return this.http.get(this.GET_QUIZ_BY_CATEGORY + categoryId + '/' + pageSize + '/' + pageIndex);
+  }
+
+  getFilteredQuizzes(searcText: string, pageSize: number, pageIndex: number): Observable<any> {
+    return this.http.get(this.GET_FILTERED_QUIZ + searcText + '/' + pageSize + '/' + pageIndex)
   }
 
 

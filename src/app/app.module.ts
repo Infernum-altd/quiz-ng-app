@@ -53,7 +53,7 @@ import { SubmittedQuizComponent } from './submitted-quiz/submitted-quiz.componen
 import {FlexModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSortModule} from "@angular/material/sort";
-import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
+import {MatRadioModule} from "@angular/material/radio";
 import { QuizzesPageComponent } from './quizzes-page/quizzes-page.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
