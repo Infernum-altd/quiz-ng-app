@@ -3,9 +3,9 @@ import {Category} from "../models/category.model";
 import {CategoryService} from "../service/categoryService/category.service";
 import {Quiz} from "../models/quiz";
 import {QuizService} from "../service/quizService/quiz.service";
-import {ProfileService} from "../service/profileService/profile.service";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import {CurrentUserService} from "../service/current-user.service";
 
 
 @Component({
@@ -27,7 +27,8 @@ export class QuizzesPageComponent implements OnInit {
   userQuestionUpdate = new Subject<string>();
 
   constructor(private categoryService: CategoryService,
-              private quizService: QuizService) {
+              private quizService: QuizService,
+              private currentUserService: CurrentUserService) {
   }
 
   ngOnInit(): void {
@@ -59,9 +60,11 @@ export class QuizzesPageComponent implements OnInit {
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
     if (this.currentQuizCategory != undefined){
+      console.log(e);
       if (this.pageSize == undefined){this.setPaginationParamDefault();}
+      console.log(e);
       this.searchByCategory(this.currentQuizCategory);
-    }else if (this.userRequest != undefined){
+    }else if (typeof this.userRequest!='undefined' && this.userRequest){
       if (this.pageSize == undefined){this.setPaginationParamDefault();}
       this.filterRequest(this.userRequest);
     }
@@ -76,8 +79,9 @@ export class QuizzesPageComponent implements OnInit {
   }
 
   getAllQuizzes(){
-    this.quizService.getQuizzes(this.pageSize, this.pageIndex).subscribe(
+    this.quizService.getQuizzes(this.pageSize, this.pageIndex, this.currentUserService.getCurrentUser().id).subscribe(
       resp => {
+        this.currentQuizCategory = undefined;
         this.quizzes = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }

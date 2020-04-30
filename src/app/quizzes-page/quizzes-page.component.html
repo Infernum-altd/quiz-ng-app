@@ -5,10 +5,11 @@
     <mat-divider></mat-divider>
     <h3 align="center"><b>Categories</b></h3>
     <mat-selection-list>
+      <button mat-raised-button (click)="setPaginationParamDefault(); getAllQuizzes();">All</button>
       <mat-list *ngFor="let category of categories">
         <mat-list-item>
           <button mat-raised-button
-                  (click)="setCurrentCategory(category.id); onPageChanged($event)">{{category.name}}</button>
+                  (click)="setPaginationParamDefault(); setCurrentCategory(category.id); onPageChanged($event); ">{{category.name}}</button>
         </mat-list-item>
       </mat-list>
     </mat-selection-list>
@@ -27,7 +28,7 @@
         </app-quiz>
       </div>
     </div>
-    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    <mat-paginator [pageIndex]="pageIndex" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                    (page)="onPageChanged($event)">
     </mat-paginator>
   </div>

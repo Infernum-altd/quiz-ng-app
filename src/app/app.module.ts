@@ -57,6 +57,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import { QuizzesPageComponent } from './quizzes-page/quizzes-page.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
+import { QuizDialogComponent } from './quiz/quiz-dialog/quiz-dialog.component';
 
 
 const profileRoutes: Routes = [
@@ -162,7 +163,8 @@ const appRoutes: Routes = [
     NewQuizComponent,
     AddQuestionsComponent,
     SubmittedQuizComponent,
-    QuizzesPageComponent
+    QuizzesPageComponent,
+    QuizDialogComponent
   ],
   imports: [
     BrowserModule,

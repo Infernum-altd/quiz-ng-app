@@ -12,4 +12,6 @@ export class Quiz {
   modificationTime: Date;
   category:string;
   modification_time: Date;
+  favorite: boolean;
+  tags: string[];
 }
