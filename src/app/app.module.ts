@@ -42,6 +42,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -162,6 +164,8 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
+    MatSelectModule,
+    MatSidenavModule,
     LayoutModule,
     FlexLayoutModule
   ],

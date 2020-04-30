@@ -1,9 +1,10 @@
-import { ProfileService } from './../service/profileService/profile.service';
+import { Observable, Observer } from 'rxjs';
 import { CategoryService } from './../service/categoryService/category.service';
 import { DashboardService } from './../service/dashboardService/dashboard.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Quiz } from '../models/quiz.model';
 import { Category } from '../models/category.model';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,92 +12,77 @@ import { Category } from '../models/category.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('ratingNavbar') ratingNavbar: MatSidenav;
+  @ViewChild('achievementsNavbar') achievementsNavbar: MatSidenav;
+
+  ratingIsOpen: boolean = false;
+  achievementIsOpen: boolean = false;
+
+
   maxCards: number = 5;
 
   userId: number = 4; //FIXME: get user id from local storage
-  recentQuizzes: Quiz[] = [];
+  recentQuizzes: Observable<Quiz[]> = this.dashboardService.getRecentQuizzes(this.userId, this.maxCards);
   recentQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
-  topQuizzes: Quiz[] = [];
+  topQuizzes: Observable<Quiz[]> = this.dashboardService.getTopQuizzes(this.maxCards);
   topQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
 
-  categories: Category[];
+  categories: Observable<Category[]> = this.categoryService.getCategories();
 
-  rating: number;
+  rating: Observable<number> = this.dashboardService.getRating(this.userId);
 
-  achievementsTotal: number;
-  achievementsForUser: number;
+  achievementsTotal: Observable<number> = this.dashboardService.getAchievementsTotal();
+  achievementsForUser: Observable<number> = this.dashboardService.getAchievementsForUser(this.userId);
 
   constructor(private dashboardService: DashboardService,
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.getRating();
-    this.getAchievements();
-    this.getRecentQuizzes();
-    this.getTopQuizzes();
-    this.getCategories();
+    console.log(this.rating);
   }
 
-  getRecentQuizzes(): void {
-    this.dashboardService.getRecentQuizzes(this.userId, this.maxCards).subscribe(
-      result => {
-        this.recentQuizzes = result;
-      },
-      err => console.error(err),
-      () => console.log('Done loading recent activities')
-    );
-    //TODO: get images
+  achievementsOpen(): void {
+    if (this.ratingIsOpen) {
+      this.ratingNavbar.close();
+      this.ratingIsOpen = false;
+    }
+
+    this.achievementIsOpen = true;
+    setTimeout(() => {
+      this.achievementsNavbar.open();
+    }, 0);
+
   }
 
-  getTopQuizzes(): void {
-    this.dashboardService.getTopQuizzes(this.maxCards).subscribe(
-      result => {
-        this.topQuizzes = result;
-      },
-      err => console.error(err),
-      () => console.log('Done loading top quizzes')
-    );
-    //TODO: get images
+  ratingOpen(): void {
+    if (this.achievementIsOpen) {
+      this.achievementsNavbar.close();
+      this.achievementIsOpen = false;
+    }
+
+    this.ratingIsOpen = true;
+    setTimeout(() => {
+      this.ratingNavbar.open();
+    }, 0);
   }
 
-  getTopQuizzesByCategory(categoryId: number): void {
-    this.dashboardService.getTopQuizzesByCategory(categoryId, this.maxCards).subscribe(
-      result => {
-        this.topQuizzes = result;
-      },
-      err => console.error(err),
-      () => console.log('Done loading top quizzes by category')
-    );
-    //TODO: get images
+  achievementsClose(): void {
+    this.achievementsNavbar.close();
+    this.achievementIsOpen = false;
   }
 
-  getCategories(): void {
-    this.categoryService.getCategories().subscribe(
-      resp => { this.categories = resp },
-      err => console.error(err),
-      () => console.log('Done loading categories')
-    );
+  ratingClose(): void {
+    this.ratingNavbar.close();
+    this.ratingIsOpen = false;
   }
 
-  getRating(): void {
-    this.dashboardService.getRating(this.userId).subscribe(
-      resp => { this.rating = resp },
-      err => console.error(err),
-      () => console.log('Done loading user rating')
-    )
+  closeAll(): void {
+    if (this.ratingIsOpen) {
+      this.ratingNavbar.close();
+    }
+    if (this.achievementIsOpen) {
+      this.achievementsNavbar.close();
+    }
   }
 
-  getAchievements(): void {
-    this.dashboardService.getAchievementsTotal().subscribe(
-      resp => { this.rating = resp },
-      err => console.error(err),
-      () => console.log('Done loading user rating')
-    )
-
-    this.dashboardService.getAchievementsForUser(this.userId).subscribe(
-      resp => { this.rating = resp },
-      err => console.error(err),
-      () => console.log('Done loading user rating')
-    )
-  }
 }
