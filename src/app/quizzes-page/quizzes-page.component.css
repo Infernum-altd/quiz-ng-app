@@ -21,3 +21,8 @@ mat-selection-list {
   width: 0px;
   background: transparent;
 }
+
+#recommended {
+  margin-top: 6px;
+  margin-bottom: 3px;
+}

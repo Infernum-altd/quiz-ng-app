@@ -6,6 +6,7 @@ import {QuizService} from "../service/quizService/quiz.service";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {CurrentUserService} from "../service/current-user.service";
+import {AuthenticationService} from "../service/loginService/authentication.service";
 
 
 @Component({
@@ -16,19 +17,22 @@ import {CurrentUserService} from "../service/current-user.service";
 export class QuizzesPageComponent implements OnInit {
   categories: Category[];
   quizzes: Quiz[];
+  recommendationQuizzes: Quiz[];
 
   length = 0;
   pageIndex: number;
-  pageSize : number;
+  pageSize: number;
   pageSizeOptions: number[] = [10, 20, 30, 40, 50];
   currentQuizCategory: number;
+  recommendationLimit: number = 20;
 
   public userRequest: string;
   userQuestionUpdate = new Subject<string>();
 
   constructor(private categoryService: CategoryService,
               private quizService: QuizService,
-              private currentUserService: CurrentUserService) {
+              private currentUserService: CurrentUserService,
+              public authService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -38,18 +42,27 @@ export class QuizzesPageComponent implements OnInit {
     this.setPaginationParamDefault();
     this.getAllQuizzes();
 
+    /*this.authService ? this.getRecommendationForAuthUser(): this.getRecommendationForAnonimus();*/
+
+    if (this.authService.logIn){
+      this.getRecommendationForAuthUser();
+    } else {
+      this.getRecommendationForAnonimus();
+    }
+    console.log(this.recommendationQuizzes);
+
     this.userQuestionUpdate.pipe(
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(value => {
         this.setPaginationParamDefault();
-          this.filterRequest(value);
+        this.filterRequest(value);
       });
   }
 
-  filterRequest(filterText: string){
+  filterRequest(filterText: string) {
     this.quizService.getFilteredQuizzes(filterText, this.pageSize, this.pageIndex).subscribe(
-      resp =>{
+      resp => {
         this.quizzes = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }
@@ -59,27 +72,29 @@ export class QuizzesPageComponent implements OnInit {
   onPageChanged(e) {
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
-    if (this.currentQuizCategory != undefined){
-      console.log(e);
-      if (this.pageSize == undefined){this.setPaginationParamDefault();}
+    if (this.currentQuizCategory != undefined) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
       console.log(e);
       this.searchByCategory(this.currentQuizCategory);
-    }else if (typeof this.userRequest!='undefined' && this.userRequest){
-      if (this.pageSize == undefined){this.setPaginationParamDefault();}
+    } else if (typeof this.userRequest != 'undefined' && this.userRequest) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
       this.filterRequest(this.userRequest);
-    }
-    else {
+    } else {
       this.getAllQuizzes();
     }
   }
 
-  setPaginationParamDefault(){
+  setPaginationParamDefault() {
     this.pageIndex = 0;
     this.pageSize = 10;
   }
 
-  getAllQuizzes(){
-    this.quizService.getQuizzes(this.pageSize, this.pageIndex, this.currentUserService.getCurrentUser().id).subscribe(
+  getAllQuizzes() {
+    this.quizService.getQuizzes(this.pageSize, this.pageIndex).subscribe(
       resp => {
         this.currentQuizCategory = undefined;
         this.quizzes = resp.responceList;
@@ -101,4 +116,21 @@ export class QuizzesPageComponent implements OnInit {
   setCurrentCategory(categoryId: number) {
     this.currentQuizCategory = categoryId;
   }
+
+  getRecommendationForAuthUser() {
+    this.quizService.getRecommendedQuizzes(this.recommendationLimit).subscribe(
+      resp => {
+        this.recommendationQuizzes = resp;
+      });
+  }
+
+  getRecommendationForAnonimus() {
+    this.quizService.RecommendationForAnonimus(this.recommendationLimit).subscribe(
+      resp => {
+        this.recommendationQuizzes = resp;
+      });
+  }
+
+
+
 }

@@ -1,5 +1,5 @@
 <div fxLayout="row">
-  <div class="sicde font" fxFlex="15">
+  <div class="font" fxFlex="15">
     <mat-divider></mat-divider>
     <button mat-raised-button routerLink="/new_quiz">Create Quiz</button>
     <mat-divider></mat-divider>
@@ -14,7 +14,7 @@
       </mat-list>
     </mat-selection-list>
   </div>
-  <div fxFlex="71" class="scroll">
+  <div #maincontent fxFlex="71" class="scroll">
     <div>
       <mat-form-field class="input-form">
         <mat-label>Search quiz</mat-label>
@@ -29,10 +29,18 @@
       </div>
     </div>
     <mat-paginator [pageIndex]="pageIndex" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-                   (page)="onPageChanged($event)">
+                   (page)="onPageChanged($event); maincontent.scrollTop = 0;">
     </mat-paginator>
   </div>
-  <div class="sicde" fxFlex="14"></div>
+  <div fxFlex="14">
+    <h3 id="recommended" align="center"><b>Recommended for you</b></h3>
+    <div class="scroll">
+      <div *ngFor="let recomendedQuiz of recommendationQuizzes" fxLayout="row wrap">
+        <app-quiz [quizData]="recomendedQuiz">
+        </app-quiz>
+      </div>
+    </div>
+  </div>
 </div>
 
 
