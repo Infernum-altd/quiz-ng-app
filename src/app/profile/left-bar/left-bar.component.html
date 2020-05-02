@@ -1,7 +1,6 @@
 <mat-card class="card" >
 
-  <img [src]="file" height="250" width="250"  *ngIf="file!=null">
-  <img [src]="file" height="250" width="250"  *ngIf="file==null">
+  <img mat-card-image [src]="file" height="250" width="250">
   <br>
   <div fxLayout="column">
     <div fxLayoutAlign="end">

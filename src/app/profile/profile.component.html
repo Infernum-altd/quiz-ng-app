@@ -1,14 +1,12 @@
-<div id="navigation" fxLayout="row" fxLayoutAlign="center center">
-  <div>
+<div fxLayout="row" fxLayoutAlign="center start" >
+  <div id="leftbar" fxFlex="20">
     <app-left-bar></app-left-bar>
   </div>
-  <div fxLayout="column">
-    <div fxLayoutAlign="start">
-      <app-profile-navigation></app-profile-navigation>
+  <div fxFlex="50">
+    <div id="navigation">
+      <app-profile-navigation ></app-profile-navigation>
     </div>
-    <div >
-      <router-outlet name="profilenav"></router-outlet>
-    </div>
+
+    <router-outlet name="profilenav"></router-outlet>
   </div>
 </div>
-

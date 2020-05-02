@@ -31,7 +31,6 @@ export class QuizzesPageComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private quizService: QuizService,
-              private currentUserService: CurrentUserService,
               public authService: AuthenticationService) {
   }
 
@@ -42,7 +41,6 @@ export class QuizzesPageComponent implements OnInit {
     this.setPaginationParamDefault();
     this.getAllQuizzes();
 
-    /*this.authService ? this.getRecommendationForAuthUser(): this.getRecommendationForAnonimus();*/
 
     if (this.authService.logIn){
       this.getRecommendationForAuthUser();

@@ -1,11 +1,8 @@
 import {ProfileService} from '../../service/profileService/profile.service';
 import {ShareIdService} from '../../service/profileService/share-id.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from "../../models/user";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
 
 
 
@@ -17,25 +14,26 @@ import {MatSort} from "@angular/material/sort";
 export class FriendsComponent implements OnInit {
   friends: User[];
   displayedColumns: string[] = ['name', 'rating', 'actions'];
-  dataSource: MatTableDataSource<User>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  length = 0;
+  pageIndex: number;
+  pageSize: number;
+  pageSizeOptions: number[] = [10, 20, 30, 40, 50];
 
   constructor(private profileService: ProfileService,
               private router: Router,
               private shareId: ShareIdService) {
 
-
-    profileService.getFriends().subscribe(resp => {
-
-      this.friends = resp;
-      this.dataSource = new MatTableDataSource(this.friends);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setPaginationParamDefault();
+
+    this.profileService.getFriends(this.pageSize, this.pageSize).subscribe(resp => {
+      this.friends = resp.responceList;
+      this.length = resp.totalNumberOfElement;
+    });
+  }
 
   checkOut(id: string, email: string) {
     this.shareId.setEmail(email);
@@ -44,9 +42,9 @@ export class FriendsComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  setPaginationParamDefault() {
+    this.pageIndex = 0;
+    this.pageSize = 10;
   }
 
 }
