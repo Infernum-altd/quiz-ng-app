@@ -1,6 +1,3 @@
-import { StatusType } from './quiz.model';
-import { Timestamp } from 'rxjs';
-
 export interface Quiz {
     id: number;
     name: string;

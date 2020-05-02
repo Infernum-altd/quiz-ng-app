@@ -13,6 +13,7 @@ export class DashboardService {
   private GET_RATING = `${this.BASE_URL}\\api\\users\\rating\\`;
   private GET_ACHIEVEMENTS_TOTAL = `${this.BASE_URL}\\achievements\\count_total`;
   private GET_ACHIEVEMENTS_FOR_USER = `${this.BASE_URL}\\achievements\\count\\`;
+  private GET_RECOMMENDATIONS = `${this.BASE_URL}\\quizzes\\recommendations\\`;
 
   constructor(private http: HttpClient) { }
 
@@ -36,7 +37,11 @@ export class DashboardService {
     return this.http.get<number>(this.GET_ACHIEVEMENTS_TOTAL);
   }
 
-  getAchievementsForUser(userId: Number): Observable<number> {
+  getAchievementsForUser(userId: number): Observable<number> {
     return this.http.get<number>(this.GET_ACHIEVEMENTS_FOR_USER + userId);
+  }
+
+  getRecommendations(userId: number, limit: number): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(this.GET_RECOMMENDATIONS + userId + "?limit=" + limit);
   }
 }

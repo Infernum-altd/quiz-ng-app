@@ -44,9 +44,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { AchievementsListComponent } from './dashboard/achievements-list/achievements-list.component';
+import { RatingListComponent } from './dashboard/rating-list/rating-list.component';
 
 const profileRoutes: Routes = [
   {
@@ -146,7 +150,9 @@ const appRoutes: Routes = [
     AnswerComponent,
     NewQuizComponent,
     AddQuestionsComponent,
-    DashboardComponent
+    DashboardComponent,
+    AchievementsListComponent,
+    RatingListComponent
   ],
   imports: [
     BrowserModule,
@@ -166,6 +172,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatSelectModule,
     MatSidenavModule,
+    MatListModule,
+    MatProgressBarModule,
     LayoutModule,
     FlexLayoutModule
   ],

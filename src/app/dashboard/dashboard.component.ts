@@ -26,6 +26,9 @@ export class DashboardComponent implements OnInit {
   recentQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
   topQuizzes: Observable<Quiz[]> = this.dashboardService.getTopQuizzes(this.maxCards);
   topQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
+  recommendationQuizzes: Observable<Quiz[]> = this.dashboardService.getRecommendations(this.userId, this.maxCards);
+  recommendationQuizzesImages: File[] = [];
+
 
   categories: Observable<Category[]> = this.categoryService.getCategories();
 
@@ -38,7 +41,6 @@ export class DashboardComponent implements OnInit {
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    console.log(this.rating);
   }
 
   achievementsOpen(): void {

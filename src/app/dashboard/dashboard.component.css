@@ -90,3 +90,7 @@ sup {
 #profile-button {
   width: 80%;
 }
+
+mat-drawer {
+  width: 25rem;
+}
