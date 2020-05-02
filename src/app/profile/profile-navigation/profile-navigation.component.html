@@ -1,32 +1,11 @@
-<!--<div class="container w-75 p-3 float-right" *ngIf="currentUser.id == id">
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="[{outlets: {profilenav: 'profinfo'}}]">My Profile</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="[{outlets: {profilenav: 'friends'}}]">My friends</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="[{outlets: {profilenav: 'mygames'}}]">My games</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="[{outlets: {profilenav: 'favorite'}}]">Favorite</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>-->
+<nav mat-tab-nav-bar *ngIf="currentUser.id == id">
+  <a mat-tab-link [routerLink]="[{outlets: {profilenav: 'profinfo'}}]" routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">My Profile</a>
+  <a mat-tab-link [routerLink]="[{outlets: {profilenav: 'friends'}}]" routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">My friends</a>
+  <a mat-tab-link [routerLink]="[{outlets: {profilenav: 'mygames'}}]" routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">My Quizzes</a>
+  <a mat-tab-link [routerLink]="[{outlets: {profilenav: 'favorite'}}]" routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">Favorite</a>
+</nav>
 
-
-<mat-toolbar *ngIf="currentUser.id == id">
-  <span><a [routerLink]="[{outlets: {profilenav: 'profinfo'}}]">My Profile</a></span>
-  <span><a [routerLink]="[{outlets: {profilenav: 'friends'}}]">My friends</a></span>
-  <span><a [routerLink]="[{outlets: {profilenav: 'mygames'}}]">My games</a></span>
-  <span><a [routerLink]="[{outlets: {profilenav: 'favorite'}}]">Favorite</a></span>
-</mat-toolbar>

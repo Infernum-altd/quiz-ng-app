@@ -50,10 +50,10 @@ export class QuizService {
   }
 
   getRecommendedQuizzes(limit: number): Observable<any>{
-    return this.http.get<Quiz[]>(this.GET_POPULAR_QUIZZES + limit + '/' + this.currentUserService.getCurrentUser().id);
+    return this.http.get<Quiz[]>(this.GET_RECOMMENDED_QUIZZES + this.currentUserService.getCurrentUser().id + '?limit=' + limit);
   }
 
   RecommendationForAnonimus(limit: number): Observable<any> {
-    return this.http.get<Quiz[]>(this.GET_RECOMMENDED_QUIZZES  + limit);
+    return this.http.get<Quiz[]>(this.GET_POPULAR_QUIZZES + limit);
   }
 }

@@ -49,7 +49,6 @@ export class QuizzesPageComponent implements OnInit {
     } else {
       this.getRecommendationForAnonimus();
     }
-    console.log(this.recommendationQuizzes);
 
     this.userQuestionUpdate.pipe(
       debounceTime(400),
