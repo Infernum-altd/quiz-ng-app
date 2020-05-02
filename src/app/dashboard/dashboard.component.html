@@ -61,9 +61,17 @@
 
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="space-between">
           <h2>Top quizzes</h2>
-          <mat-select placeholder="Categories" fxFlexAlign="end">
-            View all
-          </mat-select>
+
+          <mat-form-field>
+            <mat-label>Select category</mat-label>
+            <mat-select [(value)]="quizCategory" (selectionChange)="onQuizCategorySelected($event.value)">
+              <mat-option [value]="-1">View all</mat-option>
+              <mat-option *ngFor='let category of categories |async' [value]="category.id">
+                {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
         </div>
 
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
@@ -90,7 +98,7 @@
 
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="space-between">
           <h2>Announcements</h2>
-          <mat-select placeholder="Categories" fxFlexAlign="end">
+          <mat-select class="categories" placeholder="Categories" fxFlexAlign="end">
             View all
           </mat-select>
         </div>

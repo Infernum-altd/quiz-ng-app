@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
 
 
   categories: Observable<Category[]> = this.categoryService.getCategories();
+  quizCategory: number = -1;
 
   rating: Observable<number> = this.dashboardService.getRating(this.userId);
 
@@ -84,6 +85,14 @@ export class DashboardComponent implements OnInit {
     }
     if (this.achievementIsOpen) {
       this.achievementsNavbar.close();
+    }
+  }
+
+  onQuizCategorySelected(value: number): void {
+    if (value === -1) {
+      this.topQuizzes = this.dashboardService.getTopQuizzes(this.maxCards);
+    } else {
+      this.topQuizzes = this.dashboardService.getTopQuizzesByCategory(value, this.maxCards);
     }
   }
 
