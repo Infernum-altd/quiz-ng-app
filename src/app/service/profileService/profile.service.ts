@@ -44,8 +44,8 @@ export class ProfileService {
     return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' + pageNumber + '/' + this.userId);
   }
 
-  getUserQuizzes(): Observable<Quiz[]>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
+  getUserQuizzes(pageSize: number, pageNumber: number): Observable<any>{
+    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId);
   }
 
   getFavoriteGames(): Observable<any[]>{

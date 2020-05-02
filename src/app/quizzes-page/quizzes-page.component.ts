@@ -5,7 +5,6 @@ import {Quiz} from "../models/quiz";
 import {QuizService} from "../service/quizService/quiz.service";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {CurrentUserService} from "../service/current-user.service";
 import {AuthenticationService} from "../service/loginService/authentication.service";
 
 
@@ -73,7 +72,6 @@ export class QuizzesPageComponent implements OnInit {
       if (this.pageSize == undefined) {
         this.setPaginationParamDefault();
       }
-      console.log(e);
       this.searchByCategory(this.currentQuizCategory);
     } else if (typeof this.userRequest != 'undefined' && this.userRequest) {
       if (this.pageSize == undefined) {
@@ -127,7 +125,5 @@ export class QuizzesPageComponent implements OnInit {
         this.recommendationQuizzes = resp;
       });
   }
-
-
 
 }

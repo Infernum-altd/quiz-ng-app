@@ -3,6 +3,7 @@ import {ShareIdService} from '../../service/profileService/share-id.service';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from "../../models/user";
+import {PageEvent} from "@angular/material/paginator";
 
 
 
@@ -29,10 +30,7 @@ export class FriendsComponent implements OnInit {
   ngOnInit(): void {
     this.setPaginationParamDefault();
 
-    this.profileService.getFriends(this.pageSize, this.pageSize).subscribe(resp => {
-      this.friends = resp.responceList;
-      this.length = resp.totalNumberOfElement;
-    });
+    this.uploadFriends();
   }
 
   checkOut(id: string, email: string) {
@@ -47,6 +45,18 @@ export class FriendsComponent implements OnInit {
     this.pageSize = 10;
   }
 
+  uploadFriends(){
+    this.profileService.getFriends(this.pageSize, this.pageIndex).subscribe(resp => {
+      this.friends = resp.responceList;
+      this.length = resp.totalNumberOfElement;
+    });
+  }
+
+  onPageChanged($event: PageEvent) {
+    this.pageIndex = $event.pageIndex;
+    this.pageSize = $event.pageSize;
+    this.uploadFriends();
+  }
 }
 
 
