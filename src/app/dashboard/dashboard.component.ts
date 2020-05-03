@@ -1,13 +1,14 @@
-import { DomSanitizer } from '@angular/platform-browser';
-import { ProfileService } from './../service/profileService/profile.service';
-import { Observable } from 'rxjs';
-import { CategoryService } from './../service/categoryService/category.service';
-import { DashboardService } from './../service/dashboardService/dashboard.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Quiz } from '../models/quiz.model';
-import { Category } from '../models/category.model';
-import { MatSidenav } from '@angular/material/sidenav';
-import { map } from 'rxjs/operators'
+import {DomSanitizer} from '@angular/platform-browser';
+import {ProfileService} from './../service/profileService/profile.service';
+import {Observable} from 'rxjs';
+import {CategoryService} from './../service/categoryService/category.service';
+import {DashboardService} from './../service/dashboardService/dashboard.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Quiz} from '../models/quiz.model';
+import {Category} from '../models/category.model';
+import {MatSidenav} from '@angular/material/sidenav';
+import {map} from 'rxjs/operators'
+import {CurrentUserService} from "../service/current-user.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,7 @@ export class DashboardComponent implements OnInit {
 
 
   maxCards: number = 5;
-  userId: number = 4; //FIXME: get user id from local storage
+  userId: number = this.currentUserService.getCurrentUser().id; //FIXME: get user id from local storage
 
   profileImage: Observable<any>;
 
@@ -42,9 +43,11 @@ export class DashboardComponent implements OnInit {
   achievementsForUser: Observable<number>;
 
   constructor(private dashboardService: DashboardService,
-    private categoryService: CategoryService,
-    private profileService: ProfileService,
-    private sanitizer: DomSanitizer) { }
+              private categoryService: CategoryService,
+              private profileService: ProfileService,
+              private sanitizer: DomSanitizer,
+              private currentUserService: CurrentUserService) {
+  }
 
   ngOnInit(): void {
     this.profileImage = this.profileService.getProfileImage(this.userId.toString()).pipe(
@@ -123,7 +126,6 @@ export class DashboardComponent implements OnInit {
     return this.imageMap.get(quizId);
 
   }
-
 
 
 }

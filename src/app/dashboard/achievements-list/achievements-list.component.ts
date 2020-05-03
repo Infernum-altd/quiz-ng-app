@@ -21,5 +21,4 @@ export class AchievementsListComponent implements OnInit {
     this.categories = this.achievementsService.getAchievementCategories();
     this.achievements = this.achievementsService.getAchievementsByUser(this.userId);
   }
-
 }
