@@ -34,7 +34,7 @@ import { NewQuizComponent } from './new-quiz/new-quiz.component';
 import { AddQuestionsComponent } from './add-questions/add-questions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
@@ -44,9 +44,6 @@ import {FlexModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSortModule} from "@angular/material/sort";
 import {MatRadioModule} from "@angular/material/radio";
-import { QuizzesPageComponent } from './quizzes-page/quizzes-page.component';
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatListModule} from "@angular/material/list";
 import { QuizDialogComponent } from './quiz/quiz-dialog/quiz-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
 
@@ -59,9 +56,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { AchievementsListComponent } from './dashboard/achievements-list/achievements-list.component';
+import { RatingListComponent } from './dashboard/rating-list/rating-list.component';
 
 const profileRoutes: Routes = [
   {
@@ -185,7 +188,9 @@ const appRoutes: Routes = [
     QuizzesPageComponent,
     QuizDialogComponent,
     AddQuestionsComponent,
-    DashboardComponent
+    DashboardComponent,
+    AchievementsListComponent,
+    RatingListComponent
   ],
     imports: [
 
