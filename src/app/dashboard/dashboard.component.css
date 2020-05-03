@@ -41,6 +41,7 @@ mat-card {
   width: 6.5rem;
   height: 6.5rem;
   margin: 0;
+  background-image: url("https://material.angular.io/assets/img/examples/shiba2.jpg");
 }
 
 #rating-card, #achievement-card {
@@ -97,4 +98,8 @@ mat-drawer {
 
 .categories {
   width: 10rem;
+}
+
+.hidden {
+  display: none;
 }

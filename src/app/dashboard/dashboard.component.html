@@ -20,7 +20,8 @@
 
         <mat-card id="profile-card">
           <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
-            <img mat-card-image id="profile-img" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            <img mat-card-image id="profile-img" [src]="(profileImage | async)"
+              onerror="this.onerror=null; this.src='https://material.angular.io/assets/img/examples/shiba2.jpg'"
               alt="Profile image" fxFlexAlign="end">
           </mat-card-content>
           <mat-card-actions fxLayoutAlign="space-around">
@@ -49,9 +50,10 @@
       <div fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start">
         <h2>Recent activity</h2>
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
-          <mat-card class="game-card" *ngFor="let quiz of recentQuizzes |async">
-            <img mat-card-image class="card-image" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-              alt="Profile image" fxFlexAlign="end">
+          <mat-card class="game-card" *ngFor="let quiz of recentQuizzes |async;let i=index">
+            <img mat-card-image class="card-image" [src]="getQuizImage(quiz.id) | async"
+              onerror="this.onerror=null; this.src='https://material.angular.io/assets/img/examples/shiba2.jpg'"
+              alt="Game image" fxFlexAlign="end">
             <mat-card-content class="quiz-name" fxLayout="column" fxLayoutAlign="space-between" fxFlexAlign="center">
               <h3>{{quiz.name}}</h3>
             </mat-card-content>
@@ -75,9 +77,10 @@
         </div>
 
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
-          <mat-card class="game-card" *ngFor="let quiz of topQuizzes |async">
-            <img mat-card-image class="card-image" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-              alt="Profile image" fxFlexAlign="end">
+          <mat-card class="game-card" *ngFor="let quiz of topQuizzes |async;let i=index">
+            <img mat-card-image class="card-image" [src]="getQuizImage(quiz.id) | async"
+              onerror="this.onerror=null; this.src='https://material.angular.io/assets/img/examples/shiba2.jpg'"
+              alt="Quiz image" fxFlexAlign="end">
             <mat-card-content class="quiz-name" fxLayout="column" fxLayoutAlign="space-between" fxFlexAlign="center">
               <h3>{{quiz.name}}</h3>
             </mat-card-content>
@@ -86,14 +89,15 @@
 
         <h2>Recommendations</h2>
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="start">
-          <mat-card class="game-card" *ngFor="let quiz of recentQuizzes |async">
-            <img mat-card-image class="card-image" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-              alt="Profile image" fxFlexAlign="end">
+          <mat-card class="game-card" *ngFor="let quiz of recommendationQuizzes |async;let i=index">
+            <img mat-card-image class="card-image" [src]="getQuizImage(quiz.id) | async"
+              onerror="this.onerror=null; this.src='https://material.angular.io/assets/img/examples/shiba2.jpg'"
+              alt="Quiz image" fxFlexAlign="end">
             <mat-card-content class="quiz-name" fxLayout="column" fxLayoutAlign="space-between" fxFlexAlign="center">
               <h3>{{quiz.name}}</h3>
             </mat-card-content>
           </mat-card>
-          <h3 *ngIf="(recentQuizzes |async)==null">Play some games to get recommendations</h3>
+          <h3 *ngIf="(recommendationQuizzes |async)==null">Play some games to get recommendations</h3>
         </div>
 
         <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="space-between">

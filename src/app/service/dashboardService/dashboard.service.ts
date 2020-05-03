@@ -14,6 +14,8 @@ export class DashboardService {
   private GET_ACHIEVEMENTS_TOTAL = `${this.BASE_URL}\\achievements\\count_total`;
   private GET_ACHIEVEMENTS_FOR_USER = `${this.BASE_URL}\\achievements\\count\\`;
   private GET_RECOMMENDATIONS = `${this.BASE_URL}\\quizzes\\recommendations\\`;
+  private GET_QUIZ_IMAGE = `${this.BASE_URL}\\quizzes\\get_image\\`;
+
 
   constructor(private http: HttpClient) { }
 
@@ -43,5 +45,9 @@ export class DashboardService {
 
   getRecommendations(userId: number, limit: number): Observable<Quiz[]> {
     return this.http.get<Quiz[]>(this.GET_RECOMMENDATIONS + userId + "?limit=" + limit);
+  }
+
+  getQuizImage(quizId: number): Observable<any> {
+    return this.http.get<any>(this.GET_QUIZ_IMAGE + quizId);
   }
 }

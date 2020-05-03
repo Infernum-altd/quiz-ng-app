@@ -12,12 +12,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class AchievementsListComponent implements OnInit {
   @Input('userId') userId: number;
 
-  categories: Observable<Category[]> = this.achievementsService.getAchievementCategories();
+  categories: Observable<Category[]>;
   achievements: Observable<Achievement[]>;
 
   constructor(private achievementsService: AchievementsService) { }
 
   ngOnInit(): void {
+    this.categories = this.achievementsService.getAchievementCategories();
     this.achievements = this.achievementsService.getAchievementsByUser(this.userId);
   }
 

@@ -1,10 +1,13 @@
-import { Observable, Observer } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ProfileService } from './../service/profileService/profile.service';
+import { Observable } from 'rxjs';
 import { CategoryService } from './../service/categoryService/category.service';
 import { DashboardService } from './../service/dashboardService/dashboard.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Quiz } from '../models/quiz.model';
 import { Category } from '../models/category.model';
 import { MatSidenav } from '@angular/material/sidenav';
+import { map } from 'rxjs/operators'
 
 @Component({
   selector: 'app-dashboard',
@@ -20,28 +23,44 @@ export class DashboardComponent implements OnInit {
 
 
   maxCards: number = 5;
-
   userId: number = 4; //FIXME: get user id from local storage
-  recentQuizzes: Observable<Quiz[]> = this.dashboardService.getRecentQuizzes(this.userId, this.maxCards);
-  recentQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
-  topQuizzes: Observable<Quiz[]> = this.dashboardService.getTopQuizzes(this.maxCards);
-  topQuizzesImages: File[] = [];  //TODO: get images for topQuizzes 
-  recommendationQuizzes: Observable<Quiz[]> = this.dashboardService.getRecommendations(this.userId, this.maxCards);
-  recommendationQuizzesImages: File[] = [];
 
+  profileImage: Observable<any>;
+
+  recentQuizzes: Observable<Quiz[]>;
+  topQuizzes: Observable<Quiz[]>;
+  recommendationQuizzes: Observable<Quiz[]>;
+
+  imageMap = new Map<number, Observable<any>>();
 
   categories: Observable<Category[]> = this.categoryService.getCategories();
   quizCategory: number = -1;
 
-  rating: Observable<number> = this.dashboardService.getRating(this.userId);
+  rating: Observable<number>;
 
-  achievementsTotal: Observable<number> = this.dashboardService.getAchievementsTotal();
-  achievementsForUser: Observable<number> = this.dashboardService.getAchievementsForUser(this.userId);
+  achievementsTotal: Observable<number>;
+  achievementsForUser: Observable<number>;
 
   constructor(private dashboardService: DashboardService,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    private profileService: ProfileService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    this.profileImage = this.profileService.getProfileImage(this.userId.toString()).pipe(
+      map(resp => this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text))
+    );
+
+    this.recentQuizzes = this.dashboardService.getRecentQuizzes(this.userId, this.maxCards);
+
+    this.topQuizzes = this.dashboardService.getTopQuizzes(this.maxCards);
+
+    this.recommendationQuizzes = this.dashboardService.getRecommendations(this.userId, this.maxCards);
+
+    this.rating = this.dashboardService.getRating(this.userId);
+
+    this.achievementsTotal = this.dashboardService.getAchievementsTotal();
+    this.achievementsForUser = this.dashboardService.getAchievementsForUser(this.userId);
   }
 
   achievementsOpen(): void {
@@ -95,5 +114,16 @@ export class DashboardComponent implements OnInit {
       this.topQuizzes = this.dashboardService.getTopQuizzesByCategory(value, this.maxCards);
     }
   }
+
+  getQuizImage(quizId: number): Observable<any> {
+    if (!this.imageMap.get(quizId)) {
+      this.imageMap.set(quizId, this.dashboardService.getQuizImage(quizId).pipe(
+        map(resp => this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text))));
+    }
+    return this.imageMap.get(quizId);
+
+  }
+
+
 
 }

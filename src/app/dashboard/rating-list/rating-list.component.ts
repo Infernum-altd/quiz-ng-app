@@ -14,14 +14,15 @@ export class RatingListComponent implements OnInit {
 
   topNumber: number = 3;
   range: number = 2;
-  topUsers: Observable<User[]> = this.ratingService.getRating(0, this.topNumber);
-  nearUsers: Observable<User[]> = this.ratingService.getRatingRange(this.userId, this.range);
+  topUsers: Observable<User[]>
+  nearUsers: Observable<User[]>;
   displayedColumns: string[] = ['position', 'name', 'surname', 'rating'];
 
 
   constructor(private ratingService: RatingService) { }
 
   ngOnInit(): void {
+    this.topUsers = this.ratingService.getRating(0, this.topNumber);
     this.nearUsers = this.ratingService.getRatingRange(this.userId, this.range);
   }
 
