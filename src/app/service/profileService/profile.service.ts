@@ -40,16 +40,16 @@ export class ProfileService {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
 
-  getFriends(pageSize: number, pageNumber: number): Observable<any>{
-    return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' + pageNumber + '/' + this.userId);
+  getFriends(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
+    return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' + pageNumber + '/' + this.userId + '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));  //active direction
   }
 
-  getUserQuizzes(pageSize: number, pageNumber: number): Observable<any>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId);
+  getUserQuizzes(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
+    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
   }
 
-  getFavoriteGames(): Observable<any[]>{
-    return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId);
+  getFavoriteGames(pageSize: number, pageNumber: number): Observable<any>{
+    return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId + '/' + pageSize + '/' + pageNumber);
   }
 
   getCategoryName(categoryId: string): Observable<any>{
@@ -72,5 +72,17 @@ export class ProfileService {
 
   getUserNotificationStatus(): Observable<NotificationStatus>{
     return this.http.get<NotificationStatus>(this.UPDATE_GET_NOTIFICATION + this.userId);
+  }
+
+  filterFriendsRequest(userSearch: string, pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
+    return this.http.get(this.FRIEND_LIST_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+  }
+
+  filterQuizzesRequest(userSearch: string, pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
+    return this.http.get(this.GET_QUIZZES_URL+ userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+  }
+
+  filterFavoriteRequest(userSearch: string, pageSize: number, pageIndex: number): Observable<any>{
+    return this.http.get(this.GET_QUIZZES_URL+ userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
   }
 }

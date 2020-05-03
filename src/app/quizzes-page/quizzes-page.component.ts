@@ -40,19 +40,14 @@ export class QuizzesPageComponent implements OnInit {
     this.setPaginationParamDefault();
     this.getAllQuizzes();
 
-
-    if (this.authService.logIn){
-      this.getRecommendationForAuthUser();
-    } else {
-      this.getRecommendationForAnonimus();
-    }
+    this.authService.logIn ? this.getRecommendationForAuthUser(): this.getRecommendationForAnonimus();
 
     this.userQuestionUpdate.pipe(
       debounceTime(400),
       distinctUntilChanged())
-      .subscribe(value => {
+      .subscribe(userSearch => {
         this.setPaginationParamDefault();
-        this.filterRequest(value);
+        userSearch.length ==0 ? this.getAllQuizzes() : this.filterRequest(userSearch);
       });
   }
 
@@ -73,7 +68,7 @@ export class QuizzesPageComponent implements OnInit {
         this.setPaginationParamDefault();
       }
       this.searchByCategory(this.currentQuizCategory);
-    } else if (typeof this.userRequest != 'undefined' && this.userRequest) {
+    } else if (this.userRequest != undefined && this.userRequest) {
       if (this.pageSize == undefined) {
         this.setPaginationParamDefault();
       }

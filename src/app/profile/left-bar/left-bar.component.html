@@ -14,8 +14,8 @@
   <mat-card-content fxLayoutAlign="center">
     <p>{{username}}</p>
 
-  </mat-card-content>
-  <mat-card-actions fxLayout="column" fxLayoutAlign="center center">
+  </mat-card-content >
+  <mat-card-actions fxLayout="column" fxLayoutAlign="center center" *ngIf="currentUserId==id">
     <button mat-raised-button [routerLink]="[{outlets: {profilenav: 'changePass'}}]" >Change password</button>
     <br>
 

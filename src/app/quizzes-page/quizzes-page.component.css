@@ -3,10 +3,6 @@ button {
   margin-bottom: 5px;
 }
 
-.font{
-  background: grey;
-}
-
 .scroll {
   max-height: 900px;
   overflow: scroll;

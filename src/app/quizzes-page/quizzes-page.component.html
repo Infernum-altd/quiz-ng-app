@@ -1,11 +1,11 @@
 <div fxLayout="row">
-  <div class="font" fxFlex="15">
+  <div fxFlex="15">
     <mat-divider></mat-divider>
     <button mat-raised-button routerLink="/new_quiz">Create Quiz</button>
     <mat-divider></mat-divider>
     <h3 align="center"><b>Categories</b></h3>
+    <button mat-raised-button (click)="setPaginationParamDefault(); getAllQuizzes();">All</button>
     <mat-selection-list>
-      <button mat-raised-button (click)="setPaginationParamDefault(); getAllQuizzes();">All</button>
       <mat-list *ngFor="let category of categories">
         <mat-list-item>
           <button mat-raised-button
