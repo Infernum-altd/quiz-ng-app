@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Quiz} from "../models/quiz";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {AuthenticationService} from "../service/loginService/authentication.service";
 import {QuizService} from "../service/quizService/quiz.service";
-import {ActivatedRoute} from "@angular/router";
+import {CurrentUserService} from "../service/current-user.service";
 
 @Component({
   selector: 'app-quiz',
@@ -8,27 +11,33 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  private quizzesData: any;
-  quizData: any;
-  constructor(private quizService:QuizService, private route: ActivatedRoute) { }
+  @Input()
+  quizData: Quiz;
+  quizImage : SafeResourceUrl;
+
+  constructor(private sanitizer: DomSanitizer,
+              public authenticationService: AuthenticationService,
+              private quizService: QuizService,
+              private currentUserService: CurrentUserService) { }
 
   ngOnInit(): void {
-    this.getQuizzes();
+    this.quizImage = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + this.quizData.image);
   }
 
-  getQuizzes() {
-       this.quizService.getQuizzes().subscribe(
-            data => { this.quizzesData = data},
-          err => console.error(err),
-            () => console.log('done loading foods')
-        );
+  markQuizAsFavorite(): void{
+    this.quizService.markQuizAsFavorite(this.quizData.id, (this.currentUserService.getCurrentUser().id)).subscribe(
+      resp =>{
+        this.quizData.favorite = true;
+      }
+    );
   }
 
-  getPokemonDetails(): void {
-    const id = this.route.snapshot.params['id'];
-    this.quizService.getQuizById(id).subscribe(data => {
-      this.quizData = data;
-    });
+  unmarkQuizAsFavorite(): void{
+    this.quizService.unmarkQuizAsFavorite(this.quizData.id, (this.currentUserService.getCurrentUser().id)).subscribe(
+      resp =>{
+        this.quizData.favorite = false;
+      }
+    );
   }
 
 }

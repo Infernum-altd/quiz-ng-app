@@ -6,3 +6,18 @@ button {
 table {
   width: 100%;
 }
+
+#table {
+  width: 45%;
+}
+
+th, td {
+  width: 50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+mat-cell, .mat-cell {
+  min-height:auto;
+  padding: 12px 16px 12px 0;
+}

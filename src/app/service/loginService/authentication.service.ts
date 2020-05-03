@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ShareIdService} from '../profileService/share-id.service';
+import {CurrentUserService} from "../current-user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private shareId: ShareIdService) { }
+              private shareId: ShareIdService,
+              private currentUserService: CurrentUserService) { }
 
   login(email: string, password: string) {
 
@@ -21,7 +23,6 @@ export class AuthenticationService {
         .subscribe((resp: any) => {
               localStorage.setItem('currentUser', JSON.stringify(resp));
               this.shareId.setId(JSON.parse(localStorage.getItem('currentUser')).id);
-
               window.location.replace('/');
             },
             error => {

@@ -53,7 +53,12 @@ import { SubmittedQuizComponent } from './submitted-quiz/submitted-quiz.componen
 import {FlexModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSortModule} from "@angular/material/sort";
-import {MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule} from "@angular/material/radio";
+import {MatRadioModule} from "@angular/material/radio";
+import { QuizzesPageComponent } from './quizzes-page/quizzes-page.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
+import { QuizDialogComponent } from './quiz/quiz-dialog/quiz-dialog.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 const profileRoutes: Routes = [
@@ -136,6 +141,10 @@ const appRoutes: Routes = [
     component: SubmittedQuizComponent
   },
   {
+    path: 'quizzes',
+    component: QuizzesPageComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -166,46 +175,51 @@ const appRoutes: Routes = [
     AnswerComponent,
     NewQuizComponent,
     AddQuestionsComponent,
-    SubmittedQuizComponent
+    SubmittedQuizComponent,
+    QuizzesPageComponent,
+    QuizDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes),
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatInputModule,
-    MatPaginatorModule,
-    FlexModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSortModule,
-    MatIconModule,
-    MatMenuModule,
-    MatRadioModule,
-    MatCardModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatExpansionModule,
-    MatDividerModule,
-    MatCheckboxModule,
-    LayoutModule,
-    FlexLayoutModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot(appRoutes),
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatInputModule,
+        MatPaginatorModule,
+        FlexModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSortModule,
+        MatIconModule,
+        MatMenuModule,
+        MatRadioModule,
+        MatCardModule,
+        MatSelectModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatInputModule,
+        MatPaginatorModule,
+        MatGridListModule,
+        MatCardModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatCheckboxModule,
+        LayoutModule,
+        FlexLayoutModule,
+        MatSidenavModule,
+        MatListModule,
+        MatTabsModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],

@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../service/profileService/profile.service';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
+import {PageEvent} from "@angular/material/paginator";
 import {Quiz} from "../../models/quiz";
-import {MatSort} from "@angular/material/sort";
+import {Subject} from "rxjs";
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-my-quizzes',
@@ -12,49 +13,79 @@ import {MatSort} from "@angular/material/sort";
 })
 export class MyQuizzesComponent implements OnInit {
   userQuizzes: Quiz[];
-  displayedColumns: string[] = ['name', 'date', 'category', 'description', 'modificationTime', 'status', 'actions'];
-  dataSource: MatTableDataSource<Quiz>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  displayedColumns: string[] = ['name', 'category', 'status', 'actions'];
+  public userRequest: string;
+  userQuestionUpdate = new Subject<string>();
+  sortDirection = undefined;
+
+  length = 0;
+  pageIndex: number;
+  pageSize: number;
+  pageSizeOptions: number[] = [8, 16, 24];
+
 
   constructor(private profileService: ProfileService) {
-
-    profileService.getUserQuizzes().subscribe(resp => {
-
-      this.userQuizzes = resp;
-      this.addCategoryToQuizzes();
-      this.dataSource = new MatTableDataSource(this.userQuizzes);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
   }
 
   ngOnInit(): void {
+    this.setPaginationParamDefault();
+    this.getUserQuizzes();
+
+    this.userQuestionUpdate.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe(userSearch => {
+        if (userSearch.length ==0) {
+          this.setPaginationParamDefault();
+          this.getUserQuizzes();
+        } else {
+          this.filterQuizzes(userSearch);
+        }
+      });
   }
 
   getUserQuizzes() {
-    this.profileService.getUserQuizzes().subscribe(
+    this.profileService.getUserQuizzes(this.pageSize, this.pageIndex, this.sortDirection).subscribe(
       resp => {
-        this.userQuizzes = resp;
-      },
-        error => {
-        alert("Error while download quizzes")
+        this.userQuizzes = resp.responceList;
+        this.length = resp.totalNumberOfElement;
       });
-
   }
 
-  addCategoryToQuizzes() {
-    for (const quiz of this.userQuizzes){
-      this.profileService.getCategoryName(quiz.category_id).subscribe(
-        resp => {
-          quiz.category = resp.text;
-        }
-      );
+  setPaginationParamDefault() {
+    this.pageIndex = 0;
+    this.pageSize = 8;
+  }
+
+  onPageChanged($event: PageEvent) {
+    this.pageIndex = $event.pageIndex;
+    this.pageSize = $event.pageSize;
+    this.choseRequest();
+  }
+
+  filterQuizzes(userSearch: string) {
+    this.profileService.filterQuizzesRequest(userSearch, this.pageSize, this.pageIndex, this.sortDirection).subscribe(
+      resp=>{
+        this.userQuizzes = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
+  }
+
+  choseRequest() {
+    if (this.userRequest != undefined && this.userRequest) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.filterQuizzes(this.userRequest);
+    }else {
+      this.getUserQuizzes();
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  sortQuizzes($event) {
+    this.sortDirection = $event.direction==''? undefined : $event;
+    this.setPaginationParamDefault();
+    this.choseRequest();
   }
 }
