@@ -1,0 +1,96 @@
+<div>
+  <div class="container" *ngIf="!isEditForm">
+    <p>Name: {{profile.name}}</p>
+    <p>Surname: {{profile.surname}}</p>
+    <p>Gender: {{profile.gender}}</p>
+    <p>Birthdate: {{profile.birthdate}}</p>
+    <p>City: {{profile.city}}</p>
+    <p>About me: {{profile.about}}</p>
+    <p *ngIf="isAdmin" > Role: {{profile.role}}</p>
+    <div class="p-2 bd-highlight align-self-center" (click)="isEditForm=true">
+      <div id="change-password-button">
+        <button type="button" class="btn btn-secondary" >Edit profile</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container" *ngIf="isEditForm">
+    <form (ngSubmit)="ngSubmit()">
+      <div class="form-group p-0">
+        <label for="name">Name</label>
+        <input type="text"
+               class="form-control"
+               id="name"
+               placeholder="Enter name"
+               name="name"
+               [(ngModel)]="profile.name"/>
+      </div>
+      <div class="form-group p-0">
+        <label for="surname">Surname</label>
+        <input type="text"
+               class="form-control"
+               id="surname"
+               placeholder="Surname"
+               name="surname"
+               [(ngModel)]="profile.surname"/>
+      </div>
+
+      <label for="gender">Gender</label>
+      <div class="form-group p-0" id="gender">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="maleRadioButton" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="MALE">
+          <label class="custom-control-label" for="maleRadioButton">Male</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="femaleRadioButton" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="FEMALE">
+          <label class="custom-control-label" for="femaleRadioButton">Female</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="notmentionRadioButtno" name="customRadioInline1" class="custom-control-input"
+                 [(ngModel)]="profile.gender" value="NOT_MENTIONED">
+          <label class="custom-control-label" for="notmentionRadioButtno">Not mentioned</label>
+        </div>
+      </div>
+
+      <div class="form-group p-0">
+        <label for="birthdate">Birtdate</label>
+        <input type="date"
+               class="form-control"
+               id="birthdate"
+               placeholder="Birthdate"
+               name="birthdate"
+               [(ngModel)]="profile.birthdate">
+      </div>
+      <div class="form-group p-0">
+        <label for="city">City</label>
+        <input type="text"
+               class="form-control"
+               id="city"
+               placeholder="City"
+               name="city"
+               [(ngModel)]="profile.city">
+      </div>
+      <div class="form-group p-0">
+        <label for="about">About</label>
+        <textarea type="text"
+                  class="form-control"
+                  id="about"
+                  placeholder="About"
+                  name="about"
+                  [(ngModel)]="profile.about">
+      </textarea>
+      </div>
+      <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+    </form>
+    <button type="submit" class="btn btn-secondary btn-block mt-3" (click)="closeEditForm()">Cancel</button>
+  </div>
+</div>
+
+
+
+
+

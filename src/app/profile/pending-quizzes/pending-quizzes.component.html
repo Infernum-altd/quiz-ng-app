@@ -1,0 +1,44 @@
+<mat-form-field color="primary">
+  <label for="search">Search</label>
+  <input id="search" matInput (keyup)="applyFilter($event)">
+</mat-form-field>
+
+<div class="mat-elevation-z8 w-75">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" width="100%">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef> Category</th>
+      <td mat-cell *matCellDef="let element"> {{element.category}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date</th>
+      <td mat-cell *matCellDef="let element"> {{element.date}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="authorEmail">
+      <th mat-header-cell *matHeaderCellDef> Author Name</th>
+      <td mat-cell *matCellDef="let element"><a class="nav-link" routerLink=""
+                                                (click)="checkOut(element.author, element.authorEmail)">
+        {{element.authorName}} {{element.authorSurname}}</a></td>
+    </ng-container>
+
+
+    <ng-container class="text-center" matColumnDef="actions">
+      <th class="text-center" mat-header-cell *matHeaderCellDef> Acting</th>
+      <mat-cell class="text-center" *matCellDef="let row; let element;">
+        <button type="button" class="btn btn-secondary m-1" (click)="checkQuiz(element.id)">Check</button>
+      </mat-cell>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
