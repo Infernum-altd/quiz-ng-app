@@ -1,4 +1,5 @@
-
+import {User} from './user';
+import {Category} from './category.model';
 
 
 export enum StatusType {

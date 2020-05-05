@@ -5,17 +5,23 @@
   <title>QuizNgApp</title>
   <base href="/">
 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
   <script>
     var  configureApiBaseUrl = "http://localhost:8080";
-      /*LOCAL : http://localhost:8080
-      HEROKU : https://quiz-api-netcracker.herokuapp.com
-      * */
+    //"http://localhost:8080";
+    // HEROKU : https://quiz-api-netcracker.herokuapp.com
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
-  <app-root></app-root>
+<body class="mat-typography">
+<app-root></app-root>
 </body>
 </html>

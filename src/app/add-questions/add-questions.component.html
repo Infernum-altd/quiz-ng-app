@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="card-header">
+    Quiz: {{name}}
+  </div>
+
+  <div class="card  question" *ngFor="let question of questions; let i=index">
+    <div class="card-header">
+      Question {{i}}
+      <button class="remove-question float-right btn btn-secondary" (click)="removeQuestion(i)">x</button>
+    </div>
+    <app-question class="card-body"></app-question>
+  </div>
+
+  <div class="col text-center">
+    <button class="btn btn-secondary btn-add float-none" (click)="addQuestion()">
+      &#43;</button>
+  </div>
+
+  <div class="card-footer">
+    <button type="submit" class="btn btn-secondary float-right">Submit</button>
+  </div>
+</div>

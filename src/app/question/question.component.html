@@ -1,0 +1,29 @@
+<div class="container">
+  <form [formGroup]="questionForm">
+    <div class="form-group mb-3 row">
+      <label for="text">Question Text</label>
+      <textarea id="text" type="text" formControlName="text" class="form-control" maxlength="360"
+                required></textarea>
+    </div>
+    <div *ngIf="questionForm.get('text').errors?.required && (submitted ||questionForm.get('text').touched || questionForm.get('text').dirty)"
+         class="alert alert-danger">Question
+      cannot be empty. </div>
+    <div *ngIf="questionForm.get('text').errors?.maxlength" class="alert alert-danger">Question can be
+      max
+      30 characters long.</div>
+    <app-image-upload class="row mb-3">
+    </app-image-upload>
+    <div class="form-group row">
+      <label for="type">Answer type</label>
+      <select id="type" formControlName="type" class="form-control btn-secondary"
+              (change)="onOptionSelected($event.target.value)" value="questionTypes[0]">
+        <option *ngFor='let type of questionTypes'>
+          {{type | titlecase}}
+        </option>
+      </select>
+    </div>
+    <div class="jumbotron">
+      <ng-template #dynamicComponent></ng-template>
+    </div>
+  </form>
+</div>

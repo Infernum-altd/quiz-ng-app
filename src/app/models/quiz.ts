@@ -10,5 +10,5 @@ export class Quiz {
   description: string;
   status: StatusType;
   modificationTime: Date;
-  category: string;
+  category:string;
 }

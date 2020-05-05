@@ -17,11 +17,11 @@ export class QuizComponent implements OnInit {
   }
 
   getQuizzes() {
-       this.quizService.getQuizzes().subscribe(
-            data => { this.quizzesData = data; },
-          err => console.error(err),
-            () => console.log('done loading foods')
-        );
+    this.quizService.getQuizzes().subscribe(
+      data => { this.quizzesData = data; },
+      err => console.error(err),
+      () => console.log('done loading foods')
+    );
   }
 
   getPokemonDetails(): void {

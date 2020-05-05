@@ -1,0 +1,21 @@
+.card {
+  margin: 0 auto;
+  float: none;
+  margin-bottom: 10px;
+  align-self: center;
+  width: 60%;
+  padding: 0;
+}
+
+.card-body {
+  padding: 10%;
+}
+
+.question {
+  width: 90%;
+  margin: 20px;
+}
+
+.btn-add {
+  margin: 10px;
+}

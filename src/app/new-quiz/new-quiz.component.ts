@@ -16,20 +16,20 @@ import { DatePipe } from '@angular/common';
 })
 export class NewQuizComponent implements OnInit {
   quizForm: FormGroup;
-  submitted = false;
+  submitted: boolean = false;
   categories: Category[];
 
   tagRef: any;
-  tags: String[] = [];
+  tags: string[] = [];
 
 
   quiz: Quiz = {
     id: 0,
-    name: '',
+    name: "",
     author: 2,
     category_id: 1,
     date: new Date().toISOString(),
-    description: '',
+    description: "",
     status: StatusType.PENDING.toString(),
     modification_time: new Date().toISOString()
   };
@@ -53,16 +53,16 @@ export class NewQuizComponent implements OnInit {
 
   loadCategories() {
     this.categoryService.getCategories().subscribe(
-      resp => { this.categories = resp; },
+      resp => { this.categories = resp },
       err => console.error(err),
       () => console.log('Done loading categories')
     );
   }
 
   addTag() {
-    if (this.tagRef == '' || this.tagRef == null || this.tags.includes(this.tagRef)) { return; }
+    if (this.tagRef == "" || this.tagRef == null || this.tags.includes(this.tagRef)) return;
     this.tags.push(this.tagRef);
-    this.tagRef = '';
+    this.tagRef = "";
   }
 
   removeTag(i: number) {
@@ -76,10 +76,10 @@ export class NewQuizComponent implements OnInit {
       return;
     }
 
-    const input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
+    let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
     this.quiz.name = input.name;
-    const category = this.quizForm.get('category').value;
-    this.quiz.category_id = this.categories.find(function(el) { return el.name === category; }).id;
+    let category = this.quizForm.get('category').value;
+    this.quiz.category_id = this.categories.find(function (el) { return el.name === category; }).id;
     this.quiz.description = input.description;
 
     this.quiz.status = this.quiz.status.toUpperCase();
@@ -101,7 +101,7 @@ export class NewQuizComponent implements OnInit {
         });
       },
       err => {
-        alert(err.error.message);
+        alert(err.error['message']);
       }
     );
   }

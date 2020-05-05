@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Quiz} from '../models/pending-quizzes.model';
-import {ActivatedRoute, Router} from "@angular/router";
-import {QuizService} from "../service/quizService/quiz.service";
-import {Subscription} from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {QuizService} from '../service/quizService/quiz.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-quiz-check',

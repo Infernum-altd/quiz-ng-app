@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {StatusType} from '../../models/quiz.model';
+
 import {Quiz} from '../../models/pending-quizzes.model';
+import {StatusType} from "../../models/quiz.model";
+
 
 
 
