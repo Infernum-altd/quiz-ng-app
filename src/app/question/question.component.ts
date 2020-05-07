@@ -6,7 +6,7 @@ import { OptionalAnswerComponent } from './../optional-answer/optional-answer.co
 import { AnswerComponent } from './../answer/answer.component';
 import { QuestionService } from './../service/questionService/question.service';
 import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 import { map, mergeMap, defaultIfEmpty } from 'rxjs/operators';
@@ -64,7 +64,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   loadComponent(value: String) {
-    var componentFactory
+    var componentFactory: ComponentFactory<AnswerComponent>;
     switch (value) {
       case QuestionType.OPTION:
         componentFactory = this.componentFactoryResolver.resolveComponentFactory(OptionalAnswerComponent);

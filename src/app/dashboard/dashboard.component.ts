@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
 
 
   maxCards: number = 5;
-  userId: number = this.currentUserService.getCurrentUser().id; //FIXME: get user id from local storage
+  userId: number = this.currentUserService.getCurrentUser().id;
 
   profileImage: Observable<any>;
 

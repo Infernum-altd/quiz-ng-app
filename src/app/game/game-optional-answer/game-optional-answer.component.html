@@ -1,0 +1,11 @@
+<div class="container" fxLayout="row wrap" fxLayoutAlign="center">
+    <div *ngFor="let option of options; let i=index" fxFlex="40%" class="answer-option">
+        <button mat-raised-button *ngIf="!checked[i]" (click)="checked[i]=!checked[i]" color="accent" fxLayout="column"
+            fxLayoutAlign="center">
+            <img matCardImage src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            {{option | titlecase}}</button>
+        <button mat-stroked-button *ngIf="checked[i]" (click)="checked[i]=!checked[i]" color="accent" fxLayout="column"
+            fxLayoutAlign="center"><img matCardImage src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            {{option | titlecase}}</button>
+    </div>
+</div>

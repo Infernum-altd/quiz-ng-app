@@ -1,0 +1,8 @@
+<div class="container" fxLayout="row" fxLayoutAlign="space-evenly">
+    <div cdkDropList cdkDropListOrientation="horizontal" class="list" (cdkDropListDropped)="drop($event)">
+        <div class="box" *ngFor="let option of options" cdkDrag fxLayout="row" fxLayoutAlign="center"><img matCardImage
+                src="https://material.angular.io/assets/img/examples/shiba2.jpg"><span
+                fxFlexAlign="center">{{option}}</span>
+        </div>
+    </div>
+</div>

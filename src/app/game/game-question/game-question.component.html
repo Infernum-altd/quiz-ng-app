@@ -1,0 +1,34 @@
+<div class="container">
+    <mat-card fxLayout="column" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="start">
+            <mat-card-header fxLayout="row" fxLayoutAlign="center">
+                <mat-card-title>Question {{questionNumber}} : {{question.text}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-grid-list class="image" cols="6" rowHeight="20rem">
+                    <mat-grid-tile [colspan]="image?2:6">
+                        <div>
+                            <mat-progress-spinner value="100" fxFlexAlign="center">
+                            </mat-progress-spinner>
+                            <div id="time" fxFlexAlign="center">
+                                <h3>15 sec</h3>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile class="image" colspan="4" *ngIf="image!=null">
+                        <div class="w-100">
+                            <img matCardImage src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                                fxFlexAlign="center">
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+        </div>
+        <mat-card-actions id="answer">
+            <!-- <app-game-sequence-answer></app-game-sequence-answer> -->
+            <!-- <app-game-boolean-answer></app-game-boolean-answer> -->
+            <app-game-string-answer></app-game-string-answer>
+            <!-- <app-game-optional-answer></app-game-optional-answer> -->
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,9 +1,8 @@
-import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { QuestionComponent } from './../question/question.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { Question, QuestionType } from '../models/question.model';
+import { Question } from '../models/question.model';
 
 @Component({
   selector: 'app-add-questions',
