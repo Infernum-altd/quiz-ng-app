@@ -62,6 +62,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -75,6 +76,8 @@ import { GameSequenceAnswerComponent } from './game/game-sequence-answer/game-se
 import { GameStringAnswerComponent } from './game/game-string-answer/game-string-answer.component';
 import { GameBooleanAnswerComponent } from './game/game-boolean-answer/game-boolean-answer.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { GameStartComponent } from './game/game-start/game-start.component';
+import { GameSettingsComponent } from './game/game-settings/game-settings.component';
 
 const profileRoutes: Routes = [
   {
@@ -168,6 +171,10 @@ const appRoutes: Routes = [
     component: GameQuestionComponent
   },
   {
+    path: 'game/start',
+    component: GameStartComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -210,7 +217,9 @@ const appRoutes: Routes = [
     GameOptionalAnswerComponent,
     GameSequenceAnswerComponent,
     GameStringAnswerComponent,
-    GameBooleanAnswerComponent
+    GameBooleanAnswerComponent,
+    GameStartComponent,
+    GameSettingsComponent
   ],
   imports: [
 
@@ -270,6 +279,7 @@ const appRoutes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatSnackBarModule,
     DragDropModule,
     LayoutModule,
     FlexLayoutModule,
