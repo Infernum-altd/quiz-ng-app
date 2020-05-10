@@ -63,6 +63,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -78,6 +79,7 @@ import { GameBooleanAnswerComponent } from './game/game-boolean-answer/game-bool
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameStartComponent } from './game/game-start/game-start.component';
 import { GameSettingsComponent } from './game/game-settings/game-settings.component';
+
 
 const profileRoutes: Routes = [
   {
@@ -280,6 +282,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatButtonToggleModule,
     MatSnackBarModule,
+    MatDialogModule,
     DragDropModule,
     LayoutModule,
     FlexLayoutModule,
