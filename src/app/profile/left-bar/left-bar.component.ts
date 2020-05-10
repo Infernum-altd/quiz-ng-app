@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ProfileService} from '../../service/profileService/profile.service';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {NotificationStatus} from '../../models/notification-status.enum';
-import {ShareIdService} from '../../service/profileService/share-id.service';
+import {ProfileService} from "../../service/profileService/profile.service";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {NotificationStatus} from "../../models/notification-status.enum";
+import {ShareIdService} from "../../service/profileService/share-id.service";
 
 @Component({
   selector: 'app-left-bar',
@@ -32,7 +32,7 @@ export class LeftBarComponent implements OnInit {
   }
 
   fileProgress(imageInput: any){
-    this.progressImage = (imageInput.target.files[0] as File);
+    this.progressImage = <File>imageInput.target.files[0];
     this.changeImg();
   }
 
@@ -52,6 +52,7 @@ export class LeftBarComponent implements OnInit {
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
         this.file = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text);
+        console.log(this.file);
       },
       error => {
         console.log(error);

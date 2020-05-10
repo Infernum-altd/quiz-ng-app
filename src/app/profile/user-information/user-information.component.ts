@@ -5,7 +5,7 @@ import {PlatformLocation} from '@angular/common';
 import {Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {Role} from '../../models/role.enum';
-
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-user-information',
@@ -14,6 +14,7 @@ import {Role} from '../../models/role.enum';
 })
 
 export class UserInformationComponent implements OnInit {
+  floatLabelControl = new FormControl('auto');
   public profile: User;
   public isEditForm = false;
   currentUserId: string;

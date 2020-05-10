@@ -1,8 +1,9 @@
+import { Observable, forkJoin } from 'rxjs';
 import { Answer } from './../models/answer.model';
-import { Component, OnInit, QueryList } from '@angular/core';
-import { FormGroup, ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
-import { Question } from '../models/question.model';
-import { ImageUploadComponent } from '../image-upload/image-upload.component';
+import { Component, OnInit } from '@angular/core';
+import { ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
+import { mergeMap, map, defaultIfEmpty } from 'rxjs/operators';
+import { AnswerService } from '../service/answerService/answer.service';
 
 @Component({
   selector: 'app-answer',
@@ -11,19 +12,73 @@ import { ImageUploadComponent } from '../image-upload/image-upload.component';
 })
 export class AnswerComponent implements OnInit {
   submitted: boolean = false;
-  answer: Answer[]
 
-  constructor() { }
+  answer: Answer[] = [];
+  images: File[] = [];
+
+  questionId: number;
+
+  constructor(private answerService: AnswerService) { }
 
   ngOnInit() {
   }
 
   isValid(): boolean {
-    return true
+    return true;
   }
 
-  getResult(): Answer[] {
-    return this.answer;
+  save(): Observable<any> {
+    this.submitted = true;
+    this.getData();
+    this.getImages();
+
+    return this.saveAnswers().pipe(
+      mergeMap(
+        () => this.saveImages()
+      ),
+      defaultIfEmpty()
+    );
+
+  }
+
+  saveAnswers(): Observable<any> {
+    let observableBatch = [];
+
+    this.answer.forEach(
+      (item) => {
+        if (item.text != null && item.text !== "") {
+          observableBatch.push(
+            this.answerService.postAnswer(item).pipe(map(response => item.id = response.id))
+          );
+        }
+      }
+    );
+
+    return forkJoin(observableBatch);
+  }
+
+  saveImages(): Observable<any> {
+    let observableBatch = [];
+
+    this.answer.forEach(
+      (item, index) => {
+        if (item.text != null && item.text !== "" && this.images[index] != null) {
+          observableBatch.push(
+            this.answerService.updateImage(item.id, this.images[index])
+          );
+        }
+      }
+    );
+
+    return forkJoin(observableBatch);
+  }
+
+  getData(): void {
+
+  }
+
+  getImages(): void {
+
   }
 
 }

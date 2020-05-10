@@ -1,64 +1,54 @@
-<mat-form-field color="primary">
-  <label for="search">Search</label>
-  <input id="search" matInput (keyup)="applyFilter($event)">
+<mat-form-field class="input-form">
+  <mat-label>Search quiz</mat-label>
+  <input matInput type="search" placeholder="Search" value="" [(ngModel)]="userRequest"
+         (ngModelChange)="this.userQuestionUpdate.next($event)">
 </mat-form-field>
-<div class="p-2 bd-highlight align-self-center w-100">
+
   <div id="add-quiz-button">
-    <button type="button" class="btn btn-secondary btn-block m-lg-auto-3" routerLink="/new_quiz">Add game</button>
+    <button mat-raised-button routerLink="/new_quiz">Create quiz</button>
   </div>
-</div>
-<div class="mat-elevation-z8 w-100">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+
+<br>
+<div id="table" class="mat-elevation-z8">
+  <table mat-table  [dataSource]="userQuizzes" matSort class="mat-elevation-z8" matSort (matSortChange) = "sortQuizzes($event)">
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td mat-cell *matCellDef="let element">{{element.name}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef>Date of creation</th>
-      <td mat-cell *matCellDef="let element">{{element.date | date}}</td>
-    </ng-container>
-
     <ng-container matColumnDef="category">
-      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
       <td mat-cell *matCellDef="let element">{{element.category}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="description">
-      <th id="description" mat-header-cell *matHeaderCellDef>Description</th>
-
-      <td mat-cell *matCellDef="let element">
-        <div class="scrollable">
-          {{element.description}}
-        </div>
-      </td>
-
-    </ng-container>
-
-    <ng-container matColumnDef="modificationTime">
-      <th mat-header-cell *matHeaderCellDef>Last modification</th>
-      <td mat-cell *matCellDef="let element">{{element.modificationTime | date}}</td>
-    </ng-container>
-
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let element">{{element.status}}</td>
     </ng-container>
 
 
-    <ng-container class="text-center" matColumnDef="actions">
-      <th id="actions" class="text-center" mat-header-cell *matHeaderCellDef> Acting</th>
-      <mat-cell class="text-center" *matCellDef="let row">
-        <button type="button" class="btn btn-secondary m-1">Play</button>
-        <button type="button" class="btn btn-secondary">Edit</button>
-        <button type="button" class="btn btn-secondary">Delete</button>
+    <ng-container  matColumnDef="actions">
+      <th id="actions" mat-header-cell *matHeaderCellDef> Acting</th>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-cell>
+
     </ng-container>
 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageIndex]="pageIndex" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                 (page)="onPageChanged($event)"></mat-paginator>
 </div>
+

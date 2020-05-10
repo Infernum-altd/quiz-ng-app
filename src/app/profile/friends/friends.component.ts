@@ -1,10 +1,11 @@
 import {ProfileService} from '../../service/profileService/profile.service';
 import {ShareIdService} from '../../service/profileService/share-id.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {User} from '../../models/user';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import {User} from "../../models/user";
+import {PageEvent} from "@angular/material/paginator";
+import {Subject} from "rxjs";
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 
 
 
@@ -16,23 +17,39 @@ import {MatPaginator} from '@angular/material/paginator';
 export class FriendsComponent implements OnInit {
   friends: User[];
   displayedColumns: string[] = ['name', 'rating', 'actions'];
-  dataSource: MatTableDataSource<User>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  public userRequest: string;
+  userQuestionUpdate = new Subject<string>();
+  sortDirection = undefined;
+
+
+  length = 0;
+  pageIndex: number;
+  pageSize: number;
+  pageSizeOptions: number[] = [9, 18, 27];
 
   constructor(private profileService: ProfileService,
               private router: Router,
               private shareId: ShareIdService) {
 
-
-    profileService.getFriends().subscribe(resp => {
-
-      this.friends = resp;
-      this.dataSource = new MatTableDataSource(this.friends);
-      this.dataSource.paginator = this.paginator;
-    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setPaginationParamDefault();
+
+    this.uploadFriends();
+
+    this.userQuestionUpdate.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe(userSearch => {
+        if (userSearch.length == 0) {
+          this.setPaginationParamDefault();
+          this.uploadFriends()
+        } else {
+          this.filterFriends(userSearch);
+        }
+      });
+  }
 
   checkOut(id: string, email: string) {
     this.shareId.setEmail(email);
@@ -41,10 +58,49 @@ export class FriendsComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  setPaginationParamDefault() {
+    this.pageIndex = 0;
+    this.pageSize = 9;
   }
 
+  uploadFriends(){
+    this.profileService.getFriends(this.pageSize, this.pageIndex, this.sortDirection).subscribe(resp => {
+      this.friends = resp.responceList;
+      this.length = resp.totalNumberOfElement;
+    });
+  }
+
+  onPageChanged($event: PageEvent) {
+    this.pageIndex = $event.pageIndex;
+    this.pageSize = $event.pageSize;
+    this.choseRequest();
+  }
+
+  filterFriends(userSearch: string) {
+    this.profileService.filterFriendsRequest(userSearch, this.pageSize, this.pageIndex, this.sortDirection).subscribe(
+      resp=>{
+        this.friends = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
+  }
+
+  sortFriends($event) {
+    this.sortDirection = $event.direction==''? undefined : $event;
+    this.setPaginationParamDefault();
+    this.choseRequest();
+  }
+
+  choseRequest(){
+    if (this.userRequest != undefined && this.userRequest) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.filterFriends(this.userRequest);
+    } else {
+      this.uploadFriends();
+    }
+  }
 }
+
 

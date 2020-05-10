@@ -15,7 +15,8 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
 
   model: User = {
-    image: undefined, notificationStatus: undefined,
+    image: undefined,
+    notificationStatus: undefined,
     about: '',
     birthdate: undefined,
     city: '',
@@ -33,8 +34,8 @@ export class RegistrationComponent implements OnInit {
 
 
   constructor(
-    private router: Router,
-    public service: RegistrationService,
+    private router : Router,
+    public service : RegistrationService,
     public authService: AuthenticationService,
     private formBuilder: FormBuilder) { }
 
@@ -70,7 +71,7 @@ export class RegistrationComponent implements OnInit {
         alert('You registered');
       },
       error => {
-        alert(error.error.message);
+        alert(error.error['message']);
       }
     );
   }

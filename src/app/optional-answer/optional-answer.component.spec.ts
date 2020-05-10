@@ -10,7 +10,7 @@ describe('OptionalAnswerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ OptionalAnswerComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

@@ -10,7 +10,7 @@ describe('AddQuestionsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AddQuestionsComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

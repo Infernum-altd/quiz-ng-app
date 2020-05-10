@@ -1,19 +1,22 @@
-.tag {
-  margin: 5px 5px;
-  padding: 5px 10px;
-  font-size: 14px;
+mat-card {
+    align-self: center;
+    width: 60%;
 }
 
-.remove-tag {
-  cursor: pointer;
-  padding: 5px;
+mat-card-content {
+    text-align: center;
 }
 
-.card {
-  margin: 0 auto;
-  float: none;
-  margin-bottom: 10px;
-  align-self: center;
-  width: 60%;
-  padding: 0;
+mat-card-actions {
+    text-align: end;
+}
+
+.form-container {
+    width: 400 px;
+    margin: 0 px auto;
+    margin-top: 200 px
+}
+
+.form-field {
+    display: block
 }

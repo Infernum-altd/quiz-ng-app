@@ -1,21 +1,24 @@
-.card {
-  margin: 0 auto;
-  float: none;
-  margin-bottom: 10px;
-  align-self: center;
-  width: 60%;
-  padding: 0;
+mat-card {
+    align-self: center;
+    width: 60%;
 }
 
-.card-body {
-  padding: 10%;
+mat-card-actions {
+    text-align: end;
 }
 
-.question {
-  width: 90%;
-  margin: 20px;
+mat-expansion-panel {
+    margin: 1rem 0;
 }
 
-.btn-add {
-  margin: 10px;
+.delete-button {
+    margin-right: 1rem;
+}
+
+h3 {
+    margin: 0;
+}
+
+.fab {
+    margin: 1rem;
 }

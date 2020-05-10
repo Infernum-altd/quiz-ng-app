@@ -1,8 +1,23 @@
-<div class="container" *ngIf="quizData">
-  <p>Name: {{quizData.name}}</p>
-  <p>Author: {{quizData.author}}</p>
-  <p>Category: {{quizData.category}}</p>
-  <p>Date: {{quizData.date}}</p>
-  <p>Description: {{quizData.description}}</p>
-  <p>Modification time: {{quizData.modification_time}}</p>
-</div>
+<mat-card class="card">
+  <mat-card-header class="head">
+    <mat-card-title>{{quizData.name}}</mat-card-title>
+    <mat-card-subtitle>Category: {{quizData.category}}</mat-card-subtitle>
+    <div *ngIf="authenticationService.logIn">
+      <button mat-icon-button *ngIf="quizData.favorite" (click)="unmarkQuizAsFavorite()">
+        <mat-icon>star</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="!quizData.favorite" (click)="markQuizAsFavorite()">
+        <mat-icon>star_border</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+  <img mat-card-image class="image" [src] = quizImage>
+  <mat-card-content>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of quizData.tags">{{tag}}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+  <mat-card-actions >
+    <button id="openButton" [disableRipple]="true"  mat-button>OPEN</button>
+  </mat-card-actions>
+</mat-card>
