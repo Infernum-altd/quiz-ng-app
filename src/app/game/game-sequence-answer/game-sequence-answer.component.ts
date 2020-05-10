@@ -1,3 +1,4 @@
+import { GameAnswerComponent } from './../game-answer/game-answer.component';
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -6,10 +7,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   templateUrl: './game-sequence-answer.component.html',
   styleUrls: ['./game-sequence-answer.component.css']
 })
-export class GameSequenceAnswerComponent implements OnInit {
+export class GameSequenceAnswerComponent extends GameAnswerComponent implements OnInit {
   options: string[] = ["Answer 1", "Answer 2", "Answer 3", "Answer 4"];
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   ngOnInit(): void {
   }
