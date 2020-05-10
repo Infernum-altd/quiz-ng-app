@@ -1,15 +1,29 @@
-import {DatePipe} from '@angular/common';
-import {Gender} from '../registration/registration.component';
+import {Role} from './role.enum';
+import {NotificationStatus} from './notification-status.enum';
+import {Gender} from './gender.enum';
 
-export interface User {
+
+export class User {
+  token?: string;
+
   id: string;
   email: string;
   password: string;
+  role: Role;
   name: string;
   surname: string;
-  gender: Gender;
+  image: any;
   birthdate: Date;
+  gender: Gender;
+  countryId: string;
   city: string;
+  rating: string;
   about: string;
-  token?: string;
+  notificationStatus: NotificationStatus;
+
+
+  constructor(id: string, email: string) {
+    this.id = id;
+    this.email = email;
+  }
 }

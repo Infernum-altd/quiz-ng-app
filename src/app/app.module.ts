@@ -3,15 +3,82 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {HTTP_INTERCEPTORS, } from '@angular/common/http';
+import { QuizComponent } from './quiz/quiz.component';
 
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {ProfileComponent} from './profile/profile.component';
+import {ProfileNavigationComponent} from './profile/profile-navigation/profile-navigation.component';
+import {LeftBarComponent} from './profile/left-bar/left-bar.component';
+import {UserInformationComponent} from './profile/user-information/user-information.component';
+import {JwtInterceptor} from './_helpers/jwt.interceptor';
+import {FriendsComponent} from './profile/friends/friends.component';
+import {MyQuizzesComponent} from './profile/my-quizzes/my-quizzes.component';
+import {FavoriteComponent} from './profile/favorite/favorite.component';
+import { ChangePasswordComponent } from './profile/change-password/change-password.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import {Router, RouterModule, Routes} from '@angular/router';
-import { CloseComponent } from './close/close.component';
-import {AuthGuardService} from './_helpers/auth-guard.service';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from './_helpers/auth-guard.service';
+import { QuestionComponent } from './question/question.component';
+import { OptionalAnswerComponent } from './optional-answer/optional-answer.component';
+import { BooleanAnswerComponent } from './boolean-answer/boolean-answer.component';
+import { StringAnswerComponent } from './string-answer/string-answer.component';
+import { SequenceAnswerComponent } from './sequence-answer/sequence-answer.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { AnswerComponent } from './answer/answer.component';
+import { NewQuizComponent } from './new-quiz/new-quiz.component';
+import { AddQuestionsComponent } from './add-questions/add-questions.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
+import {MatInputModule} from '@angular/material/input';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { AdminUsersComponent } from './profile/admin-users/admin-users.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { PendingQuizzesComponent } from './profile/pending-quizzes/pending-quizzes.component';
+import { QuizCheckComponent } from './quiz-check/quiz-check.component';
+
+const profileRoutes: Routes = [
+  {
+    path: 'profinfo',
+    component: UserInformationComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'friends',
+    component: FriendsComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'adminUsers',
+    component: AdminUsersComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'pendingQuizzes',
+    component: PendingQuizzesComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'mygames',
+    component: MyQuizzesComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'favorite',
+    component: FavoriteComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'changePass',
+    component: ChangePasswordComponent,
+    outlet: 'profilenav'
+  }
+];
+
 
 const appRoutes: Routes = [
   {
@@ -23,8 +90,41 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'close', canActivate: [AuthGuardService],
-    component: CloseComponent
+    path: 'profile/:id', canActivate: [AuthGuardService],
+    component: ProfileComponent,
+    children: profileRoutes,
+  },
+  {
+    path: 'friends', canActivate: [AuthGuardService],
+    component: FriendsComponent
+  },
+  {
+    path: 'adminUsers', canActivate: [AuthGuardService],
+    component: AdminUsersComponent
+  },
+  {
+    path: 'checkquiz/:id', canActivate: [AuthGuardService],
+    component: QuizCheckComponent
+  },
+  {
+    path: 'pendingQuizzes', canActivate: [AuthGuardService],
+    component: PendingQuizzesComponent
+  },
+  {
+    path: 'quizzes/:id',
+    component: QuizComponent
+  },
+  {
+    path: 'question',
+    component: QuestionComponent
+  },
+  {
+    path: 'new_quiz',
+    component: NewQuizComponent
+  },
+  {
+    path: 'add_questions',
+    component: AddQuestionsComponent
   },
   {
     path: '',
@@ -39,17 +139,46 @@ const appRoutes: Routes = [
     RegistrationComponent,
     LoginComponent,
     NavigationComponent,
-    CloseComponent,
+    ProfileComponent,
+    ProfileNavigationComponent,
+    LeftBarComponent,
+    UserInformationComponent,
+    FriendsComponent,
+    MyQuizzesComponent,
+    FavoriteComponent,
+    ChangePasswordComponent,
+    QuizComponent,
+    QuestionComponent,
+    OptionalAnswerComponent,
+    BooleanAnswerComponent,
+    StringAnswerComponent,
+    SequenceAnswerComponent,
+    ImageUploadComponent,
+    AnswerComponent,
+    NewQuizComponent,
+    AddQuestionsComponent,
+    AdminUsersComponent,
+    PendingQuizzesComponent,
+    QuizCheckComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes),
-    ReactiveFormsModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot(appRoutes),
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatInputModule,
+        MatPaginatorModule,
+        NgbModule
+    ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [OptionalAnswerComponent, BooleanAnswerComponent, StringAnswerComponent, SequenceAnswerComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
