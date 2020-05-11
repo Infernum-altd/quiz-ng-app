@@ -1,3 +1,5 @@
+import { CurrentUserService } from './../../service/current-user.service';
+import { Router } from '@angular/router';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Quiz } from 'src/app/models/quiz';
@@ -16,14 +18,12 @@ export interface QuizDialogData {
 export class QuizDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<QuizDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: QuizDialogData) {
-  }
-
-  onCloseClick(): void {
-    this.dialogRef.close();
+    @Inject(MAT_DIALOG_DATA) public data: QuizDialogData,
+    private router: Router) {
   }
 
   onStartClick(): void {
-    //TODO: go to game settings
+    this.router.navigate(['/game/settings', { quizId: this.data.quizData.id }]);
+    this.dialogRef.close();
   }
 }

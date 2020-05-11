@@ -1,17 +1,23 @@
-<div class="container" fxLayout="column" fxLayoutAlign="start">
-    <h2 fxFlexAlign="center">Settings</h2>
-    <div fxLayout.gt-sm="row" fxLayout="column" fxFlex="auto" fxLayoutAlign="space-evenly">
-        <mat-form-field>
-            <mat-label>Max number of users</mat-label>
-            <input matInput type="number" [value]="10" required>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Timer for question</mat-label>
-            <input matInput type="number" [value]="10" required>
-        </mat-form-field>
-        <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="1rem">
-            <button mat-raised-button color="accent">Save Settings</button>
-            <button mat-raised-button color="warn">Start Game</button>
-        </div>
-    </div>
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+            <h1> Game : Quiz [Quiz name]</h1>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="start">
+            <h2 fxFlexAlign="center">Settings</h2>
+            <div fxLayout.gt-sm="row" fxLayout="column" fxFlex="auto" fxLayoutAlign="space-evenly">
+                <mat-form-field>
+                    <mat-label>Max number of users</mat-label>
+                    <input matInput type="number" [value]="10" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Timer for question</mat-label>
+                    <input matInput type="number" [value]="10" required>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="accent" (click)="createGame()">Save Settings</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
