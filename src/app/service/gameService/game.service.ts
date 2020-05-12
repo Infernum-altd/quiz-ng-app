@@ -21,21 +21,35 @@ export class GameService {
     return this.http.post<number>(this.CREATE_GAME, game);
   }
 
-  initializeWebSocketConnection(gameId: number, userId: number) {
+  initializeWebSocketConnection(gameId: number, userId: number): Observable<Game> {
     this.client = new Stomp.Client();
-    this.client.webSocketFactory = function () { return new WebSocket("ws://localhost:8080/ws"); }
-    this.client.brokerURL = this.webSocketEndPoint;
+    this.client.webSocketFactory = function () { return new SockJs("http://localhost:8080/ws"); }
     let client = this.client;
-    client.onConnect = function (_frame) {
-      client.subscribe('/play/game/' + gameId, (message) => {
-        console.log("here");
-        if (message.body) {
-          console.log(message.body);
-        }
-      });
-      client.publish({ destination: '/app/play/game/' + gameId + '/user/' + userId });
-    };
+    return Observable.create((observer) => {
+      client.onConnect = function (_frame) {
+        client.subscribe('/play/game/' + gameId, (message) => {
+          if (message.body) {
+            observer.next(JSON.parse(message.body));
+          }
+        });
+        client.publish({ destination: '/app/play/game/' + gameId + '/user/' + userId });
+      };
 
+      client.onWebSocketClose = function (_frame) {
+        observer.complete();
+      };
+      client.onWebSocketError = function (frame) {
+        observer.error(frame);
+      };
+
+      return () => {
+        client.deactivate();
+      }
+    });
+
+  }
+
+  connect(): void {
     this.client.activate();
   }
 }

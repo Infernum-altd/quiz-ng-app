@@ -16,7 +16,8 @@ export class GameSettingsComponent implements OnInit {
     quizId: null,
     hostId: null,
     questionTimer: 10,
-    maxUsersNumber: 10
+    maxUsersNumber: 10,
+    players: null
   }
 
   constructor(private route: ActivatedRoute,

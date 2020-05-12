@@ -1,16 +1,17 @@
 <div class="container">
     <mat-card>
         <mat-card-header>
-            <h1> Game : Quiz [Quiz name]</h1>
+            <h1> Game Start</h1>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="start">
             <div class="user-list" fxFlexAlign="center">
                 <h2>Connected users</h2>
                 <mat-card>
                     <mat-list role="list">
-                        <mat-list-item role="listitem" *ngFor="let user of users"> <img class="avatar" matCardImage
-                                src="https://material.angular.io/assets/img/examples/shiba2.jpg">{{user.name}}
-                            {{user.surname}}
+                        <mat-list-item role="listitem" *ngFor="let player of (game| async)?.players"> <img
+                                class="avatar" matCardImage
+                                src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+                            {{player.userName}}
                         </mat-list-item>
                     </mat-list>
                 </mat-card>
