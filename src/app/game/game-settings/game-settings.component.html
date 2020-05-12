@@ -1,7 +1,8 @@
 <div class="container">
     <mat-card>
-        <mat-card-header>
-            <h1> Game : Quiz [Quiz name]</h1>
+        <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+            <h1> Game Settings</h1>
+            <button mat-raised-button color="accent" (click)="createGame()">Save Settings</button>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="start">
             <h2 fxFlexAlign="center">Settings</h2>
@@ -16,8 +17,5 @@
                 </mat-form-field>
             </div>
         </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button color="accent" (click)="createGame()">Save Settings</button>
-        </mat-card-actions>
     </mat-card>
 </div>

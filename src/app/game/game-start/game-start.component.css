@@ -37,3 +37,7 @@ hr {
 mat-list-item {
     margin: 0.5rem;
 }
+
+.start-button {
+    width: 10em;
+}

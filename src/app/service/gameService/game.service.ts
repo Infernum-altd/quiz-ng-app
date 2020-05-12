@@ -52,4 +52,8 @@ export class GameService {
   connect(): void {
     this.client.activate();
   }
+
+  startGame(gameId: number): void {
+    this.client.publish({ destination: '/app/play/game/' + gameId + '/start' });
+  }
 }

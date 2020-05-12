@@ -18,12 +18,11 @@ export class GameStartComponent implements OnInit, OnDestroy {
   gameId: number;
   userId: number;
 
-  game: Observable<Game> = null;
+  game$: Observable<Game> = null;
 
 
   constructor(private route: ActivatedRoute,
     private gameService: GameService,
-    private quizService: QuizService,
     private currentUserService: CurrentUserService) {
 
   }
@@ -41,8 +40,12 @@ export class GameStartComponent implements OnInit, OnDestroy {
   }
 
   connectToGame(gameId: number, hostId: number): void {
-    this.game = this.gameService.initializeWebSocketConnection(gameId, hostId);
+    this.game$ = this.gameService.initializeWebSocketConnection(gameId, hostId);
     this.gameService.connect();
+  }
+
+  startGame(): void {
+    
   }
 
 }
