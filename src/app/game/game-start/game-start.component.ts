@@ -1,8 +1,8 @@
+import { GameService } from './../../service/gameService/game.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { Role } from 'src/app/models/role.enum';
-import { Gender } from 'src/app/models/gender.enum';
-import { NotificationStatus } from 'src/app/models/notification-status.enum';
+import { ActivatedRoute } from '@angular/router';
+import { CurrentUserService } from 'src/app/service/current-user.service';
 
 @Component({
   selector: 'app-game-start',
@@ -10,26 +10,28 @@ import { NotificationStatus } from 'src/app/models/notification-status.enum';
   styleUrls: ['./game-start.component.css']
 })
 export class GameStartComponent implements OnInit {
-  user: User = {
-    id: '4', email: 'email@mail.com', password: 'password', role: Role.USER, name: 'Name', surname: 'Surname', image: null, birthdate: null,
-    gender: Gender.NOT_MENTIONED, countryId: null, city: null, rating: null, about: null, notificationStatus: NotificationStatus.ON
-  };
-  users: User[] = [
-    this.user, this.user, this.user, this.user, this.user
-  ]; //TODO: set observable and get data from server
+  users: User[] = []; //TODO: set observable and get data from server
+  gameId: number;
+  userId: number;
 
-  constructor() {
-    //FIXME: delete this code
-    for (var i = 0; i < 10; i++) {
-      let user = new User('4', 'email@mail.com');
-      user.name = "Name";
-      user.surname = "Surname";
-      this.users.push();
-    }
+  constructor(private route: ActivatedRoute,
+    private gameService: GameService,
+    private currentUserService: CurrentUserService) {
+
   }
 
   ngOnInit(): void {
+    this.userId = parseInt(this.currentUserService.getCurrentUser().id);
+    this.route.params.subscribe(params => {
+      this.gameId = +params['gameId'];
+      this.connectToGame(this.gameId, this.userId);
+    },
+      err => console.log("Error loading page")  //FIXME
+    );
+  }
 
+  connectToGame(gameId: number, hostId: number): void {
+    this.gameService.initializeWebSocketConnection(gameId, hostId);
   }
 
 }

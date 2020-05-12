@@ -173,11 +173,11 @@ const appRoutes: Routes = [
     component: GameQuestionComponent
   },
   {
-    path: 'game/settings',
+    path: 'game/settings/:quizId',
     component: GameSettingsComponent
   },
   {
-    path: 'game/start',
+    path: 'game/start/:gameId',
     component: GameStartComponent
   },
   {

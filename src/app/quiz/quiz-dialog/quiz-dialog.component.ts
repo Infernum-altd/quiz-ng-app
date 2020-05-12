@@ -23,7 +23,7 @@ export class QuizDialogComponent {
   }
 
   onStartClick(): void {
-    this.router.navigate(['/game/settings', { quizId: this.data.quizData.id }]);
+    this.router.navigate(['/game/settings', this.data.quizData.id]);
     this.dialogRef.close();
   }
 }

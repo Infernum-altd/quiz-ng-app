@@ -23,26 +23,24 @@ export class GameSettingsComponent implements OnInit {
     private router: Router,
     private currentUserService: CurrentUserService,
     private gameService: GameService) {
-    this.route.params.subscribe(params => {
-      this.game.quizId = params.quizId;
-    });
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.game.quizId = +params['quizId'];
+    });
     this.game.hostId = parseInt(this.currentUserService.getCurrentUser().id);
   }
 
   createGame(): void {
     this.gameService.createGame(this.game).subscribe(
-      response => this.startGameSession(response, this.game.hostId),
+      response => this.router.navigate(['/game/start', response]),
+
       err => {
         console.log("Error creating game: " + err)
       }  //FIXME: handle errors
     )
   }
 
-  startGameSession(gameId: number, hostId: number): void {
-    this.gameService.initializeWebSocketConnection(gameId, hostId);
-    this.router.navigate(['/game/start']);
-  }
+
 }
