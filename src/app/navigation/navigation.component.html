@@ -3,6 +3,11 @@
     <a mat-button routerLink="/dashboard">QUIZ</a>
     <a mat-button routerLink="/quizzes">Quizzes</a>
     <span class="spacer"></span>
+
+      <mat-form-field appearance="outline" style="margin-bottom: -1.25em">
+        <input matInput type="number" placeholder="Game id">
+      </mat-form-field>
+
     <a mat-button routerLink="/register" *ngIf="!authService.logIn">Register</a>
     <a mat-button routerLink="/login" *ngIf="!authService.logIn">Login</a>
     <a

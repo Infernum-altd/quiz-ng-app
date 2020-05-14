@@ -37,7 +37,9 @@ mat-selection-list {
   max-width: 200px;
   width: 100%;
   margin-bottom: 0px;
+  padding-bottom: 0px;
 }
+
 
 mat-paginator {
   width: 50%;
@@ -48,6 +50,3 @@ mat-paginator {
   margin-left: 9px;
 }
 
-.content {
-
-}

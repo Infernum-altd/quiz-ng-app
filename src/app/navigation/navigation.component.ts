@@ -11,6 +11,7 @@ export class NavigationComponent implements OnInit {
   currentUser: any;
   username: string;
   id: string;
+
   constructor(public authService: AuthenticationService,
               private router: Router) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
