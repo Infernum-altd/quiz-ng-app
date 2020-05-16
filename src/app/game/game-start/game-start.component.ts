@@ -1,11 +1,10 @@
-import { QuizService } from './../../service/quizService/quiz.service';
-import { mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { AuthenticationService } from './../../service/loginService/authentication.service';
 import { Player } from './../../models/game.model';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GameService } from './../../service/gameService/game.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from 'src/app/models/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from 'src/app/service/current-user.service';
 import { Game } from 'src/app/models/game.model';
 
@@ -14,15 +13,23 @@ import { Game } from 'src/app/models/game.model';
   templateUrl: './game-start.component.html',
   styleUrls: ['./game-start.component.css']
 })
-export class GameStartComponent implements OnInit, OnDestroy {
+export class GameStartComponent implements OnInit {
   gameId: number;
-  userId: number;
+
+  player: Player = {
+    userId: null,
+    userScore: 0,
+    userName: null,
+    isAuthorize: false
+  }
 
   game$: Observable<Game> = null;
 
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private gameService: GameService,
+    private authenticationService: AuthenticationService,
     private currentUserService: CurrentUserService) {
 
   }
@@ -30,22 +37,31 @@ export class GameStartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userId = parseInt(this.currentUserService.getCurrentUser().id);
+    if (this.authenticationService.logIn) {
+      this.player.userId = parseInt(this.currentUserService.getCurrentUser().id);
+      this.player.isAuthorize = true;
+    }
     this.route.params.subscribe(params => {
       this.gameId = +params['gameId'];
-      this.connectToGame(this.gameId, this.userId);
+      this.connectToGame();
     },
-      err => console.log("Error loading page")  //FIXME
+      err => console.log("Error loading page: " + err)  //FIXME
     );
   }
 
-  connectToGame(gameId: number, hostId: number): void {
-    this.game$ = this.gameService.initializeWebSocketConnection(gameId, hostId);
+  connectToGame(): void {
+    this.game$ = this.gameService.initializeWebSocketConnection(this.gameId, this.player).pipe(
+      map(resp => JSON.parse(resp))
+    );
     this.gameService.connect();
   }
 
   startGame(): void {
-    
+    this.router.navigateByUrl('/game/question/' + this.gameId, {
+      state: {
+        isStart: '1'
+      }
+    });
   }
 
 }

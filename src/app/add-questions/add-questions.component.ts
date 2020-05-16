@@ -29,7 +29,8 @@ export class AddQuestionsComponent implements OnInit {
       quizId: this.quizId,
       type: 'OPTION',
       text: '',
-      active: true
+      active: true,
+      answerList: null
     });
   }
 
@@ -39,7 +40,8 @@ export class AddQuestionsComponent implements OnInit {
       quizId: this.quizId,
       type: 'OPTION',
       text: '',
-      active: true
+      active: true,
+      answerList: null
     });
   }
 

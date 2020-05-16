@@ -169,7 +169,7 @@ const appRoutes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'game/question',
+    path: 'game/question/:gameId',
     component: GameQuestionComponent
   },
   {

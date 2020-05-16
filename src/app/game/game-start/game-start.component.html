@@ -3,7 +3,7 @@
         <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
             <h1> Game Start</h1>
             <div>
-                <button mat-raised-button class="start-button" color="accent" *ngIf="game?.hostId===userId"
+                <button mat-raised-button class="start-button" color="accent" *ngIf="game?.hostId===player.userId"
                     (click)="startGame()">Start
                 </button>
             </div>
@@ -14,8 +14,7 @@
             <h2>Connected users</h2>
             <mat-card>
                 <mat-list role="list">
-                    <mat-list-item role="listitem" *ngFor="let player of game?.players"> <img class="avatar"
-                            matCardImage src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+                    <mat-list-item role="listitem" *ngFor="let player of game?.players">
                         {{player.userName}}
                     </mat-list-item>
                 </mat-list>

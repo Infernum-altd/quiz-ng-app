@@ -1,3 +1,5 @@
+import { Answer } from './answer.model';
+
 export enum QuestionType {
     OPTION = "Option",
     BOOLEAN = "Boolean",
@@ -10,6 +12,6 @@ export interface Question {
     quizId: number,
     type: String,
     text: string,
-    active: boolean
-    //TODO: add language and image
+    active: boolean,
+    answerList: Answer[]
 } 

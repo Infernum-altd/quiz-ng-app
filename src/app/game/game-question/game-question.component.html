@@ -2,7 +2,8 @@
     <mat-card fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="start">
             <mat-card-header fxLayout="row" fxLayoutAlign="center">
-                <mat-card-title>Question {{questionNumber}} : {{question.text}}</mat-card-title>
+                <mat-card-title>Question {{(getQuestionNumber() |async) +1}} : {{(getQuestion() | async)?.text}}
+                </mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <mat-grid-list class="image" cols="6" rowHeight="20rem">
@@ -11,7 +12,7 @@
                             <mat-progress-spinner value="100" fxFlexAlign="center">
                             </mat-progress-spinner>
                             <div id="time" fxFlexAlign="center">
-                                <h3>15 sec</h3>
+                                <h3>{{questionTimer}} sec</h3>
                             </div>
                         </div>
                     </mat-grid-tile>
@@ -24,8 +25,6 @@
                 </mat-grid-list>
             </mat-card-content>
         </div>
-        <mat-card-actions id="answer">
-            <ng-template #dynamicComponent></ng-template>
-        </mat-card-actions>
+        <ng-template #dynamicComponent></ng-template>
     </mat-card>
 </div>

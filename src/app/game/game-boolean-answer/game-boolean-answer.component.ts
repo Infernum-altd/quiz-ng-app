@@ -14,13 +14,13 @@ export class GameBooleanAnswerComponent extends GameAnswerComponent implements O
   }
 
   ngOnInit(): void {
-    this.answer.push({
-      id: null,
-      questionId: 0,
-      text: "",
-      correct: false,
-      nextAnswerId: null
-    });
+    // this.answer.push({
+    //   id: null,
+    //   questionId: 0,
+    //   text: "",
+    //   correct: false,
+    //   nextAnswerId: null
+    // });
   }
 
   onAnswerClick(option: string): void {

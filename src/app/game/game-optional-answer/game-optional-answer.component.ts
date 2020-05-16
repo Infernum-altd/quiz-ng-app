@@ -1,23 +1,21 @@
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game-optional-answer',
   templateUrl: './game-optional-answer.component.html',
   styleUrls: ['./game-optional-answer.component.css']
 })
-export class GameOptionalAnswerComponent extends GameAnswerComponent implements OnInit {
-  options: string[] = ["Answer 1", "Answer 2", "Answer 3", "Answer 4"];
-  checked: boolean[] = [];
+export class GameOptionalAnswerComponent extends GameAnswerComponent implements AfterViewInit {
+  checked: boolean[];
 
   constructor() {
     super();
   }
-
-  ngOnInit(): void {
-    this.options.forEach(
-      () => this.checked.push(false)
+  ngAfterViewInit(): void {
+    this.answers.pipe(
+      map(_ => this.checked.push(false))
     );
   }
-
 }

@@ -36,7 +36,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     quizId: null,
     type: QuestionType.OPTION,
     text: "",
-    active: true
+    active: true,
+    answerList: null
   };
   image: File = null;
 
@@ -63,7 +64,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.loadComponent(QuestionType.OPTION.toString());
   }
 
-  loadComponent(value: String) {
+  loadComponent(value: string) {
+    let titleCasePipe = new TitleCasePipe();
+    value = titleCasePipe.transform(value);
     var componentFactory: ComponentFactory<AnswerComponent>;
     switch (value) {
       case QuestionType.OPTION:

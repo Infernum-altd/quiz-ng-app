@@ -1,4 +1,3 @@
-import { CurrentUserService } from './../../service/current-user.service';
 import { Router } from '@angular/router';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
