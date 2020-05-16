@@ -1,9 +1,9 @@
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { AuthenticationService } from './../../service/loginService/authentication.service';
 import { Player } from './../../models/game.model';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { GameService } from './../../service/gameService/game.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from 'src/app/service/current-user.service';
 import { Game } from 'src/app/models/game.model';
@@ -57,11 +57,7 @@ export class GameStartComponent implements OnInit {
   }
 
   startGame(): void {
-    this.router.navigateByUrl('/game/question/' + this.gameId, {
-      state: {
-        isStart: '1'
-      }
-    });
+    this.gameService.startGame(this.gameId);
   }
 
 }

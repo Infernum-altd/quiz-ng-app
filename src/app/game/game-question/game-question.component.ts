@@ -1,4 +1,3 @@
-import { share, map, mergeMap } from 'rxjs/operators';
 import { GameService } from './../../service/gameService/game.service';
 import { Observable } from 'rxjs';
 import { GameStringAnswerComponent } from './../game-string-answer/game-string-answer.component';
@@ -6,7 +5,7 @@ import { GameBooleanAnswerComponent } from './../game-boolean-answer/game-boolea
 import { GameOptionalAnswerComponent } from './../game-optional-answer/game-optional-answer.component';
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Question, QuestionType } from 'src/app/models/question.model';
 import { GameSequenceAnswerComponent } from '../game-sequence-answer/game-sequence-answer.component';
 import { Answer } from 'src/app/models/answer.model';
@@ -22,10 +21,11 @@ export class GameQuestionComponent implements OnInit {
   @ViewChild(GameAnswerComponent) answerComponent: GameAnswerComponent;
 
   gameId: number;
+
+  initTime: number;
   questionTimer: number;
 
-  shared: Observable<any> = null;
-  question: Observable<Question> = null;
+  question: Question;
   questionNumber: Observable<number> = null;
   answers: Observable<Answer[]> = null;
 
@@ -34,77 +34,17 @@ export class GameQuestionComponent implements OnInit {
   componentRef: ComponentRef<GameAnswerComponent>;
 
 
-  constructor(private route: ActivatedRoute,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private gameService: GameService) { }
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver) { }
 
-  ngOnInit(): void { }
-
-  getShared(): Observable<string> {
-    if (this.shared != null) {
-      return this.shared;
-    }
-    return this.shared = this.route.params.pipe(
-      map(params => {
-        this.gameId = +params['gameId'];
-        let isStart: number = parseInt(history.state.isStart, 10);
-
-        if (isStart === 1) {
-          this.gameService.startGame(this.gameId);
-        }
-      }
-      ),
-      mergeMap(
-        _ => this.gameService.getQuestion().pipe(
-          map(resp => {
-            let questionData = JSON.parse(resp);
-            this.questionTimer = questionData['questionTimer'];
-            this.getAnswers();
-            this.loadComponent(questionData['question'].type);
-            this.startTimer();
-            return questionData;
-          })
-        )
-      ),
-      share()
-    );
+  ngOnInit(): void {
+    this.questionNumber = history.state.questionNumber + 1;
+    this.question = history.state.question;
+    this.initTime = history.state.questionTimer;
+    this.questionTimer = this.initTime;
+    this.startTimer();
   }
 
-  getAnswers(): Observable<Answer[]> {
-    if (this.answers != null) {
-      return this.answers;
-    }
-    return this.answers = this.getShared().pipe(
-      map(
-        resp => {
-          return resp['question']['answerList'];
-        }
-      ));
-  }
-
-  getQuestion(): Observable<Question> {
-    if (this.question != null) {
-      return this.question;
-    }
-    return this.question = this.shared.pipe(
-      map(
-        resp => {
-          return resp['question'];
-        }
-      ));
-  }
-
-  getQuestionNumber(): Observable<number> {
-    if (this.questionNumber != null) {
-      return this.questionNumber;
-    }
-    return this.questionNumber = this.getShared().pipe(
-      map(
-        resp => {
-          return resp['questionNumber'];
-        }
-      ));
-  }
 
   loadComponent(value: string) {
     let titleCasePipe = new TitleCasePipe();
@@ -127,13 +67,15 @@ export class GameQuestionComponent implements OnInit {
 
     this.answerHost.clear();
     this.componentRef = this.answerHost.createComponent(componentFactory);
-    this.componentRef.instance.answers = this.getAnswers();
+    this.componentRef.instance.answers = this.question.answerList;
     this.componentRef.changeDetectorRef.detectChanges();
   }
 
   interval: NodeJS.Timeout;
 
   startTimer() {
+    this.questionTimer = this.initTime;
+
     this.interval = setInterval(() => {
       if (this.questionTimer > 0) {
         this.questionTimer--

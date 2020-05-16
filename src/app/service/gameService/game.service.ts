@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Player } from './../../models/game.model';
 import * as SockJs from 'sockjs-client';
 import { RxStomp, RxStompConfig } from '@stomp/rx-stomp';
@@ -6,10 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Game } from 'src/app/models/game.model';
 import { Observable, ReplaySubject, of } from 'rxjs';
-import { Question } from 'src/app/models/question.model';
 import { Answer } from 'src/app/models/answer.model';
-import { IMessage } from '@stomp/stompjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class GameService {
   client: RxStomp;
   gameObservable: Observable<string>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   createGame(game: Game): Observable<number> {
     return this.http.post<number>(this.CREATE_GAME, game);
@@ -51,12 +50,22 @@ export class GameService {
 
   startGame(gameId: number) {
     this.client.publish({ destination: '/app/play/game/' + gameId + '/start' });
-    return this.gameObservable;
+    this.gameObservable.pipe(take(1)).subscribe(
+      resp => {
+        let data = JSON.parse(resp);
+        this.router.navigateByUrl('/game/question/' + gameId, {
+          state: {
+            questionNumber: data['questionNumber'],
+            question: data['question'],
+            questionTimer: data['questionTimer']
+          }
+        });
+      }
+    );
   }
 
   postAnswer(gameId: number, answers: Answer[]) {
     this.client.publish({ destination: '/app/play/game/' + gameId + '/start' });
-    return this.gameObservable;
   }
 
   getQuestion(): Observable<string> {

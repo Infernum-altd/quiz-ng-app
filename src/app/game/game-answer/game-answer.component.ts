@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./game-answer.component.css']
 })
 export class GameAnswerComponent implements OnInit {
-  @Input() answers: Observable<Answer[]>;
-  currentAnswer: string;
+  @Input() answers: Answer[];
+  currentAnswer: Answer[];
 
   constructor() { }
 
