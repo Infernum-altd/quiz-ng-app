@@ -1,11 +1,10 @@
+import { ActivatedRoute } from '@angular/router';
 import { GameService } from './../../service/gameService/game.service';
-import { Observable } from 'rxjs';
 import { GameStringAnswerComponent } from './../game-string-answer/game-string-answer.component';
 import { GameBooleanAnswerComponent } from './../game-boolean-answer/game-boolean-answer.component';
 import { GameOptionalAnswerComponent } from './../game-optional-answer/game-optional-answer.component';
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef, AfterViewInit } from '@angular/core';
 import { Question, QuestionType } from 'src/app/models/question.model';
 import { GameSequenceAnswerComponent } from '../game-sequence-answer/game-sequence-answer.component';
 import { Answer } from 'src/app/models/answer.model';
@@ -16,9 +15,8 @@ import { TitleCasePipe } from '@angular/common';
   templateUrl: './game-question.component.html',
   styleUrls: ['./game-question.component.css']
 })
-export class GameQuestionComponent implements OnInit {
+export class GameQuestionComponent implements OnInit, AfterViewInit {
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
-  @ViewChild(GameAnswerComponent) answerComponent: GameAnswerComponent;
 
   gameId: number;
 
@@ -26,8 +24,9 @@ export class GameQuestionComponent implements OnInit {
   questionTimer: number;
 
   question: Question;
-  questionNumber: Observable<number> = null;
-  answers: Observable<Answer[]> = null;
+  questionNumber: number;
+  userId: number; //FIXME: set user
+  answers: Answer[];
 
   image: string = null;
 
@@ -35,16 +34,25 @@ export class GameQuestionComponent implements OnInit {
 
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver) { }
+    private activatedRoute: ActivatedRoute,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private gameService: GameService) { }
 
   ngOnInit(): void {
+    this.gameId = this.activatedRoute.snapshot.params['gameId'];
+    console.log(this.activatedRoute.snapshot.params['gameId'])
+
+    this.userId = history.state.userId;
     this.questionNumber = history.state.questionNumber + 1;
     this.question = history.state.question;
     this.initTime = history.state.questionTimer;
     this.questionTimer = this.initTime;
-    this.startTimer();
   }
 
+  ngAfterViewInit(): void {
+    this.loadComponent(this.question.type);
+    this.startTimer();
+  }
 
   loadComponent(value: string) {
     let titleCasePipe = new TitleCasePipe();
@@ -67,8 +75,10 @@ export class GameQuestionComponent implements OnInit {
 
     this.answerHost.clear();
     this.componentRef = this.answerHost.createComponent(componentFactory);
-    this.componentRef.instance.answers = this.question.answerList;
     this.componentRef.changeDetectorRef.detectChanges();
+
+    this.componentRef.instance.answers = this.question.answerList;
+    this.componentRef.instance.questionId = this.question.id;
   }
 
   interval: NodeJS.Timeout;
@@ -81,11 +91,13 @@ export class GameQuestionComponent implements OnInit {
         this.questionTimer--
       } else {
         clearInterval(this.interval);
+        this.submitAnswer();
       }
     }, 1000);
   }
 
-  nextQuestion() {
-    //TODO:
+  submitAnswer() {
+    let answers = this.componentRef.instance.getSubmittedAnswers();
+    this.gameService.postAnswer(this.gameId, this.userId, answers);
   }
 }

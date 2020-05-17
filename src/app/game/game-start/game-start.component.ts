@@ -27,7 +27,6 @@ export class GameStartComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
     private gameService: GameService,
     private authenticationService: AuthenticationService,
     private currentUserService: CurrentUserService) {
@@ -54,6 +53,7 @@ export class GameStartComponent implements OnInit {
       map(resp => JSON.parse(resp))
     );
     this.gameService.connect();
+    this.gameService.subscribeQuestion(this.gameId);
   }
 
   startGame(): void {

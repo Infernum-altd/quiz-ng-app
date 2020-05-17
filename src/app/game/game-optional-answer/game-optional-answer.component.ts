@@ -1,5 +1,6 @@
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
 import { Component, OnInit } from '@angular/core';
+import { Answer } from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-optional-answer',
@@ -7,14 +8,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game-optional-answer.component.css']
 })
 export class GameOptionalAnswerComponent extends GameAnswerComponent implements OnInit {
-  checked: boolean[];
+  checked: boolean[] = [].fill(false, this.maxAnswerSize);
 
   constructor() {
     super();
   }
 
   OnInit() {
-    this.checked.fill(false, this.answers.length);
+  }
+
+  getSubmittedAnswers(): Answer[] {
+    let submittedAnswer: Answer[] = [];
+    this.answers.forEach(
+      (value, index) => {
+        if (this.checked[index]) {
+          submittedAnswer.push(value);
+        }
+      }
+    );
+    return submittedAnswer;
   }
 
 }

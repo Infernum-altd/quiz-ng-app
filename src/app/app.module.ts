@@ -79,6 +79,7 @@ import { GameBooleanAnswerComponent } from './game/game-boolean-answer/game-bool
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameStartComponent } from './game/game-start/game-start.component';
 import { GameSettingsComponent } from './game/game-settings/game-settings.component';
+import { GameFinishComponent } from './game/game-finish/game-finish.component';
 
 
 const profileRoutes: Routes = [
@@ -225,7 +226,8 @@ const appRoutes: Routes = [
     GameStringAnswerComponent,
     GameBooleanAnswerComponent,
     GameStartComponent,
-    GameSettingsComponent
+    GameSettingsComponent,
+    GameFinishComponent
   ],
   imports: [
 

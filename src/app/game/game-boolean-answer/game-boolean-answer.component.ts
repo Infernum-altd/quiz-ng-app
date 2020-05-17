@@ -1,5 +1,6 @@
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
 import { Component } from '@angular/core';
+import { Answer } from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-boolean-answer',
@@ -8,13 +9,20 @@ import { Component } from '@angular/core';
 })
 export class GameBooleanAnswerComponent extends GameAnswerComponent {
   options: string[] = ["true", "false"];
+  currentAnswer: string = null;
 
   constructor() {
     super();
   }
 
   onAnswerClick(option: string): void {
-    console.log(option);
+    this.currentAnswer = option;
   }
 
+  getSubmittedAnswers(): Answer[] {
+    let answer = this.getEmptyAnswer();
+    answer.text = this.currentAnswer;
+    answer.questionId = this.questionId;
+    return [answer];
+  }
 }

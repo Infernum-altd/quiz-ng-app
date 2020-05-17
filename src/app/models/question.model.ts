@@ -10,7 +10,7 @@ export enum QuestionType {
 export interface Question {
     id: number,
     quizId: number,
-    type: String,
+    type: string,
     text: string,
     active: boolean,
     answerList: Answer[]

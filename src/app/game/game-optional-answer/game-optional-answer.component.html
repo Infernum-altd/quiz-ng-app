@@ -1,7 +1,7 @@
 <div class="container" fxLayout="column">
     <p fxFlexAlign="center">Select one or more answers</p>
     <div fxLayout="row wrap" fxLayoutAlign="center">
-        <div *ngFor="let answer of (answers|async); let i=index" fxFlex="40%" class="answer-option">
+        <div *ngFor="let answer of answers; let i=index" fxFlex="40%" class="answer-option">
             <button mat-raised-button *ngIf="!checked[i]" (click)="checked[i]=!checked[i]" color="accent"
                 fxLayout="column" fxLayoutAlign="center">
                 <img matCardImage src="https://material.angular.io/assets/img/examples/shiba2.jpg">

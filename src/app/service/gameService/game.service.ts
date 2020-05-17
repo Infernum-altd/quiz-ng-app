@@ -1,3 +1,4 @@
+import { CurrentUserService } from './../current-user.service';
 import { Router } from '@angular/router';
 import { Player } from './../../models/game.model';
 import * as SockJs from 'sockjs-client';
@@ -20,7 +21,7 @@ export class GameService {
   client: RxStomp;
   gameObservable: Observable<string>;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private currentUserService: CurrentUserService) { }
 
   createGame(game: Game): Observable<number> {
     return this.http.post<number>(this.CREATE_GAME, game);
@@ -48,24 +49,33 @@ export class GameService {
     this.client.activate();
   }
 
-  startGame(gameId: number) {
-    this.client.publish({ destination: '/app/play/game/' + gameId + '/start' });
-    this.gameObservable.pipe(take(1)).subscribe(
+  subscribeQuestion(gameId: number) {
+    this.gameObservable.pipe().subscribe(
       resp => {
         let data = JSON.parse(resp);
-        this.router.navigateByUrl('/game/question/' + gameId, {
-          state: {
-            questionNumber: data['questionNumber'],
-            question: data['question'],
-            questionTimer: data['questionTimer']
-          }
-        });
+        if (data && data['question']) {
+          console.log(data);
+          let link = '/game/question/' + gameId;
+          this.router.navigate([link],
+            {
+              state: {
+                questionNumber: data['questionNumber'],
+                question: data['question'],
+                questionTimer: data['questionTimer'],
+                userId: this.currentUserService.getCurrentUser().id  //FIXME
+              }
+            });
+        }
       }
     );
   }
 
-  postAnswer(gameId: number, answers: Answer[]) {
-    this.client.publish({ destination: '/app/play/game/' + gameId + '/start' });
+  startGame(gameId: number) {
+    this.client.publish({ destination: `/app/play/game/${gameId}/start` });
+  }
+
+  postAnswer(gameId: number, userId: number, answers: Answer[]) {
+    this.client.publish({ destination: `/app/play/game/${gameId}/user/${userId}/sendAnswer`, body: JSON.stringify({ answers: answers }) });
   }
 
   getQuestion(): Observable<string> {
