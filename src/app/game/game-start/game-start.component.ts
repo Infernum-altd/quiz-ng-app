@@ -1,10 +1,10 @@
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AuthenticationService } from './../../service/loginService/authentication.service';
 import { Player } from './../../models/game.model';
 import { Observable } from 'rxjs';
 import { GameService } from './../../service/gameService/game.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from 'src/app/service/current-user.service';
 import { Game } from 'src/app/models/game.model';
 
@@ -20,11 +20,10 @@ export class GameStartComponent implements OnInit {
     userId: null,
     userScore: 0,
     userName: null,
-    isAuthorize: false
+    authorize: false
   }
 
-  game$: Observable<Game> = null;
-
+  players: Observable<Player[]>;
 
   constructor(private route: ActivatedRoute,
     private gameService: GameService,
@@ -38,7 +37,11 @@ export class GameStartComponent implements OnInit {
   ngOnInit(): void {
     if (this.authenticationService.logIn) {
       this.player.userId = parseInt(this.currentUserService.getCurrentUser().id);
-      this.player.isAuthorize = true;
+      this.player.authorize = true;
+    } else {
+      this.player.userId = new Date().getMilliseconds();
+      this.player.userName = "Player " + this.player.userId;
+      this.player.authorize = false;
     }
     this.route.params.subscribe(params => {
       this.gameId = +params['gameId'];
@@ -49,15 +52,14 @@ export class GameStartComponent implements OnInit {
   }
 
   connectToGame(): void {
-    this.game$ = this.gameService.initializeWebSocketConnection(this.gameId, this.player).pipe(
-      map(resp => JSON.parse(resp))
-    );
+    this.gameService.initializeWebSocketConnection(this.gameId, this.player);
+    this.players = this.gameService.waitGameStart();
+    this.gameService.subscribeQuestion();
     this.gameService.connect();
-    this.gameService.subscribeQuestion(this.gameId);
   }
 
   startGame(): void {
-    this.gameService.startGame(this.gameId);
+    this.gameService.startGame();
   }
 
 }

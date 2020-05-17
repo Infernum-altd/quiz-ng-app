@@ -2,7 +2,7 @@ export interface Player {
     userId: number;
     userScore: number;
     userName: string;
-    isAuthorize: boolean;
+    authorize: boolean;
 }
 
 export interface Game {

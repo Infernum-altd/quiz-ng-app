@@ -1,4 +1,7 @@
+import { GameService } from './../../service/gameService/game.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Player } from 'src/app/models/game.model';
 
 @Component({
   selector: 'app-game-finish',
@@ -6,10 +9,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game-finish.component.css']
 })
 export class GameFinishComponent implements OnInit {
+  gameId: number;
 
-  constructor() { }
+  rating: Observable<Player[]>;
+
+  constructor(
+    private gameService: GameService
+  ) { }
 
   ngOnInit(): void {
+    this.getRating();
+  }
+
+  getRating() {
+    this.rating = this.gameService.subscribeRating();
+    this.gameService.finishGame();
+  }
+
+  quitGame() {
+
   }
 
 }

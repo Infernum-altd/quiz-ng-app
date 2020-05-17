@@ -1,5 +1,5 @@
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Answer } from 'src/app/models/answer.model';
 
@@ -9,8 +9,13 @@ import { Answer } from 'src/app/models/answer.model';
   styleUrls: ['./game-sequence-answer.component.css']
 })
 export class GameSequenceAnswerComponent extends GameAnswerComponent implements OnInit {
-  constructor() {
+  constructor(private changeDetectionRef: ChangeDetectorRef) {
     super();
+    this.changeDetectionRef.detach();
+    setInterval(() => {
+      this.changeDetectionRef.reattach();
+      this.changeDetectionRef.markForCheck();
+    }, 1000);
   }
 
   ngOnInit(): void {

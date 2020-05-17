@@ -1,5 +1,5 @@
 import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Answer } from 'src/app/models/answer.model';
 
 @Component({
@@ -10,8 +10,13 @@ import { Answer } from 'src/app/models/answer.model';
 export class GameOptionalAnswerComponent extends GameAnswerComponent implements OnInit {
   checked: boolean[] = [].fill(false, this.maxAnswerSize);
 
-  constructor() {
+  constructor(private changeDetectionRef: ChangeDetectorRef) {
     super();
+    this.changeDetectionRef.detach();
+    setInterval(() => {
+      this.changeDetectionRef.reattach();
+      this.changeDetectionRef.markForCheck();
+    }, 1000);
   }
 
   OnInit() {
@@ -26,6 +31,7 @@ export class GameOptionalAnswerComponent extends GameAnswerComponent implements 
         }
       }
     );
+
     return submittedAnswer;
   }
 

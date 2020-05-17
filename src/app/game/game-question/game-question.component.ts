@@ -1,3 +1,4 @@
+import { Player } from './../../models/game.model';
 import { ActivatedRoute } from '@angular/router';
 import { GameService } from './../../service/gameService/game.service';
 import { GameStringAnswerComponent } from './../game-string-answer/game-string-answer.component';
@@ -25,7 +26,7 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
 
   question: Question;
   questionNumber: number;
-  userId: number; //FIXME: set user
+  player: Player; //FIXME: set user
   answers: Answer[];
 
   image: string = null;
@@ -42,7 +43,7 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
     this.gameId = this.activatedRoute.snapshot.params['gameId'];
     console.log(this.activatedRoute.snapshot.params['gameId'])
 
-    this.userId = history.state.userId;
+    this.player = history.state.player;
     this.questionNumber = history.state.questionNumber + 1;
     this.question = history.state.question;
     this.initTime = history.state.questionTimer;
@@ -75,7 +76,6 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
 
     this.answerHost.clear();
     this.componentRef = this.answerHost.createComponent(componentFactory);
-    this.componentRef.changeDetectorRef.detectChanges();
 
     this.componentRef.instance.answers = this.question.answerList;
     this.componentRef.instance.questionId = this.question.id;
@@ -98,6 +98,6 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
 
   submitAnswer() {
     let answers = this.componentRef.instance.getSubmittedAnswers();
-    this.gameService.postAnswer(this.gameId, this.userId, answers);
+    this.gameService.postAnswer(answers);
   }
 }

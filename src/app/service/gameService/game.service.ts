@@ -1,4 +1,4 @@
-import { CurrentUserService } from './../current-user.service';
+import { GameStateService } from './../gameStateService/game-state.service';
 import { Router } from '@angular/router';
 import { Player } from './../../models/game.model';
 import * as SockJs from 'sockjs-client';
@@ -19,15 +19,23 @@ export class GameService {
   CREATE_GAME: string = `${this.BASE_URL}\\play\\addSession`;
   webSocketEndPoint: string = `${this.BASE_URL}\\ws`; //FIXME
   client: RxStomp;
-  gameObservable: Observable<string>;
 
-  constructor(private http: HttpClient, private router: Router, private currentUserService: CurrentUserService) { }
+  gameObservable: Observable<string>;
+  gameId: number;
+  player: Player;
+
+  constructor(private http: HttpClient, private router: Router, private gameStateService: GameStateService) { }
 
   createGame(game: Game): Observable<number> {
     return this.http.post<number>(this.CREATE_GAME, game);
   }
 
-  initializeWebSocketConnection(gameId: number, player: Player): Observable<string> {
+  initializeWebSocketConnection(gameId: number, player: Player) {
+    this.gameId = gameId;
+    this.player = player;
+
+    console.log(this.player);
+
     let that = this;
 
     let config = new RxStompConfig();
@@ -36,49 +44,97 @@ export class GameService {
     this.client = new RxStomp();
     this.client.configure(config);
 
-    this.gameObservable = this.client.watch('/play/game/' + gameId).pipe(
+    this.gameStateService.setGameState(this.gameId, false);
+
+    this.gameObservable = this.client.watch(`/play/game/${this.gameId}`).pipe(
       map(resp => resp.body)
     );
-
-    this.client.publish({ destination: '/app/play/game/' + gameId + '/user', body: JSON.stringify(player) });
-
-    return this.gameObservable;
   }
 
   connect(): void {
     this.client.activate();
+    this.client.publish({ destination: `/app/play/game/${this.gameId}/user`, body: JSON.stringify(this.player) });
   }
 
-  subscribeQuestion(gameId: number) {
-    this.gameObservable.pipe().subscribe(
+  waitGameStart(): Observable<Player[]> {
+    return this.gameObservable.pipe(
+      map(resp => {
+        let data = JSON.parse(resp);
+        return data['players'];
+      })
+    );
+  }
+
+  subscribeQuestion() {
+    this.gameObservable.subscribe(
       resp => {
         let data = JSON.parse(resp);
-        if (data && data['question']) {
-          console.log(data);
-          let link = '/game/question/' + gameId;
-          this.router.navigate([link],
-            {
-              state: {
-                questionNumber: data['questionNumber'],
-                question: data['question'],
-                questionTimer: data['questionTimer'],
-                userId: this.currentUserService.getCurrentUser().id  //FIXME
-              }
-            });
+        if (data) {
+          if (data['question']) {
+            this.gameStateService.setGameState(this.gameId, true);
+            this.routeQuestion(data);
+          }
+          else {
+            if (this.gameStateService.getGameState(this.gameId)) {
+              this.routeResults();
+            }
+          }
         }
       }
     );
   }
 
-  startGame(gameId: number) {
-    this.client.publish({ destination: `/app/play/game/${gameId}/start` });
+  subscribeRating(): Observable<Player[]> {
+    return this.gameObservable.pipe(
+      map(resp => {
+        let data = JSON.parse(resp);
+        return data['players'];
+      })
+    );
   }
 
-  postAnswer(gameId: number, userId: number, answers: Answer[]) {
-    this.client.publish({ destination: `/app/play/game/${gameId}/user/${userId}/sendAnswer`, body: JSON.stringify({ answers: answers }) });
+  startGame() {
+    this.client.publish({ destination: `/app/play/game/${this.gameId}/start` });
+  }
+
+  postAnswer(answers: Answer[]) {
+    this.client.publish({ destination: `/app/play/game/${this.gameId}/sendAnswer`, body: JSON.stringify({ answers: answers, player: this.player }) });
   }
 
   getQuestion(): Observable<string> {
     return this.gameObservable;
+  }
+
+  routeQuestion(data: any) {
+    let link = `/game/question/${this.gameId}`;
+    this.router.navigate([link],
+      {
+        state: {
+          questionNumber: data['questionNumber'],
+          question: data['question'],
+          questionTimer: data['questionTimer'],
+          player: this.player
+        }
+      });
+  }
+
+  routeResults() {
+    let link = `/game/finish/${this.gameId}`;
+    this.router.navigate([link]);
+  }
+
+  finishGame() {
+    this.client.publish({ destination: `/app/play/game/${this.gameId}/finish` });
+  }
+
+  manageGameState() {
+    if (!this.gameStateService.getGameState(this.gameId)) {
+      this.gameStateService.setGameState(this.gameId, true);
+    }
+  }
+
+  disconnect() {
+    this.gameStateService.deleteGame(this.gameId);
+    this.client.deactivate();
   }
 }

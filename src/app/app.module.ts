@@ -182,6 +182,10 @@ const appRoutes: Routes = [
     component: GameStartComponent
   },
   {
+    path: 'game/finish/:gameId',
+    component: GameFinishComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -292,8 +296,7 @@ const appRoutes: Routes = [
     DragDropModule,
     LayoutModule,
     FlexLayoutModule,
-    MatProgressBarModule
-  ],
+    MatProgressBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],

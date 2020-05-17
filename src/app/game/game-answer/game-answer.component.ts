@@ -1,7 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Answer } from 'src/app/models/answer.model';
-import { Observable } from 'rxjs';
-
 @Component({
   selector: 'app-game-answer',
   templateUrl: './game-answer.component.html',
@@ -9,10 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class GameAnswerComponent implements OnInit {
   maxAnswerSize: number = 4;
-  @Input() answers: Answer[];
+  @Input() answers: Answer[] = [];
   @Input() questionId: number;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
