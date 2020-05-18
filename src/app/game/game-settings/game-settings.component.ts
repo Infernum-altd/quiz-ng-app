@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { mergeMap, defaultIfEmpty } from 'rxjs/operators';
 import { GameService } from './../../service/gameService/game.service';
 import { CurrentUserService } from './../../service/current-user.service';
@@ -11,6 +13,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game-settings.component.css']
 })
 export class GameSettingsComponent implements OnInit {
+  gameSettingsForm = new FormGroup({
+    maxUserNumberControl: new FormControl("10", [Validators.min(2), Validators.max(50)]),
+    questionTimerControl: new FormControl("10", [Validators.min(5), Validators.max(50)])
+  });
+
   game: Game = {
     id: null,
     quizId: null,
@@ -34,13 +41,18 @@ export class GameSettingsComponent implements OnInit {
   }
 
   createGame(): void {
-    this.gameService.createGame(this.game).subscribe(
-      response => this.router.navigate(['/game/start', response]),
+    if (this.gameSettingsForm.valid) {
+      this.game.maxUsersNumber = this.gameSettingsForm.get('maxUserNumberControl').value;
+      this.game.questionTimer = this.gameSettingsForm.get('questionTimerControl').value;
 
-      err => {
-        console.log("Error creating game: " + err)
-      }  //FIXME: handle errors
-    )
+      this.gameService.createGame(this.game).subscribe(
+        response => this.router.navigate(['/game/start', response]),
+
+        err => {
+          console.log("Error creating game: " + err)
+        }  //FIXME: handle errors
+      )
+    }
   }
 
 
