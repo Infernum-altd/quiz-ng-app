@@ -17,7 +17,7 @@ import { map, take } from 'rxjs/operators';
 export class GameService {
   BASE_URL: string = window["configureApiBaseUrl"];
   CREATE_GAME: string = `${this.BASE_URL}\\play\\addSession`;
-  webSocketEndPoint: string = `${this.BASE_URL}\\ws`; //FIXME
+  webSocketEndPoint: string = `${this.BASE_URL}\\ws`;
   client: RxStomp;
 
   gameObservable: Observable<string>;
@@ -33,8 +33,6 @@ export class GameService {
   initializeWebSocketConnection(gameId: number, player: Player) {
     this.gameId = gameId;
     this.player = player;
-
-    console.log(this.player);
 
     let that = this;
 
@@ -56,13 +54,8 @@ export class GameService {
     this.client.publish({ destination: `/app/play/game/${this.gameId}/user`, body: JSON.stringify(this.player) });
   }
 
-  waitGameStart(): Observable<Player[]> {
-    return this.gameObservable.pipe(
-      map(resp => {
-        let data = JSON.parse(resp);
-        return data['players'];
-      })
-    );
+  waitGameStart(): Observable<string> {
+    return this.gameObservable;
   }
 
   subscribeQuestion() {

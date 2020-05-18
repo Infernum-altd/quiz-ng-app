@@ -41,7 +41,6 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.gameId = this.activatedRoute.snapshot.params['gameId'];
-    console.log(this.activatedRoute.snapshot.params['gameId'])
 
     this.player = history.state.player;
     this.questionNumber = history.state.questionNumber + 1;
@@ -79,6 +78,9 @@ export class GameQuestionComponent implements OnInit, AfterViewInit {
 
     this.componentRef.instance.answers = this.question.answerList;
     this.componentRef.instance.questionId = this.question.id;
+
+    this.componentRef.changeDetectorRef.detectChanges();
+
   }
 
   interval: NodeJS.Timeout;

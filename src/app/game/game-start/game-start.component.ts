@@ -23,7 +23,7 @@ export class GameStartComponent implements OnInit {
     authorize: false
   }
 
-  players: Observable<Player[]>;
+  game$: Observable<Game>;
 
   constructor(private route: ActivatedRoute,
     private gameService: GameService,
@@ -53,7 +53,9 @@ export class GameStartComponent implements OnInit {
 
   connectToGame(): void {
     this.gameService.initializeWebSocketConnection(this.gameId, this.player);
-    this.players = this.gameService.waitGameStart();
+    this.game$ = this.gameService.waitGameStart().pipe(
+      map(resp => JSON.parse(resp))
+    );
     this.gameService.subscribeQuestion();
     this.gameService.connect();
   }

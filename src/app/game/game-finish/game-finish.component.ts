@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { GameService } from './../../service/gameService/game.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -14,7 +15,8 @@ export class GameFinishComponent implements OnInit {
   rating: Observable<Player[]>;
 
   constructor(
-    private gameService: GameService
+    private gameService: GameService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -27,7 +29,7 @@ export class GameFinishComponent implements OnInit {
   }
 
   quitGame() {
-
+    this.router.navigateByUrl('dashboard');
   }
 
 }

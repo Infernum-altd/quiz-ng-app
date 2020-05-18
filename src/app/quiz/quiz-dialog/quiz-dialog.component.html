@@ -17,6 +17,6 @@
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-flat-button (click)="onStartClick()" color="accent">Start Game</button>
+    <button mat-flat-button (click)="onStartClick()" color="accent" *ngIf="isLogin">Start Game</button>
     <button mat-flat-button mat-dialog-close>Close</button>
 </div>
