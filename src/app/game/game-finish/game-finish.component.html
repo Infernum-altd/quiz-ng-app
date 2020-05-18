@@ -14,7 +14,10 @@
             <mat-card>
                 <mat-list role="list">
                     <mat-list-item role="listitem" *ngFor="let player of rating |async">
-                        {{player.userName}} {{player.userScore}}
+                        <div class="mat-list-item-content" fxLayout="row" fxLayoutAlign="space-between">
+                            <p fxFlexAlign="center">{{player.userName}}</p>
+                            <p fxFlexAlign="center"> {{player.userScore}}</p>
+                        </div>
                     </mat-list-item>
                 </mat-list>
             </mat-card>
