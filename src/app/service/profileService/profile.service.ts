@@ -25,6 +25,7 @@ export class ProfileService {
   private UPDATE_USER_IMAGE = `${this.BASE_URL}\\profile\\newicon\\`;
   private GET_USER_IMAGE_BY_USER_ID = `${this.BASE_URL}\\profile\\getimage\\`;
   private UPDATE_GET_NOTIFICATION = `${this.BASE_URL}\\profile\\status\\`;
+  private DELETE_ADMIN_URL = `${this.BASE_URL}\\profile\\deleteAdminUser\\`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
@@ -55,31 +56,6 @@ export class ProfileService {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
 
-  getFriends(): Observable<User[]>{
-    return this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
-  }
-
-  getAdminUsers(): Observable<User[]>{
-    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
-  }
-
-  getUserQuizzes(): Observable<Quiz[]>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
-  }
-
-  getFavoriteGames(): Observable<any[]>{
-    return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId);
-  }
-
-  getCategoryName(categoryId: string): Observable<any>{
-    return this.http.get(this.GET_CATEGORY_NAME + categoryId);
-  }
-
-  updateImage(image: File): Observable<any>{
-  updatePassword(newPassword: string): Observable<any> {
-    return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
-  }
-
   getFriends(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
     return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' + pageNumber + '/' + this.userId + '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));  //active direction
   }
@@ -92,7 +68,11 @@ export class ProfileService {
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId + '/' + pageSize + '/' + pageNumber);
   }
 
-  getCategoryName(categoryId: string): Observable<any> {
+  getAdminUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
+  }
+
+  getCategoryName(categoryId: string): Observable<any>{
     return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
 

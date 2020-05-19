@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
 
 import { ProfileComponent } from './profile/profile.component';
@@ -16,10 +16,6 @@ import { MyQuizzesComponent } from './profile/my-quizzes/my-quizzes.component';
 import { FavoriteComponent } from './profile/favorite/favorite.component';
 import { ChangePasswordComponent } from './profile/change-password/change-password.component';
 
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -82,12 +78,41 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameStartComponent } from './game/game-start/game-start.component';
 import { GameSettingsComponent } from './game/game-settings/game-settings.component';
 import { GameFinishComponent } from './game/game-finish/game-finish.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {QuizInfoComponent} from "./quiz-check/quiz-info/quiz-info.component";
+import {QuestionCheckComponent} from "./quiz-check/question-check/question-check.component";
+import {AdminUsersComponent} from "./profile/admin-users/admin-users.component";
+import {PendingQuizzesComponent} from "./profile/pending-quizzes/pending-quizzes.component";
+import {QuizCheckComponent} from "./quiz-check/quiz-check.component";
 
+
+const quizCheckRoutes: Routes = [
+  {
+    path: 'quizinfo',
+    component: QuizInfoComponent,
+    outlet: 'quiznav'
+  },
+  {
+    path: 'qAnda',
+    component: QuestionCheckComponent,
+    outlet: 'quiznav'
+  }
+];
 
 const profileRoutes: Routes = [
   {
     path: 'profinfo',
     component: UserInformationComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'adminUsers',
+    component: AdminUsersComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'pendingQuizzes',
+    component: PendingQuizzesComponent,
     outlet: 'profilenav'
   },
   {
@@ -111,10 +136,6 @@ const profileRoutes: Routes = [
     outlet: 'profilenav'
   }
 ];
-
-import {Router, RouterModule, Routes} from '@angular/router';
-import { CloseComponent } from './close/close.component';
-import {AuthGuardService} from './_helpers/auth-guard.service';
 
 const appRoutes: Routes = [
   {
@@ -189,6 +210,19 @@ const appRoutes: Routes = [
   {
     path: 'game/finish/:gameId',
     component: GameFinishComponent
+  },
+  {
+    path: 'pendingQuizzes', canActivate: [AuthGuardService],
+    component: PendingQuizzesComponent
+  },
+  {
+    path: 'checkquiz/:id', canActivate: [AuthGuardService],
+    component: QuizCheckComponent,
+    children: quizCheckRoutes,
+  },
+  {
+    path: 'adminUsers', canActivate: [AuthGuardService],
+    component: AdminUsersComponent
   },
   {
     path: '',

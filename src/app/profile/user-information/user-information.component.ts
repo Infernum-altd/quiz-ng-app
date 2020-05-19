@@ -5,12 +5,6 @@ import { ShareIdService } from "../../service/profileService/share-id.service";
 import { PlatformLocation } from "@angular/common";
 import { Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
-import {User} from '../../models/user';
-import {ProfileService} from '../../service/profileService/profile.service';
-import {ShareIdService} from '../../service/profileService/share-id.service';
-import {PlatformLocation} from '@angular/common';
-import {Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
 import {Role} from '../../models/role.enum';
 
 
@@ -64,10 +58,6 @@ export class UserInformationComponent implements OnInit {
     this.saveProfile();
     this.closeEditForm();
   }
-
-  public getProfile(id: string) {
-    this.profileService.getProfile(id).subscribe(
-      (resp: any) => {
 
   public getProfile(id: string){
     this.profileService.getProfile(id).subscribe(

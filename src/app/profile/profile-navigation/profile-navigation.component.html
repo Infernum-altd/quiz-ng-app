@@ -7,9 +7,9 @@
      routerLinkActive #myQuizzes="routerLinkActive" [active]="myQuizzes.isActive">My Quizzes</a>
   <a mat-tab-link *ngIf="!isAdmin" [routerLink]="[{outlets: {profilenav: 'favorite'}}]"
      routerLinkActive #favorite="routerLinkActive" [active]="favorite.isActive">Favorite</a>
-  <a mat-tab-link *ngIf="isAdmin" [routerLink]="[{outlets: {profilenav: 'pendingQuizzes'}}]">
-     routerLinkActive #quizzes="routerLinkActive" [active]="favorite.isActive">Quizzes</a>
+  <a mat-tab-link *ngIf="isAdmin" [routerLink]="[{outlets: {profilenav: 'pendingQuizzes'}}]"
+     routerLinkActive #quizzes="routerLinkActive" [active]="quizzes.isActive">Quizzes</a>
   <a mat-tab-link *ngIf="isAdmin" [routerLink]="[{outlets: {profilenav: 'adminUsers'}}]"
-     routerLinkActive #admins="routerLinkActive" [active]="favorite.isActive">Admin users</a>
+     routerLinkActive #admins="routerLinkActive" [active]="admins.isActive">Admin users</a>
 </nav>
 
