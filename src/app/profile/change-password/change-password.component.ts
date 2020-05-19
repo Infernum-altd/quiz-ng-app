@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ProfileService} from "../../service/profileService/profile.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {ProfileService} from '../../service/profileService/profile.service';
 
 @Component({
   selector: 'app-change-password',
@@ -15,7 +15,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private profileService: ProfileService,) { }
+              private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.changePasswordForm = this.formBuilder.group({
@@ -65,5 +65,5 @@ export function MustMatch(controlName: string, matchingControlName: string) {
     } else {
       matchingControl.setErrors(null);
     }
-  }
+  };
 }

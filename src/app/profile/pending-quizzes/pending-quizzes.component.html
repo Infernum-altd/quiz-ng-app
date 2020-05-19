@@ -29,10 +29,10 @@
     </ng-container>
 
 
-    <ng-container class="text-center" matColumnDef="actions">
-      <th class="text-center" mat-header-cell *matHeaderCellDef> Acting</th>
-      <mat-cell class="text-center" *matCellDef="let row; let element;">
-        <button type="button" class="btn btn-secondary m-1" (click)="checkQuiz(element.id)">Check</button>
+    <ng-container  matColumnDef="actions">
+      <th  mat-header-cell *matHeaderCellDef> Acting</th>
+      <mat-cell  *matCellDef="let row; let element;">
+        <button  class="buttonsAction" mat-stroked-button (click)="checkQuiz(element)">Check</button>
       </mat-cell>
     </ng-container>
 

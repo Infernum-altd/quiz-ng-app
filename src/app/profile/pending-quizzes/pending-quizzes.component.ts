@@ -48,11 +48,12 @@ export class PendingQuizzesComponent implements OnInit {
       this.router.navigate(['profile', id, {outlets: {profilenav: 'profinfo'}}]);
     });
   }
-  checkQuiz(id: string){
-    console.log('component ' + id);
+  checkQuiz(quiz: Quiz) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate(['checkquiz', id]);
+      this.router.navigate(['checkquiz', quiz.id, {outlets: {quiznav: 'quizinfo'}}]);
     });
+    console.log('quizId ' + quiz.id);
+    console.log('checkquiz' + JSON.stringify(quiz));
+    localStorage.setItem('currentQuiz', JSON.stringify(quiz));
   }
-
 }

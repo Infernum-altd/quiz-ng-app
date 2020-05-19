@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
       }
     );
     this.shareId.setId(this.id);
-    this.router.navigate([{outlets: {profilenav: 'profinfo'}}]);
+    // this.router.navigate([{outlets: {profilenav: 'profinfo'}}]);
   }
 
   ngOnInit(): void {

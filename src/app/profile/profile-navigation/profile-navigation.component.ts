@@ -16,7 +16,7 @@ export class ProfileNavigationComponent implements OnInit {
   navLinks: any = [
     {
       label: 'My Profile',
-      link:'[{outlets: {profilenav: \'profinfo\'}}]',
+      link: '[{outlets: {profilenav: \'profinfo\'}}]',
       index: 0
     },
     {

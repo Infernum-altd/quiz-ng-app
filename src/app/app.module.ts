@@ -70,6 +70,22 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {AchievementsListComponent} from './dashboard/achievements-list/achievements-list.component';
 import {RatingListComponent} from './dashboard/rating-list/rating-list.component';
 import {QuizzesPageComponent} from "./quizzes-page/quizzes-page.component";
+import { QuestionCheckComponent } from './quiz-check/question-check/question-check.component';
+import { QuizInfoComponent } from './quiz-check/quiz-info/quiz-info.component';
+import {QuizCheckNavComponent} from "./quiz-check/quiz-check-nav/quiz-check-nav.component";
+
+const quizCheckRoutes: Routes = [
+  {
+    path: 'quizinfo',
+    component: QuizInfoComponent,
+    outlet: 'quiznav'
+  },
+  {
+    path: 'qAnda',
+    component: QuestionCheckComponent,
+    outlet: 'quiznav'
+  }
+];
 
 const profileRoutes: Routes = [
   {
@@ -137,14 +153,6 @@ const appRoutes: Routes = [
     component: QuizComponent
   },
   {
-    path: 'friends', canActivate: [AuthGuardService],
-    component: FriendsComponent
-  },
-  {
-    path: 'quizzes/:id',
-    component: QuizComponent
-  },
-  {
     path: 'question',
     component: QuestionComponent
   },
@@ -174,7 +182,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'checkquiz/:id', canActivate: [AuthGuardService],
-    component: QuizCheckComponent
+    component: QuizCheckComponent,
+    children: quizCheckRoutes,
   },
   {
     path: 'adminUsers', canActivate: [AuthGuardService],
@@ -220,10 +229,13 @@ const appRoutes: Routes = [
     RatingListComponent,
     AdminUsersComponent,
     PendingQuizzesComponent,
-    QuizCheckComponent
+    QuizCheckComponent,
+    QuestionCheckComponent,
+    QuizInfoComponent,
+    QuizCheckNavComponent
   ],
   imports: [
-
+    NgbModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

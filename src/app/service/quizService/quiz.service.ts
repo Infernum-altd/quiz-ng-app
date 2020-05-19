@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 import {Quiz} from "../../models/quiz.model";
 import {AuthenticationService} from "../loginService/authentication.service";
 import {CurrentUserService} from "../current-user.service";
+import {User} from "../../models/user";
+import {QuizInfo} from "../../models/quiz-info";
 
 
 @Injectable({
@@ -12,7 +14,8 @@ import {CurrentUserService} from "../current-user.service";
 export class QuizService {
 
   private BASE_URL = window["configureApiBaseUrl"];
-  private QUIZZES_URL = `${this.BASE_URL}\\quizzes`;
+  private QUIZZES_URL = `${this.BASE_URL}\\quizzes\\`;
+  private QUIZZES_INFO_URL = `${this.BASE_URL}\\quizzes\\info\\`;
   private GET_QUIZ_BY_CATEGORY = `${this.QUIZZES_URL}\\categories\\`;
   private GET_FILTERED_QUIZ = `${this.QUIZZES_URL}\\filter\\`;
   private MARK_QUIZ_AS_FAVORITE = `${this.QUIZZES_URL}\\mark\\`;
@@ -29,8 +32,12 @@ export class QuizService {
     return this.http.get<Quiz[]>(this.QUIZZES_URL + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
   }
 
-  getQuizById(id: number){
-    return this.http.get(`${this.QUIZZES_URL}\\${id}`);
+  getQuizById(id: string){
+    return this.http.get<Quiz>(this.QUIZZES_URL + id);
+  }
+
+  getQuizInfoById(id: string){
+    return this.http.get<QuizInfo>(this.QUIZZES_INFO_URL + id);
   }
 
   getQuizzesByCategory(categoryId: number, pageSize: number, pageIndex: number): Observable<any> {

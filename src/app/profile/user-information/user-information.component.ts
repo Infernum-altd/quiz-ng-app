@@ -54,7 +54,6 @@ export class UserInformationComponent implements OnInit {
   }
 
   ngSubmit(){
-
     if (this.id === this.currentUserId ){
       this.saveProfile(); }
     else{

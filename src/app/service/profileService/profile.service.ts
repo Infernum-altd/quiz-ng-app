@@ -31,6 +31,10 @@ export class ProfileService {
   constructor(private http: HttpClient,
               private currentUserService: CurrentUserService) { }
 
+  getAdminUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
+  }
+
   getProfile(userId: string): Observable<User> {
     return this.http.get<User>(this.PROFILE_URL + userId);
   }

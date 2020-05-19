@@ -3,6 +3,7 @@ import {Quiz} from '../models/pending-quizzes.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuizService} from '../service/quizService/quiz.service';
 import {Subscription} from 'rxjs';
+import {ShareIdService} from '../service/profileService/share-id.service';
 
 @Component({
   selector: 'app-quiz-check',
@@ -11,33 +12,19 @@ import {Subscription} from 'rxjs';
 })
 export class QuizCheckComponent implements OnInit {
   private subscription: Subscription;
-  public quiz: Quiz;
   id: string;
   constructor(private activateRoute: ActivatedRoute,
-              private quizService: QuizService,
-              private router: Router) {
+              private router: Router,
+              private shareId: ShareIdService) {
     this.subscription = this.activateRoute.params.subscribe(
-    params => {
-      this.id = params.id;
-    }
-  );
-    this.router.navigate([{outlets: {profilenav: 'checkquiz'}}]);
+      params => {
+        this.id = params.id;
+      }
+    );
+    // this.shareId.setId(this.id);
+    // this.router.navigate([{outlets: {quiznav: 'quizinfo'}}]);
   }
 
   ngOnInit(): void {
-    this.getQuiz(this.id);
   }
-
-  public getQuiz(id: string){
-    this.quizService.getQuizById(id).subscribe(
-      (resp: any) => {
-        this.quiz = resp;
-      },
-      error => {
-        console.log(error);
-        alert('Something wrong with downloading profile');
-      }
-    );
-  }
-
 }
