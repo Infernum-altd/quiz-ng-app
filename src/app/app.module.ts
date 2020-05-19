@@ -18,6 +18,8 @@ import { ChangePasswordComponent } from './profile/change-password/change-passwo
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -110,6 +112,9 @@ const profileRoutes: Routes = [
   }
 ];
 
+import {Router, RouterModule, Routes} from '@angular/router';
+import { CloseComponent } from './close/close.component';
+import {AuthGuardService} from './_helpers/auth-guard.service';
 
 const appRoutes: Routes = [
   {

@@ -1,0 +1,100 @@
+<div>
+<p *ngIf="isAdmin || isSuperAdmin">
+  <button  type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+    Add user
+  </button>
+</p>
+<div id="collapseExample" [ngbCollapse]="isCollapsed">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" >
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text"
+                 formControlName="email"
+                 class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+          />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="selectRole">Role select</label>
+          <select class="form-control" id="selectRole"  formControlName="role">
+            <option value="USER">USER</option>
+            <option *ngIf="isSuperAdmin" value="ADMIN">ADMIN</option>
+            <option value="MODERATOR">MODERATOR</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password"
+                 formControlName="password"
+                 class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                 required/>
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.pattern">-Must contain at least 8 or more characters</div>  <!--Must contain one number and one uppercase and lowercase letter, and at least 8 or more characters -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+          <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+            <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+            <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary">Add new user</button>
+        </div>
+      </form>
+  </div>
+</div>
+</div>
+</div>
+
+<mat-form-field color="primary">
+  <label for="search">Search</label>
+  <input id="search" matInput (keyup)="applyFilter($event)">
+</mat-form-field>
+<div class="mat-elevation-z8 w-75">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" width="100%">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let element"><a class="nav-link" routerLink=""
+                                                (click)="checkOut(element.id, element.email)">
+        {{element.name}} {{element.surname}}</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Role</th>
+      <td mat-cell *matCellDef="let element"> {{element.role}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef> Active</th>
+      <td mat-cell *matCellDef="let element">   {{element.active}}</td>
+    </ng-container>
+
+
+    <ng-container class="text-center" matColumnDef="actions">
+      <th class="text-center" mat-header-cell *matHeaderCellDef> Acting</th>
+      <mat-cell class="text-center" *matCellDef="let row; let element;">
+        <button *ngIf="isAdmin && element.active" type="button" class="btn btn-secondary" (click)="updateActiveStatusUser(element.id)">Deactive</button>
+        <button *ngIf="isAdmin && !element.active" type="button" class="btn btn-secondary" (click)="updateActiveStatusUser(element.id)">Active</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteAdminUser(element.id)">Delete</button>
+      </mat-cell>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -5,6 +5,13 @@ import { ShareIdService } from "../../service/profileService/share-id.service";
 import { PlatformLocation } from "@angular/common";
 import { Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
+import {User} from '../../models/user';
+import {ProfileService} from '../../service/profileService/profile.service';
+import {ShareIdService} from '../../service/profileService/share-id.service';
+import {PlatformLocation} from '@angular/common';
+import {Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Role} from '../../models/role.enum';
 
 
 @Component({
@@ -19,14 +26,22 @@ export class UserInformationComponent implements OnInit {
   public isEditForm = false;
   currentUserId: string;
   id: string;
+  roleUs: Role;
+  public isAdmin = false;
 
   constructor(private profileService: ProfileService,
-    private shareId: ShareIdService,
-    private location: PlatformLocation,
-    private router: Router) {
+              private shareId: ShareIdService,
+              private location: PlatformLocation,
+              private router: Router){
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
     this.id = shareId.shareId();
     this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);
+    this.roleUs = JSON.parse(localStorage.getItem('currentUser')).role;
+  }
+  adminCheck(){
+    if (this.roleUs.toString() !== Role[Role.USER]){
+      this.isAdmin = true;
+    }
   }
 
   ngOnInit(): void {
@@ -53,11 +68,27 @@ export class UserInformationComponent implements OnInit {
   public getProfile(id: string) {
     this.profileService.getProfile(id).subscribe(
       (resp: any) => {
+
+  public getProfile(id: string){
+    this.profileService.getProfile(id).subscribe(
+      (resp: any) => {
+        this.adminCheck();
         this.profile = resp;
       },
       error => {
         console.log(error);
-        alert("Something wrong with downloading profile");
+        alert('Something wrong with downloading profile');
+      }
+    );
+  }
+  updateAdminUser() {
+    this.profile.id = this.id;
+    this.profileService.updateAdminUser(this.profile).subscribe(
+      (resp: any) => {
+        this.profile = resp;
+      },
+      error => {
+        alert('Something wrong while updating profile');
       }
     );
   }
@@ -68,7 +99,7 @@ export class UserInformationComponent implements OnInit {
         this.profile = resp;
       },
       error => {
-        alert("Something wrong while updating profile");
+        alert('Something wrong while updating profile');
       }
     );
   }

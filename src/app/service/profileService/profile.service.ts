@@ -15,8 +15,10 @@ export class ProfileService {
   private BASE_URL = window['configureApiBaseUrl'];
   private PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\`;
   private FRIEND_LIST_URL = `${this.BASE_URL}\\profile\\myfriends\\`;
+  private ADMIN_USERS_LIST_URL = `${this.BASE_URL}\\profile\\adminUsers\\`;
   private UPDATE_PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\update`;
   private UPDATE_PASSWORD_URL = `${this.BASE_URL}\\profile\\updatePassword\\`;
+  private UPDATE_ACTIVE_STATUS_URL = `${this.BASE_URL}\\profile\\updateActive\\`;
   private GET_QUIZZES_URL = `${this.BASE_URL}\\profile\\myquizzes\\`;
   private GET_FAVORITE_URL = `${this.BASE_URL}\\profile\\myfavorite\\`;
   private GET_CATEGORY_NAME = `${this.BASE_URL}\\profile\\category\\`;
@@ -37,6 +39,43 @@ export class ProfileService {
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
+  updateAdminUser(user: User): Observable<User>{
+    return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
+  }
+
+  deleteAdminUsers(id): Observable<User>{
+    console.log(this.DELETE_ADMIN_URL + id);
+    return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
+  }
+  updateActiveStatusUser(id): Observable<any>{
+    return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
+  }
+
+  updatePassword(newPassword: string): Observable<any>{
+    return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
+  }
+
+  getFriends(): Observable<User[]>{
+    return this.http.get<User[]>(this.FRIEND_LIST_URL + this.userId);
+  }
+
+  getAdminUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
+  }
+
+  getUserQuizzes(): Observable<Quiz[]>{
+    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + this.userId);
+  }
+
+  getFavoriteGames(): Observable<any[]>{
+    return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId);
+  }
+
+  getCategoryName(categoryId: string): Observable<any>{
+    return this.http.get(this.GET_CATEGORY_NAME + categoryId);
+  }
+
+  updateImage(image: File): Observable<any>{
   updatePassword(newPassword: string): Observable<any> {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
