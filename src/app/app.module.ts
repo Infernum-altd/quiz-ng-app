@@ -80,6 +80,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameStartComponent } from './game/game-start/game-start.component';
 import { GameSettingsComponent } from './game/game-settings/game-settings.component';
 import { GameFinishComponent } from './game/game-finish/game-finish.component';
+import { PlayedGameComponent } from './profile/played-game/played-game.component';
+import { GameResultDialogComponent } from './profile/played-game/game-result-dialog/game-result-dialog.component';
 
 
 const profileRoutes: Routes = [
@@ -106,6 +108,11 @@ const profileRoutes: Routes = [
   {
     path: 'changePass',
     component: ChangePasswordComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'played',
+    component: PlayedGameComponent,
     outlet: 'profilenav'
   }
 ];
@@ -231,7 +238,9 @@ const appRoutes: Routes = [
     GameBooleanAnswerComponent,
     GameStartComponent,
     GameSettingsComponent,
-    GameFinishComponent
+    GameFinishComponent,
+    PlayedGameComponent,
+    GameResultDialogComponent
   ],
   imports: [
 
@@ -303,5 +312,7 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent],
   entryComponents: [OptionalAnswerComponent, BooleanAnswerComponent, StringAnswerComponent, SequenceAnswerComponent],
 })
+
 export class AppModule {
 }
+

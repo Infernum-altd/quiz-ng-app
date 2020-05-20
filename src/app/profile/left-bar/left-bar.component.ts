@@ -52,7 +52,6 @@ export class LeftBarComponent implements OnInit {
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
         this.file = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text);
-        console.log(this.file);
       },
       error => {
         console.log(error);
