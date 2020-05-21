@@ -32,7 +32,7 @@ export class QuizService {
     return this.http.get<Quiz[]>(this.QUIZZES_URL + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
   }
 
-  getQuizById(id: string){
+  getQuizById(id: number){
     return this.http.get<Quiz>(this.QUIZZES_URL + id);
   }
 
@@ -63,4 +63,11 @@ export class QuizService {
   RecommendationForAnonimus(limit: number): Observable<any> {
     return this.http.get<Quiz[]>(this.GET_POPULAR_QUIZZES + limit);
   }
+
+/*  getQuizzes(): Observable<any> {
+    return this.http.get<Quiz[]>(this.QUIZZES_URL);
+  }*/
 }
+
+
+

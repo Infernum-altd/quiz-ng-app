@@ -6,9 +6,6 @@ import {Quiz} from '../../models/pending-quizzes.model';
 import {StatusType} from "../../models/quiz.model";
 
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })

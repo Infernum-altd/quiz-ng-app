@@ -1,11 +1,12 @@
-import {User} from '../../models/user';
-import {ProfileService} from '../../service/profileService/profile.service';
-import {ShareIdService} from '../../service/profileService/share-id.service';
-import {PlatformLocation} from '@angular/common';
-import {Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { User } from "../../models/user";
+import { ProfileService } from "../../service/profileService/profile.service";
+import { ShareIdService } from "../../service/profileService/share-id.service";
+import { PlatformLocation } from "@angular/common";
+import { Router } from "@angular/router";
+import { FormControl } from "@angular/forms";
 import {Role} from '../../models/role.enum';
-import {FormControl} from "@angular/forms";
+
 
 @Component({
   selector: 'app-user-information',
@@ -35,6 +36,7 @@ export class UserInformationComponent implements OnInit {
     if (this.roleUs.toString() !== Role[Role.USER]){
       this.isAdmin = true;
     }
+>>>>>>>>> Temporary merge branch 2
   }
 
   ngOnInit(): void {
@@ -43,8 +45,8 @@ export class UserInformationComponent implements OnInit {
       this.shareId.setId(this.currentUserId);
       this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);
 
-      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'profinfo'}}]);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['profile', this.currentUserId, { outlets: { profilenav: 'profinfo' } }]);
       });
     });
   }

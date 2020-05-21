@@ -5,6 +5,12 @@ import {AuthenticationService} from '../service/loginService/authentication.serv
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
+export enum Gender{
+  MALE,
+  FEMALE,
+  NOT_MENTIONED
+}
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -13,6 +19,7 @@ import {Router} from '@angular/router';
 export class RegistrationComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
+  public Gender = Gender;
 
   model: User = {
     image: undefined,
@@ -31,13 +38,12 @@ export class RegistrationComponent implements OnInit {
     password: ''
   };
 
-
-
   constructor(
-    private router : Router,
-    public service : RegistrationService,
+    public service: RegistrationService,
     public authService: AuthenticationService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router){
+  }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({

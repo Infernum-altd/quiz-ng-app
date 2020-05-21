@@ -15,7 +15,7 @@ export class LeftBarComponent implements OnInit {
   notificationStatus: NotificationStatus;
   progressImage: any;
   file: SafeResourceUrl;
-  id: string;
+  id : string;
   constructor(private profileService: ProfileService,
               private sanitizer: DomSanitizer,
               private shareId: ShareIdService) {
@@ -62,18 +62,18 @@ export class LeftBarComponent implements OnInit {
 
   change(){
     this.profileService.updateNotificationStatus(this.notificationStatus).subscribe(
-      resp => {
-        alert('Notification status was changed');
+      resp =>{
+        alert("Notification status was changed")
       },
       error => {
-        alert('Error while change notification status');
+        alert("Error while change notification status")
       }
     );
   }
 
   getNotification() {
     this.profileService.getUserNotificationStatus().subscribe(
-      resp => {
+      resp =>{
         this.notificationStatus = resp;
       }
     );

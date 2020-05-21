@@ -40,4 +40,5 @@ export class AuthenticationService {
   public get logIn(): boolean {
     return (localStorage.getItem('currentUser') != null);
   }
+
 }
