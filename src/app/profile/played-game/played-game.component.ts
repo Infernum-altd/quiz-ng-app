@@ -65,15 +65,6 @@ export class PlayedGameComponent implements OnInit {
     this.choseRequest();
   }
 
-/*  filterPlayedGames(userSearch: string) {
-    this.profileService.filterFriendsRequest(userSearch, this.pageSize, this.pageIndex, this.sortDirection).subscribe(
-      resp=>{
-        this.playedGame = resp.responceList;
-        this.length = resp.totalNumberOfElement;
-      }
-    );
-  }*/
-
   choseRequest() {
     if (this.userRequest != undefined && this.userRequest) {
       if (this.pageSize == undefined) {

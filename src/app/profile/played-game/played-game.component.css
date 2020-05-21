@@ -17,3 +17,7 @@ mat-cell, .mat-cell {
 #table {
   width: 40%;
 }
+
+.mat-row:hover {
+  background-color: whitesmoke;
+}
