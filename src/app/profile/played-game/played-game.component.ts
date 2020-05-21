@@ -42,7 +42,7 @@ export class PlayedGameComponent implements OnInit {
           this.setPaginationParamDefault();
           this.uploadPlayedGames()
         } else {
-          this.filterPlayedGames(userSearch);
+          userSearch.length ==0 ? this.uploadPlayedGames() : this.uploadPlayedGames(userSearch);
         }
       });
   }
@@ -52,8 +52,8 @@ export class PlayedGameComponent implements OnInit {
     this.pageSize = 9;
   }
 
-  uploadPlayedGames(){
-    this.profileService.getPlayedGames(this.pageSize, this.pageIndex, this.sortDirection).subscribe(resp => {
+  uploadPlayedGames(userSearch?: string){
+    this.profileService.getPlayedGames(this.pageSize, this.pageIndex, this.sortDirection, userSearch).subscribe(resp => {
       this.playedGame = resp.responceList;
       this.length = resp.totalNumberOfElement;
     });
@@ -65,21 +65,21 @@ export class PlayedGameComponent implements OnInit {
     this.choseRequest();
   }
 
-  filterPlayedGames(userSearch: string) {
+/*  filterPlayedGames(userSearch: string) {
     this.profileService.filterFriendsRequest(userSearch, this.pageSize, this.pageIndex, this.sortDirection).subscribe(
       resp=>{
         this.playedGame = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }
     );
-  }
+  }*/
 
   choseRequest() {
     if (this.userRequest != undefined && this.userRequest) {
       if (this.pageSize == undefined) {
         this.setPaginationParamDefault();
       }
-      this.filterPlayedGames(this.userRequest);
+      this.uploadPlayedGames(this.userRequest);
     }else {
       this.uploadPlayedGames();
     }

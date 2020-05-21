@@ -89,8 +89,11 @@ export class ProfileService {
     return this.http.get(this.GET_QUIZZES_URL+ userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
   }
 
-  getPlayedGames(pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
-    return this.http.get(this.GET_PLAYED_GAMES  + pageSize + '/' + pageIndex + '/' + this.userId + '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+  getPlayedGames(pageSize: number, pageIndex: number, sortDirection: any, userSearch?: string): Observable<any> {
+    console.log(userSearch);
+    return this.http.get(this.GET_PLAYED_GAMES  + pageSize + '/' + pageIndex + '/' + this.userId +
+      '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction) + '&' +
+      'search=' + (userSearch==undefined? "": userSearch));
   }
 
   getGamesResult(gameId: number): Observable<any> {
