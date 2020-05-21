@@ -24,6 +24,7 @@ export class ProfileService {
   private GET_USER_IMAGE_BY_USER_ID = `${this.BASE_URL}\\profile\\getimage\\`;
   private UPDATE_GET_NOTIFICATION = `${this.BASE_URL}\\profile\\status\\`;
   private GET_PLAYED_GAMES = `${this.BASE_URL}\\profile\\played\\`;
+  private GET_GAME_RESULT = `${this.BASE_URL}\\profile\\gameresult\\`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
@@ -90,5 +91,9 @@ export class ProfileService {
 
   getPlayedGames(pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
     return this.http.get(this.GET_PLAYED_GAMES  + pageSize + '/' + pageIndex + '/' + this.userId + '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+  }
+
+  getGamesResult(gameId: number): Observable<any> {
+    return this.http.get(this.GET_GAME_RESULT + gameId);
   }
 }

@@ -91,11 +91,9 @@ export class PlayedGameComponent implements OnInit {
     this.choseRequest();
   }
 
-  openDialog() {
+  openDialog(id: number) {
     this.dialog.open(GameResultDialogComponent, {
-      data: {
-        animal: 'panda'
-      }
+      data: id
     });
   }
 
