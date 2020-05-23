@@ -14,7 +14,7 @@ export class LeftBarComponent implements OnInit {
   currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
   notificationStatus: NotificationStatus;
   progressImage: any;
-  file: SafeResourceUrl;
+  imageUrl: string;
   id : string;
   constructor(private profileService: ProfileService,
               private sanitizer: DomSanitizer,
@@ -51,7 +51,8 @@ export class LeftBarComponent implements OnInit {
   uploadFile(){
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
-        this.file = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text);
+        this.imageUrl = resp.text;
+        console.log(resp.text);
       },
       error => {
         console.log(error);

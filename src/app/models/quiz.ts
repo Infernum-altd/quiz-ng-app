@@ -6,7 +6,7 @@ export class Quiz {
   author: string;
   category_id: string;
   date: Date;
-  image:any;//byte array
+  image:String;//byte array
   description: string;
   status: StatusType;
   modificationTime: Date;

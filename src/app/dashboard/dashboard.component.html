@@ -20,8 +20,7 @@
 
         <mat-card id="profile-card">
           <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
-            <img mat-card-image id="profile-img" [src]="(profileImage | async)"
-              onerror="this.onerror=null; this.src='https://material.angular.io/assets/img/examples/shiba2.jpg'"
+            <img mat-card-image id="profile-img" [src]="profileImage"
               alt="Profile image" fxFlexAlign="end">
           </mat-card-content>
           <mat-card-actions fxLayoutAlign="space-around">
