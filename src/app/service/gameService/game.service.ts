@@ -50,8 +50,6 @@ export class GameService {
   }
 
   connect(): void {
-    console.log(this.client.connectionState$.getValue());
-
     this.client.activate();
     this.client.publish({ destination: `/app/play/game/${this.gameId}/user`, body: JSON.stringify(this.player) });
   }

@@ -10,13 +10,15 @@ import { Question, QuestionType } from 'src/app/models/question.model';
 import { GameSequenceAnswerComponent } from '../game-sequence-answer/game-sequence-answer.component';
 import { Answer } from 'src/app/models/answer.model';
 import { TitleCasePipe } from '@angular/common';
+import { CanComponentDeactivate } from 'src/app/service/canDeactivateGuardService/can-deactivate-guard.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game-question',
   templateUrl: './game-question.component.html',
   styleUrls: ['./game-question.component.css']
 })
-export class GameQuestionComponent implements OnInit, AfterViewChecked {
+export class GameQuestionComponent implements OnInit, AfterViewChecked, CanComponentDeactivate {
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
 
   gameId: number;
@@ -115,5 +117,13 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked {
   submitAnswer() {
     let answers = this.componentRef.instance.getSubmittedAnswers();
     this.gameService.postAnswer(answers);
+  }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (window.confirm('Quit this page?')) {
+      this.gameService.disconnect();
+      return true;
+    }
+    return false;
   }
 }
