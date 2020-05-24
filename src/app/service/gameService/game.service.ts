@@ -50,6 +50,8 @@ export class GameService {
   }
 
   connect(): void {
+    console.log(this.client.connectionState$.getValue());
+
     this.client.activate();
     this.client.publish({ destination: `/app/play/game/${this.gameId}/user`, body: JSON.stringify(this.player) });
   }
@@ -81,6 +83,7 @@ export class GameService {
     return this.gameObservable.pipe(
       map(resp => {
         let data = JSON.parse(resp);
+        this.disconnect();
         return data['players'];
       })
     );
@@ -99,7 +102,7 @@ export class GameService {
   }
 
   routeQuestion(data: any) {
-    let link = `/game/question/${this.gameId}`;
+    let link = `/game/question/${this.gameId}/${data['questionNumber']}`;
     this.router.navigate([link],
       {
         state: {
