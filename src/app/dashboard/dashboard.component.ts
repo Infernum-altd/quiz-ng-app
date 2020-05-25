@@ -50,8 +50,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileImage = this.profileService.getProfileImage(this.userId.toString()).pipe(
-      map(resp => this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text))
+    this.profileService.getProfileImage(this.userId.toString()).subscribe(
+      (resp => this.profileImage = resp.text)
     );
 
     this.recentQuizzes = this.dashboardService.getRecentQuizzes(this.userId, this.maxCards);
@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
   getQuizImage(quizId: number): Observable<any> {
     if (!this.imageMap.get(quizId)) {
       this.imageMap.set(quizId, this.dashboardService.getQuizImage(quizId).pipe(
-        map(resp => this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text))));
+        map(resp => resp.text)));
     }
     return this.imageMap.get(quizId);
 
