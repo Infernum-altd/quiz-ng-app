@@ -1,14 +1,16 @@
-import { DomSanitizer } from '@angular/platform-browser';
-import { ProfileService } from './../service/profileService/profile.service';
-import { Observable } from 'rxjs';
-import { CategoryService } from './../service/categoryService/category.service';
-import { DashboardService } from './../service/dashboardService/dashboard.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Quiz } from '../models/quiz.model';
-import { Category } from '../models/category.model';
-import { MatSidenav } from '@angular/material/sidenav';
-import { map } from 'rxjs/operators'
-import { CurrentUserService } from "../service/current-user.service";
+import {DomSanitizer} from '@angular/platform-browser';
+import {ProfileService} from './../service/profileService/profile.service';
+import {Observable} from 'rxjs';
+import {CategoryService} from './../service/categoryService/category.service';
+import {DashboardService} from './../service/dashboardService/dashboard.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Quiz} from '../models/quiz.model';
+import {Category} from '../models/category.model';
+import {MatSidenav} from '@angular/material/sidenav';
+import {map} from 'rxjs/operators'
+import {CurrentUserService} from "../service/current-user.service";
+import {Announcement} from "../models/announcement";
+import {AnnouncementService} from "../service/announcementService/announcement.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -42,11 +44,14 @@ export class DashboardComponent implements OnInit {
   achievementsTotal: Observable<number>;
   achievementsForUser: Observable<number>;
 
+  announcement: Announcement[];
+
   constructor(private dashboardService: DashboardService,
-    private categoryService: CategoryService,
-    private profileService: ProfileService,
-    private sanitizer: DomSanitizer,
-    private currentUserService: CurrentUserService) {
+              private categoryService: CategoryService,
+              private profileService: ProfileService,
+              private sanitizer: DomSanitizer,
+              private currentUserService: CurrentUserService,
+              private annoService: AnnouncementService) {
   }
 
   ngOnInit(): void {
@@ -64,6 +69,11 @@ export class DashboardComponent implements OnInit {
 
     this.achievementsTotal = this.dashboardService.getAchievementsTotal();
     this.achievementsForUser = this.dashboardService.getAchievementsForUser(this.userId);
+
+    this.annoService.getAnnouncement().subscribe(
+      resp => {console.log(resp); this.announcement = resp;}
+    );
+    //console.log(this.announcement);
   }
 
   achievementsOpen(): void {
@@ -124,8 +134,5 @@ export class DashboardComponent implements OnInit {
         map(resp => resp.text)));
     }
     return this.imageMap.get(quizId);
-
   }
-
-
 }

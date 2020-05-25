@@ -34,6 +34,7 @@
     "bootstrap-icons": "^1.0.0-alpha3",
     "express": "^4.17.1",
     "net": "^1.0.2",
+    "ngx-infinite-scroll": "^9.0.0",
     "ngx-pagination": "^5.0.0",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",

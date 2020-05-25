@@ -87,6 +87,8 @@ import {PendingQuizzesComponent} from "./profile/pending-quizzes/pending-quizzes
 import {QuizCheckComponent} from "./quiz-check/quiz-check.component";
 import { PlayedGameComponent } from './profile/played-game/played-game.component';
 import { GameResultDialogComponent } from './profile/played-game/game-result-dialog/game-result-dialog.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+
 
 
 const quizCheckRoutes: Routes = [
@@ -348,7 +350,9 @@ const appRoutes: Routes = [
     DragDropModule,
     LayoutModule,
     FlexLayoutModule,
-    MatProgressBarModule],
+    MatProgressBarModule,
+    InfiniteScrollModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],

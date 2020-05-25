@@ -105,11 +105,41 @@
             View all
           </mat-select>
         </div>
-        <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1rem" fxLayoutAlign="center">
-          <mat-card class="announcements">
 
-          </mat-card>
+        <div id="announcements-block">
+
+          <div class="announcements-list" fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="center">
+            <div *ngFor = "let annon of announcement">
+              <mat-card   style="border: 2px solid #ff0000" *ngIf="!annon.generated; else elseBlock">
+                <mat-card-header>
+                  <mat-card-title>{{annon.date | date:'shortTime'}}</mat-card-title>
+                  <mat-card-subtitle>{{annon.date | date}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>
+                    {{annon.text}}
+                  </p>
+                </mat-card-content>
+              </mat-card>
+              <ng-template #elseBlock>
+                <mat-card   style="border: 2px solid #008000">
+                  <mat-card-header>
+                    <mat-card-title>{{annon.date | date:'shortTime'}}</mat-card-title>
+                    <mat-card-subtitle>{{annon.date | date}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p>
+                      {{annon.text}}
+                    </p>
+                  </mat-card-content>
+                </mat-card>
+              </ng-template>
+            </div>
+          </div>
         </div>
+
+
+
       </div>
     </div>
   </mat-drawer-content>
