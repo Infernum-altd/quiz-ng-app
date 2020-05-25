@@ -1,3 +1,4 @@
+import { CanDeactivateGuardService } from './service/canDeactivateGuardService/can-deactivate-guard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -203,8 +204,10 @@ const appRoutes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'game/question/:gameId',
-    component: GameQuestionComponent
+    path: 'game/question/:gameId/:questionNumber',
+    component: GameQuestionComponent,
+    canDeactivate: [CanDeactivateGuardService],
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'game/settings/:quizId',
@@ -212,7 +215,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'game/start/:gameId',
-    component: GameStartComponent
+    component: GameStartComponent,
+    canDeactivate: [CanDeactivateGuardService]
   },
   {
     path: 'game/finish/:gameId',
