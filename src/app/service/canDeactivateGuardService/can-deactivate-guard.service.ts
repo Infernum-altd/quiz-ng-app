@@ -19,7 +19,7 @@ export class CanDeactivateGuardService {
       return true;
     }
 
-    if (currentState.url.includes('/game/question') && nextState.url.includes('/game/question')) {
+    if (currentState.url.includes('/game/question') && (nextState.url.includes('/game/question') || nextState.url.includes('/game/finish'))) {
       return true;
     }
 
