@@ -52,7 +52,6 @@ export class LeftBarComponent implements OnInit {
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
         this.imageUrl = resp.text;
-        console.log(resp.text);
       },
       error => {
         console.log(error);

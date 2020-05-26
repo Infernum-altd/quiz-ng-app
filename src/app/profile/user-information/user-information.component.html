@@ -1,12 +1,12 @@
 <div *ngIf="!isEditForm">
   <span>
-    <p>Name: {{profile.name}}</p>
+    <p>Name: {{profile?.name}}</p>
   </span>
-  <p>Surname: {{profile.surname}}</p>
-  <p>Gender: {{profile.gender}}</p>
-  <p>Birthdate: {{profile.birthdate | date}}</p>
-  <p>City: {{profile.city}}</p>
-  <p>About me: {{profile.about}}</p>
+  <p>Surname: {{profile?.surname}}</p>
+  <p>Gender: {{profile?.gender}}</p>
+  <p>Birthdate: {{profile?.birthdate | date}}</p>
+  <p>City: {{profile?.city}}</p>
+  <p>About me: {{profile?.about}}</p>
 
   <div (click)="isEditForm=true">
     <div>
