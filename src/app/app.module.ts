@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -87,6 +87,10 @@ import {QuizInfoComponent} from "./quiz-check/quiz-info/quiz-info.component";
 import {QuestionCheckComponent} from "./quiz-check/question-check/question-check.component";
 import {QuizCheckNavComponent} from "./quiz-check/quiz-check-nav/quiz-check-nav.component";
 import { SetPasswordComponent } from './set-password/set-password.component';
+import { PlayedGameComponent } from './profile/played-game/played-game.component';
+import { GameResultDialogComponent } from './profile/played-game/game-result-dialog/game-result-dialog.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {CanDeactivateGuardService} from "./service/canDeactivateGuardService/can-deactivate-guard.service";
 
 
 const quizCheckRoutes: Routes = [
@@ -136,6 +140,11 @@ const profileRoutes: Routes = [
   {
     path: 'changePass',
     component: ChangePasswordComponent,
+    outlet: 'profilenav'
+  },
+  {
+    path: 'played',
+    component: PlayedGameComponent,
     outlet: 'profilenav'
   }
 ];
@@ -199,8 +208,14 @@ const appRoutes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'game/question/:gameId',
-    component: GameQuestionComponent
+    path: 'pendingQuizzes', canActivate: [AuthGuardService],
+    component: PendingQuizzesComponent
+  },
+  {
+    path: 'game/question/:gameId/:questionNumber',
+    component: GameQuestionComponent,
+    canDeactivate: [CanDeactivateGuardService],
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'game/settings/:quizId',
@@ -208,7 +223,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'game/start/:gameId',
-    component: GameStartComponent
+    component: GameStartComponent,
+    canDeactivate: [CanDeactivateGuardService]
   },
   {
     path: 'game/finish/:gameId',
@@ -284,7 +300,16 @@ const appRoutes: Routes = [
     QuestionCheckComponent,
     QuizInfoComponent,
     QuizCheckNavComponent,
-    SetPasswordComponent
+    SetPasswordComponent,
+    PlayedGameComponent,
+    GameResultDialogComponent,
+    RatingListComponent,
+    AdminUsersComponent,
+    PendingQuizzesComponent,
+    QuizCheckComponent,
+    QuestionCheckComponent,
+    QuizInfoComponent,
+    QuizCheckNavComponent
   ],
   imports: [
     NgbModule,
@@ -323,7 +348,10 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatDialogModule,
     DragDropModule,
-    MatProgressBarModule],
+    LayoutModule,
+    FlexLayoutModule,
+    MatProgressBarModule,
+    InfiniteScrollModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],

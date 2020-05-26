@@ -63,11 +63,4 @@ export class QuizService {
   RecommendationForAnonimus(limit: number): Observable<any> {
     return this.http.get<Quiz[]>(this.GET_POPULAR_QUIZZES + limit);
   }
-
-/*  getQuizzes(): Observable<any> {
-    return this.http.get<Quiz[]>(this.QUIZZES_URL);
-  }*/
 }
-
-
-

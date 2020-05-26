@@ -14,8 +14,8 @@ export class LeftBarComponent implements OnInit {
   currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
   notificationStatus: NotificationStatus;
   progressImage: any;
-  file: SafeResourceUrl;
-  id : string;
+  imageUrl: string;
+  id: string;
   constructor(private profileService: ProfileService,
               private sanitizer: DomSanitizer,
               private shareId: ShareIdService) {
@@ -40,19 +40,18 @@ export class LeftBarComponent implements OnInit {
     this.profileService.updateImage(this.progressImage).subscribe(
       resp => {
         this.uploadFile();
-        alert('Icon was changed');
+        alert("Icon was changed")
       },
       error => {
-        alert('Error while updating icon');
+        alert("Error while updating icon")
       }
-    );
+    )
   }
 
   uploadFile(){
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
-        this.file = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + resp.text);
-        console.log(this.file);
+        this.imageUrl = resp.text;
       },
       error => {
         console.log(error);

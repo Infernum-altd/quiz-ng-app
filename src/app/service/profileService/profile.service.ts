@@ -26,6 +26,8 @@ export class ProfileService {
   private UPDATE_USER_IMAGE = `${this.BASE_URL}\\profile\\newicon\\`;
   private GET_USER_IMAGE_BY_USER_ID = `${this.BASE_URL}\\profile\\getimage\\`;
   private UPDATE_GET_NOTIFICATION = `${this.BASE_URL}\\profile\\status\\`;
+  private GET_PLAYED_GAMES = `${this.BASE_URL}\\profile\\played\\`;
+  private GET_GAME_RESULT = `${this.BASE_URL}\\profile\\gameresult\\`;
   private DELETE_ADMIN_URL = `${this.BASE_URL}\\profile\\deleteAdminUser\\`;
   private GET_FILTERED_USERS = `${this.BASE_URL}\\profile\\adminUsers\\filter\\`;
   private GET_USERS_BY_ROLE = `${this.BASE_URL}\\profile\\roleStatus\\`;
@@ -49,12 +51,12 @@ export class ProfileService {
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
-  deleteAdminUsers(id): Observable<User>{
-    return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
-  }
-  updateActiveStatusUser(id): Observable<any>{
-    return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
-  }
+    deleteAdminUsers(id): Observable<User>{
+      return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
+    }
+    updateActiveStatusUser(id): Observable<any>{
+      return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
+    }
 
   updatePassword(newPassword: string): Observable<any>{
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
@@ -115,6 +117,17 @@ export class ProfileService {
 
   filterFavoriteRequest(userSearch: string, pageSize: number, pageIndex: number): Observable<any>{
     return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
+  }
+
+  getPlayedGames(pageSize: number, pageIndex: number, sortDirection: any, userSearch?: string): Observable<any> {
+    console.log(userSearch);
+    return this.http.get(this.GET_PLAYED_GAMES  + pageSize + '/' + pageIndex + '/' + this.userId +
+      '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction) + '&' +
+      'search=' + (userSearch==undefined? "": userSearch));
+  }
+
+  getGamesResult(gameId: number): Observable<any> {
+    return this.http.get(this.GET_GAME_RESULT + gameId);
   }
 
   postRegisterInfo(user: User): Observable<User> {

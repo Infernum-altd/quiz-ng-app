@@ -1,6 +1,6 @@
-import {Role} from './role.enum';
-import {NotificationStatus} from './notification-status.enum';
-import {Gender} from './gender.enum';
+import {Role} from "./role.enum";
+import {Gender} from "./gender.enum";
+import {NotificationStatus} from "./notification-status.enum";
 
 
 export class User {

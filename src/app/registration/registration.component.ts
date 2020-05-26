@@ -26,16 +26,16 @@ export class RegistrationComponent implements OnInit {
     notificationStatus: undefined,
     about: '',
     birthdate: undefined,
-    city: '',
-    countryId: '',
+    city: "",
+    countryId: "",
     gender: undefined,
-    name: '',
-    rating: '',
+    name: "",
+    rating: "",
     role: undefined,
-    surname: '',
-    id: null,
-    email: '',
-    password: ''
+    surname: "",
+    id:null,
+    email:'',
+    password:''
   };
 
   constructor(
@@ -48,7 +48,13 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],   /// ("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
+      name: [''],
+      surname: [''],
+      gender: [Gender.NOT_MENTIONED],
+      birthdate: ['1973-01-01'],
+      city: [''],
+      about: [''],
+      password: ['', [Validators.required, Validators.pattern('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}')]],
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')
@@ -64,17 +70,23 @@ export class RegistrationComponent implements OnInit {
     const input: User = JSON.parse(JSON.stringify(this.registerForm.value));
     this.model.email = input.email;
     this.model.password = input.password;
+    this.model.name = input.name;
+    this.model.surname = input.surname;
+    this.model.gender = input.gender;
+    this.model.birthdate = input.birthdate;
+    this.model.city = input.city;
+    this.model.about = input.about;
     this.register();
   }
 
 
   register(): void{
     this.service.postRegisterInfo(this.model).subscribe(
-      res => {
+      res =>{
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['/']);
         });
-        alert('You registered');
+        alert("You registered");
       },
       error => {
         alert(error.error['message']);

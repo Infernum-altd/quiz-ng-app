@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {ProfileService} from '../../service/profileService/profile.service';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+import {ProfileService} from "../../service/profileService/profile.service";
 
 @Component({
   selector: 'app-change-password',
@@ -42,10 +42,10 @@ export class ChangePasswordComponent implements OnInit {
   changePassword() {
     this.profileService.updatePassword(this.newPassword).subscribe(
       (resp: any) => {
-        alert('Password was changed');
+        alert("Password was changed")
       },
       error => {
-        alert('Something wrong while save password');
+        alert("Something wrong while save password")
       }
     );
   }

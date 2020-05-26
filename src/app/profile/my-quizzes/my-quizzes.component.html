@@ -10,7 +10,7 @@
 
 <br>
 <div id="table" class="mat-elevation-z8">
-  <table mat-table  [dataSource]="userQuizzes" matSort class="mat-elevation-z8" matSort (matSortChange) = "sortQuizzes($event)">
+  <table mat-table  [dataSource]="userQuizzes" class="mat-elevation-z8" matSort (matSortChange) = "sortQuizzes($event)">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -37,9 +37,9 @@
         <button mat-icon-button>
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button>
+<!--        <button mat-icon-button>
           <mat-icon>delete</mat-icon>
-        </button>
+        </button>-->
       </mat-cell>
 
     </ng-container>

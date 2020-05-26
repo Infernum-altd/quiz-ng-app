@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ShareIdService} from '../../service/profileService/share-id.service';
+import {ShareIdService} from "../../service/profileService/share-id.service";
 import {Role} from '../../models/role.enum';
+
 
 @Component({
   selector: 'app-profile-navigation',
