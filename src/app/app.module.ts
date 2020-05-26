@@ -5,64 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
-
-import { ProfileComponent } from './profile/profile.component';
-import { ProfileNavigationComponent } from './profile/profile-navigation/profile-navigation.component';
-import { LeftBarComponent } from './profile/left-bar/left-bar.component';
-import { UserInformationComponent } from './profile/user-information/user-information.component';
-import { JwtInterceptor } from './_helpers/jwt.interceptor';
-import { FriendsComponent } from './profile/friends/friends.component';
-import { MyQuizzesComponent } from './profile/my-quizzes/my-quizzes.component';
-import { FavoriteComponent } from './profile/favorite/favorite.component';
-import { ChangePasswordComponent } from './profile/change-password/change-password.component';
-import {ProfileComponent} from './profile/profile.component';
-import {ProfileNavigationComponent} from './profile/profile-navigation/profile-navigation.component';
-import {LeftBarComponent} from './profile/left-bar/left-bar.component';
-import {UserInformationComponent} from './profile/user-information/user-information.component';
-import {JwtInterceptor} from './_helpers/jwt.interceptor';
-import {FriendsComponent} from './profile/friends/friends.component';
-import {MyQuizzesComponent} from './profile/my-quizzes/my-quizzes.component';
-import {FavoriteComponent} from './profile/favorite/favorite.component';
-import {ChangePasswordComponent} from './profile/change-password/change-password.component';
-import { AdminUsersComponent } from './profile/admin-users/admin-users.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { PendingQuizzesComponent } from './profile/pending-quizzes/pending-quizzes.component';
-import { QuizCheckComponent } from './quiz-check/quiz-check.component';
 
-import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './login/login.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { RouterModule, Routes } from "@angular/router";
-import { AuthGuardService } from "./_helpers/auth-guard.service";
-import { QuestionComponent } from './question/question.component';
-import { OptionalAnswerComponent } from './optional-answer/optional-answer.component';
-import { BooleanAnswerComponent } from './boolean-answer/boolean-answer.component';
-import { StringAnswerComponent } from './string-answer/string-answer.component';
-import { SequenceAnswerComponent } from './sequence-answer/sequence-answer.component';
-import { ImageUploadComponent } from './image-upload/image-upload.component';
-import { AnswerComponent } from './answer/answer.component';
-import { NewQuizComponent } from './new-quiz/new-quiz.component';
-import { AddQuestionsComponent } from './add-questions/add-questions.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
-import {RegistrationComponent} from './registration/registration.component';
-import {LoginComponent} from './login/login.component';
-import {NavigationComponent} from './navigation/navigation.component';
-import {RouterModule, Routes} from "@angular/router";
-import {AuthGuardService} from "./_helpers/auth-guard.service";
-import {QuestionComponent} from './question/question.component';
-import {OptionalAnswerComponent} from './optional-answer/optional-answer.component';
-import {BooleanAnswerComponent} from './boolean-answer/boolean-answer.component';
-import {StringAnswerComponent} from './string-answer/string-answer.component';
-import {SequenceAnswerComponent} from './sequence-answer/sequence-answer.component';
-import {ImageUploadComponent} from './image-upload/image-upload.component';
-import {AnswerComponent} from './answer/answer.component';
-import {NewQuizComponent} from './new-quiz/new-quiz.component';
-import {AddQuestionsComponent} from './add-questions/add-questions.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {QuizCheckNavComponent} from "./quiz-check/quiz-check-nav/quiz-check-nav.component";
+import {CanDeactivateGuardService} from "./service/canDeactivateGuardService/can-deactivate-guard.service";
+
 
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatChipsModule } from '@angular/material/chips';
@@ -118,28 +65,33 @@ import {QuizCheckComponent} from "./quiz-check/quiz-check.component";
 import { PlayedGameComponent } from './profile/played-game/played-game.component';
 import { GameResultDialogComponent } from './profile/played-game/game-result-dialog/game-result-dialog.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {UserInformationComponent} from "./profile/user-information/user-information.component";
+import {RouterModule, Routes} from "@angular/router";
+import {FriendsComponent} from "./profile/friends/friends.component";
+import {MyQuizzesComponent} from "./profile/my-quizzes/my-quizzes.component";
+import {FavoriteComponent} from "./profile/favorite/favorite.component";
+import {ChangePasswordComponent} from "./profile/change-password/change-password.component";
+import {RegistrationComponent} from "./registration/registration.component";
+import {LoginComponent} from "./login/login.component";
+import {AuthGuardService} from "./_helpers/auth-guard.service";
+import {ProfileComponent} from "./profile/profile.component";
+import {QuestionComponent} from "./question/question.component";
+import {NewQuizComponent} from "./new-quiz/new-quiz.component";
+import {AddQuestionsComponent} from "./add-questions/add-questions.component";
+import {NavigationComponent} from "./navigation/navigation.component";
+import {ProfileNavigationComponent} from "./profile/profile-navigation/profile-navigation.component";
+import {LeftBarComponent} from "./profile/left-bar/left-bar.component";
+import {OptionalAnswerComponent} from "./optional-answer/optional-answer.component";
+import {BooleanAnswerComponent} from "./boolean-answer/boolean-answer.component";
+import {StringAnswerComponent} from "./string-answer/string-answer.component";
+import {AnswerComponent} from "./answer/answer.component";
+import {ImageUploadComponent} from "./image-upload/image-upload.component";
+import {SequenceAnswerComponent} from "./sequence-answer/sequence-answer.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 
 
-
-const quizCheckRoutes: Routes = [
-  {
-    path: 'quizinfo',
-    component: QuizInfoComponent,
-    outlet: 'quiznav'
-  },
-  {
-    path: 'qAnda',
-    component: QuestionCheckComponent,
-    outlet: 'quiznav'
-  }
-];
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {AchievementsListComponent} from './dashboard/achievements-list/achievements-list.component';
-import {RatingListComponent} from './dashboard/rating-list/rating-list.component';
-import {QuizzesPageComponent} from "./quizzes-page/quizzes-page.component";
-import { QuestionCheckComponent } from './quiz-check/question-check/question-check.component';
-import { QuizInfoComponent } from './quiz-check/quiz-info/quiz-info.component';
-import {QuizCheckNavComponent} from "./quiz-check/quiz-check-nav/quiz-check-nav.component";
 
 const quizCheckRoutes: Routes = [
   {
@@ -331,7 +283,7 @@ const appRoutes: Routes = [
     GameSettingsComponent,
     GameFinishComponent,
     PlayedGameComponent,
-    GameResultDialogComponent
+    GameResultDialogComponent,
     RatingListComponent,
     AdminUsersComponent,
     PendingQuizzesComponent,

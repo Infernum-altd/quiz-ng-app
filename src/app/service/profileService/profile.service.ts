@@ -74,10 +74,6 @@ export class ProfileService {
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId + '/' + pageSize + '/' + pageNumber);
   }
 
-  getAdminUsers(): Observable<User[]>{
-    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
-  }
-
   getCategoryName(categoryId: string): Observable<any>{
     return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
