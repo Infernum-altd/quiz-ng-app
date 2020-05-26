@@ -19,21 +19,24 @@ export class QuizInfoComponent implements OnInit {
   public quiz: Quiz;
   currentQuizId: string;
   id: string;
+  comment: boolean;
 
   constructor(private quizService: QuizService,
               private shareId: ShareIdService,
               private location: PlatformLocation,
               private router: Router){
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
-    // this.id = shareId.shareId();
+  }
+  moderatorCheck(){
+    if (this.quiz.moderatorComment !== null){
+      this.comment = true;
+    }
+    else{this.comment = false; }
   }
 
   ngOnInit(): void {
     this.getQuiz(this.currentQuizId);
     this.location.onPopState(() => {
-      // this.shareId.setId(this.currentQuizId);
-      // this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);
-
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate(['checkquiz', this.currentQuizId, {outlets: {quiznav: 'quizinfo'}}]);
       });

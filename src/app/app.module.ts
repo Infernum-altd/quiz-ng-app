@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
 
 import {ProfileComponent} from './profile/profile.component';
@@ -21,7 +21,6 @@ import { PendingQuizzesComponent } from './profile/pending-quizzes/pending-quizz
 import { QuizCheckComponent } from './quiz-check/quiz-check.component';
 
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
 import {RegistrationComponent} from './registration/registration.component';
 import {LoginComponent} from './login/login.component';
 import {NavigationComponent} from './navigation/navigation.component';
@@ -84,12 +83,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameStartComponent } from './game/game-start/game-start.component';
 import { GameSettingsComponent } from './game/game-settings/game-settings.component';
 import { GameFinishComponent } from './game/game-finish/game-finish.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {QuizInfoComponent} from "./quiz-check/quiz-info/quiz-info.component";
 import {QuestionCheckComponent} from "./quiz-check/question-check/question-check.component";
-import {AdminUsersComponent} from "./profile/admin-users/admin-users.component";
-import {PendingQuizzesComponent} from "./profile/pending-quizzes/pending-quizzes.component";
-import {QuizCheckComponent} from "./quiz-check/quiz-check.component";
+import {QuizCheckNavComponent} from "./quiz-check/quiz-check-nav/quiz-check-nav.component";
+import { SetPasswordComponent } from './set-password/set-password.component';
 
 
 const quizCheckRoutes: Routes = [
@@ -231,6 +228,10 @@ const appRoutes: Routes = [
     component: AdminUsersComponent
   },
   {
+    path: 'activate/:code',
+    component: SetPasswordComponent
+  },
+  {
     path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -282,7 +283,8 @@ const appRoutes: Routes = [
     QuizCheckComponent,
     QuestionCheckComponent,
     QuizInfoComponent,
-    QuizCheckNavComponent
+    QuizCheckNavComponent,
+    SetPasswordComponent
   ],
   imports: [
     NgbModule,
@@ -305,16 +307,7 @@ const appRoutes: Routes = [
     MatRadioModule,
     MatCardModule,
     MatSelectModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatInputModule,
-    MatPaginatorModule,
     MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
     MatFormFieldModule,
     MatChipsModule,
     MatExpansionModule,
@@ -326,27 +319,10 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatListModule,
     MatTabsModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes),
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
     MatButtonToggleModule,
     MatSnackBarModule,
     MatDialogModule,
     DragDropModule,
-    LayoutModule,
-    FlexLayoutModule,
     MatProgressBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

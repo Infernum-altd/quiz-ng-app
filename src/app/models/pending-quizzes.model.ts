@@ -12,5 +12,6 @@ export interface Quiz {
   authorName: string;
   authorSurname: string;
   authorEmail: string;
+  moderatorComment: string;
 }
 

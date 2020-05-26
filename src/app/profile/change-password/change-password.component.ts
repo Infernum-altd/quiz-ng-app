@@ -35,7 +35,7 @@ export class ChangePasswordComponent implements OnInit {
     if (this.changePasswordForm.invalid) {
       return;
     }
-    this.newPassword = this.changePasswordForm.value;
+    this.newPassword = this.changePasswordForm.value.password;
     this.changePassword();
   }
 

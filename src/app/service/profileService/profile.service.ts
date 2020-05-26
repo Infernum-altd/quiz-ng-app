@@ -5,6 +5,7 @@ import {User} from '../../models/user';
 import {Quiz} from '../../models/quiz';
 import {NotificationStatus} from '../../models/notification-status.enum';
 import {CurrentUserService} from "../current-user.service";
+import {AuthenticationService} from "../loginService/authentication.service";
 
 
 
@@ -15,7 +16,7 @@ export class ProfileService {
   private BASE_URL = window['configureApiBaseUrl'];
   private PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\`;
   private FRIEND_LIST_URL = `${this.BASE_URL}\\profile\\myfriends\\`;
-  private ADMIN_USERS_LIST_URL = `${this.BASE_URL}\\profile\\adminUsers\\`;
+  private ADMIN_USERS_LIST_URL = `${this.BASE_URL}\\profile\\adminUsers`;
   private UPDATE_PROFILE_URL = `${this.BASE_URL}\\profile\\myprofile\\update`;
   private UPDATE_PASSWORD_URL = `${this.BASE_URL}\\profile\\updatePassword\\`;
   private UPDATE_ACTIVE_STATUS_URL = `${this.BASE_URL}\\profile\\updateActive\\`;
@@ -26,14 +27,14 @@ export class ProfileService {
   private GET_USER_IMAGE_BY_USER_ID = `${this.BASE_URL}\\profile\\getimage\\`;
   private UPDATE_GET_NOTIFICATION = `${this.BASE_URL}\\profile\\status\\`;
   private DELETE_ADMIN_URL = `${this.BASE_URL}\\profile\\deleteAdminUser\\`;
+  private GET_FILTERED_USERS = `${this.BASE_URL}\\profile\\adminUsers\\filter\\`;
+  private GET_USERS_BY_ROLE = `${this.BASE_URL}\\profile\\roleStatus\\`;
+  private ADD_ADMIN_USER_URL = `${this.BASE_URL}\\api\\users\\addAdminUser`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
+              private authService: AuthenticationService,
               private currentUserService: CurrentUserService) { }
-
-  getAdminUsers(): Observable<User[]>{
-    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
-  }
 
   getProfile(userId: string): Observable<User> {
     return this.http.get<User>(this.PROFILE_URL + userId);
@@ -49,7 +50,6 @@ export class ProfileService {
   }
 
   deleteAdminUsers(id): Observable<User>{
-    console.log(this.DELETE_ADMIN_URL + id);
     return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
   }
   updateActiveStatusUser(id): Observable<any>{
@@ -71,9 +71,16 @@ export class ProfileService {
   getFavoriteGames(pageSize: number, pageNumber: number): Observable<any>{
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId + '/' + pageSize + '/' + pageNumber);
   }
+  getAdminUsers(pageSize: number, pageIndex: number): Observable<any>{
+    if (!pageIndex){ pageIndex = 0;}
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
+  }
+  getUsersByRoleStatus(userRole: string, userStatus: string, pageSize: number, pageIndex: number): Observable<any> {
+    return this.http.get(this.GET_USERS_BY_ROLE + userRole + '/' + userStatus + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
+  }
 
-  getAdminUsers(): Observable<User[]>{
-    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
+  getFilteredUsers(searchText: string, pageSize: number, pageIndex: number): Observable<any> {
+    return this.http.get(this.GET_FILTERED_USERS + searchText + '/' + pageSize + '/' + pageIndex);
   }
 
   getCategoryName(categoryId: string): Observable<any>{
@@ -103,10 +110,14 @@ export class ProfileService {
   }
 
   filterQuizzesRequest(userSearch: string, pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
-    return this.http.get(this.GET_QUIZZES_URL+ userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+    return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
   }
 
   filterFavoriteRequest(userSearch: string, pageSize: number, pageIndex: number): Observable<any>{
-    return this.http.get(this.GET_QUIZZES_URL+ userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
+    return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
+  }
+
+  postRegisterInfo(user: User): Observable<User> {
+    return this.http.post<User>(this.ADD_ADMIN_USER_URL, user);
   }
 }

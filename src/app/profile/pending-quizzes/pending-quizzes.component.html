@@ -1,10 +1,21 @@
-<mat-form-field color="primary">
-  <label for="search">Search</label>
-  <input id="search" matInput (keyup)="applyFilter($event)">
+<div fxLayout="column">
+<div #maincontent fxFlex="71" class="scroll main">
+<div class="input">
+  <mat-form-field  appearance="outline">
+    <mat-label>Search quiz</mat-label>
+    <input matInput type="search" placeholder="Search" value="" [(ngModel)]="userRequest"
+           (ngModelChange)="this.userQuestionUpdate.next($event)">
+  </mat-form-field>
+<mat-form-field class="quiz_selection">
+  <mat-label>Select</mat-label>
+  <mat-select [(value)]="selected"  disableRipple>
+    <mat-option value="Pending" (click)="setPaginationParamDefault(); setCurrentTable('Pending'); getAllPendingQuizzes()" >Assignments</mat-option>
+    <mat-option value="Assigned" (click)="setPaginationParamDefault(); setCurrentTable('Assigned'); getAssignedQuizzes()">My Assignments</mat-option>
+  </mat-select>
 </mat-form-field>
-
+</div>
 <div class="mat-elevation-z8 w-75">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" width="100%">
+  <table mat-table [dataSource]="pendingQuizzes" class="mat-elevation-z8" width="100%">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name</th>
@@ -32,7 +43,8 @@
     <ng-container  matColumnDef="actions">
       <th  mat-header-cell *matHeaderCellDef> Acting</th>
       <mat-cell  *matCellDef="let row; let element;">
-        <button  class="buttonsAction" mat-stroked-button (click)="checkQuiz(element)">Check</button>
+        <button  class="buttonsAction" mat-stroked-button *ngIf="currentTable=='Pending'" (click)="checkQuiz(element)">Сheck</button>
+        <button  class="buttonsAction" mat-stroked-button *ngIf="currentTable=='Assigned'" (click)="checkQuiz(element)">Continue</button>
       </mat-cell>
     </ng-container>
 
@@ -40,5 +52,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageIndex]="pageIndex" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                 (page)="onPageChanged($event); maincontent.scrollTop = 0;">
+  </mat-paginator>
+</div>
+</div>
 </div>

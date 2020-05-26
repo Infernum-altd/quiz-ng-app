@@ -2,7 +2,7 @@ import { GameStateService } from './../gameStateService/game-state.service';
 import { Router } from '@angular/router';
 import { Player } from './../../models/game.model';
 import * as SockJs from 'sockjs-client';
-import { RxStomp, RxStompConfig } from '@stomp/rx-stomp';
+
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,6 +10,7 @@ import { Game } from 'src/app/models/game.model';
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { Answer } from 'src/app/models/answer.model';
 import { map, take } from 'rxjs/operators';
+import {RxStomp, RxStompConfig} from "@stomp/rx-stomp";
 
 @Injectable({
   providedIn: 'root'

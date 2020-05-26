@@ -14,7 +14,7 @@ import {QuizInfo} from "../../models/quiz-info";
 export class QuizService {
 
   private BASE_URL = window["configureApiBaseUrl"];
-  private QUIZZES_URL = `${this.BASE_URL}\\quizzes\\`;
+  private QUIZZES_URL = `${this.BASE_URL}\\quizzes`;
   private QUIZZES_INFO_URL = `${this.BASE_URL}\\quizzes\\info\\`;
   private GET_QUIZ_BY_CATEGORY = `${this.QUIZZES_URL}\\categories\\`;
   private GET_FILTERED_QUIZ = `${this.QUIZZES_URL}\\filter\\`;

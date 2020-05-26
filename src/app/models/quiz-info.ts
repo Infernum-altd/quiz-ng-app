@@ -12,4 +12,5 @@ export class QuizInfo {
   authorName: string;
   authorSurname: string;
   authorEmail: string;
+  moderatorComment: string;
 }

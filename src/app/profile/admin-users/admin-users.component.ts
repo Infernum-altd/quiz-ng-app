@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {User} from '../../models/user';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {ProfileService} from '../../service/profileService/profile.service';
@@ -13,6 +12,10 @@ import {Role} from '../../models/role.enum';
 import {Gender} from '../../models/gender.enum';
 import {NotificationStatus} from '../../models/notification-status.enum';
 import {MustMatch} from '../../registration/registration.component';
+import {User} from "../../models/user";
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import {Subject} from "rxjs";
+import {stringify} from "querystring";
 
 @Component({
   selector: 'app-admin-users',
@@ -20,19 +23,6 @@ import {MustMatch} from '../../registration/registration.component';
   styleUrls: ['./admin-users.component.css']
 })
 export class AdminUsersComponent implements OnInit {
-  adminUsers: User[];
-  displayedColumns: string[] = ['name', 'role', 'active', 'actions'];
-  dataSource: MatTableDataSource<User>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
-  public isCollapsed = true;
-  registerForm: FormGroup;
-  submitted = false;
-  currentUserId: string;
-  isAdmin = false;
-  isSuperAdmin = false;
-  roleUs: Role;
-
   model: User = {
     id: null,
     email: '',
@@ -49,6 +39,30 @@ export class AdminUsersComponent implements OnInit {
     countryId: null,
     rating: null
   };
+  adminUsers: User[];
+  displayedColumns: string[] = ['name', 'email', 'role', 'active', 'actions'];
+  dataSource: MatTableDataSource<User>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+  public isCollapsed = true;
+  registerForm: FormGroup;
+  submitted = false;
+  currentUserId: string;
+  isAdmin = false;
+  isSuperAdmin = false;
+  roleUs: Role;
+  selectedRole = 'AllRole';
+  selectedStatus = 'AllStatus';
+
+  length = 0;
+  pageIndex: number;
+  pageSize: number;
+  pageSizeOptions: number[] = [10, 20, 30, 40, 50];
+  currentUserRole = 'AllRole';
+  currentUserStatus = 'AllStatus';
+  public userRequest: string;
+  userQuestionUpdate = new Subject<string>();
+
   constructor(private profileService: ProfileService,
               private router: Router,
               private shareId: ShareIdService,
@@ -56,24 +70,70 @@ export class AdminUsersComponent implements OnInit {
               private formBuilder: FormBuilder) {
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
     this.roleUs = JSON.parse(localStorage.getItem('currentUser')).role;
-
-    profileService.getAdminUsers().subscribe(resp => {
-      this.adminUsers = resp;
-      this.dataSource = new MatTableDataSource(this.adminUsers);
-      this.dataSource.paginator = this.paginator;
-    });
   }
 
   ngOnInit(): void {
     this.adminCheck();
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      role: [''],
-      password: ['', [Validators.required, Validators.minLength(8)]],   /// ("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
-      confirmPassword: ['', Validators.required]
-    }, {
-      validator: MustMatch('password', 'confirmPassword')
+      role: ['']
     });
+    this.setPaginationParamDefault();
+    this.userQuestionUpdate.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe(userSearch => {
+        this.setPaginationParamDefault();
+        userSearch.length ==0 ? this.getAllAdminUsers() : this.filterRequest(userSearch);
+      });
+    this.searchByRoleStatus(this.currentUserRole, this.currentUserStatus);
+  }
+  onPageChanged(e) {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    if (this.currentUserRole != undefined && this.currentUserStatus != undefined) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.searchByRoleStatus(this.currentUserRole, this.currentUserStatus);
+    } else if (this.userRequest != undefined && this.userRequest) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.filterRequest(this.userRequest);
+    } else {
+      this.getAllAdminUsers();
+    }
+  }
+
+  searchByRoleStatus(userRole: string, userStatus: string) {
+    this.profileService.getUsersByRoleStatus(userRole, userStatus, this.pageSize, this.pageIndex).subscribe(
+      resp => {
+        this.adminUsers = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
+  }
+
+
+  filterRequest(filterText: string) {
+    this.profileService.getFilteredUsers(filterText, this.pageSize, this.pageIndex).subscribe(
+      resp => {
+        this.adminUsers = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
+  }
+
+  setPaginationParamDefault() {
+    this.pageIndex = 0;
+    this.pageSize = 10;
+  }
+  setCurrentRole(role: string) {
+    this.currentUserRole = role;
+  }
+  setCurrentStatus(status: string) {
+    this.currentUserStatus = status;
   }
   onSubmit() {
     this.submitted = true;
@@ -82,13 +142,11 @@ export class AdminUsersComponent implements OnInit {
     }
     const input: User = JSON.parse(JSON.stringify(this.registerForm.value));
     this.model.email = input.email;
-    this.model.password = input.password;
     this.model.role = input.role;
     this.addNewUser();
   }
   addNewUser(): void{
-    console.log(this.model);
-    this.regService.postRegisterInfo(this.model).subscribe(
+    this.profileService.postRegisterInfo(this.model).subscribe(
       res => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'adminUsers'}}]);
@@ -107,6 +165,16 @@ export class AdminUsersComponent implements OnInit {
     if (this.roleUs.toString() === Role[Role.ADMIN]){
       this.isAdmin = true;
     }
+  }
+  getAllAdminUsers() {
+    console.log("pagesize " + this.pageSize);
+    this.profileService.getAdminUsers(this.pageSize, this.pageIndex).subscribe(
+      resp => {
+        this.currentUserRole = undefined;
+        this.adminUsers = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
   }
 
   checkOut(id: string, email: string) {

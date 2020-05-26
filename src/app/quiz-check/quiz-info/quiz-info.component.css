@@ -19,3 +19,10 @@ mat-radio-button {
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
   background-color:rgb(255, 37, 37.26);
 }
+
+.example-card {
+  min-width: 650px;
+  border: 1px;
+  margin: 5px;
+  background-color: lightsalmon;
+}

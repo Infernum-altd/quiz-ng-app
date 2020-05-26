@@ -13,7 +13,6 @@ export class RegistrationService {
   constructor(private http: HttpClient) { }
 
   postRegisterInfo(user: User): Observable<User> {
-    console.log(user);
     return this.http.post<User>(this.REGISTRATION_URL, user);
   }
 

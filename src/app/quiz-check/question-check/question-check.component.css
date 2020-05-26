@@ -25,15 +25,28 @@
   background-color: lightgrey;
   border-radius: 3px;
   border-color: darkgrey;
+  display: flex;
+  justify-content: center;
 }
 .mat-button-active{
   background-color: lightgreen;
   border-radius: 3px;
   border-color: darkgrey;
+  margin: 10px;
 }
 
 .example-header-image {
   background-size: cover;
+}
+.reject-comment{
+  background-color: lightsalmon;
+}
+.reject-comment:hover{
+  background-color: salmon !important;
+}
+.form-field{
+  display: flex;
+  justify-content: center;
 }
 
 

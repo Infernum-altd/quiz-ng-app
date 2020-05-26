@@ -10,12 +10,12 @@ export enum StatusType {
 }
 
 export interface Quiz {
-  id:number;
+  id: number;
   name:string;
   author:User;
   category:Category;
   date:string;
   description:string;
-  status:StatusType;
+  status: StatusType;
   modification_time:string;
 }

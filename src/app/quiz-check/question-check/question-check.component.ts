@@ -41,7 +41,6 @@ export class QuestionCheckComponent implements OnInit {
     this.quizService.getQuizById(id).subscribe(
       (resp: any) => {
         this.quiz = resp;
-        console.log('ans ', this.quiz.questions);
       },
       error => {
         console.log(error);
@@ -52,14 +51,12 @@ export class QuestionCheckComponent implements OnInit {
   activeQuiz() {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
+    this.unsignModeratorQuiz();
     this.quizService.updateActiveStatusQuiz(this.currentQuizId).subscribe(
       (resp: any) => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'pendingQuizzes'}}]);
         });
-        // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        //   this.router.navigate(['profile', JSON.parse(localStorage.getItem('currentuser')).id, {outlets: {profilenav: 'pendingQuizzes'}}]);
-        // });
       },
       error => {
         alert('Something wrong while change active status');
@@ -69,11 +66,9 @@ export class QuestionCheckComponent implements OnInit {
   checkCount(i: number) {
     if (!this.checkedQuestions.includes(i)){
       this.checkedQuestions.push(i);
-      console.log('ar ', this.checkedQuestions);
     }
     else {
       this.checkedQuestions.splice(this.checkedQuestions.indexOf(i), i);
-      console.log('ar else ', this.checkedQuestions);
     }
   }
   allChecked(){
@@ -84,12 +79,12 @@ export class QuestionCheckComponent implements OnInit {
   leaveComment() {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
-    console.log("comment component " + this.comment);
+    this.unsignModeratorQuiz();
     this.quizService.updateCommentQuiz(this.currentQuizId, this.comment).subscribe(
       (resp: any) => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'pendingQuizzes'}}]);
-          alert('Successfully send comment');
+          alert('Comment sent successfully');
         });
       },
       error => {
@@ -97,7 +92,15 @@ export class QuestionCheckComponent implements OnInit {
       }
     );
   }
-
+  unsignModeratorQuiz() {
+    this.quizService.unsignQuiz(this.currentQuizId).subscribe(
+      (resp: any) => {
+      },
+    error => {
+      alert('Something wrong while unsign');
+    }
+    );
+  }
   get f() { return this.commentForm.controls; }
 
 

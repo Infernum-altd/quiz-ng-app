@@ -7,6 +7,9 @@ import {QuizService} from '../../service/quizService/quiz.service';
 import {Quiz} from '../../models/pending-quizzes.model';
 import {PendingQuizzesService} from '../../service/pendingQuizzesService/pending-quizzes.service';
 import {ShareIdService} from "../../service/profileService/share-id.service";
+import {QuizCheckServiceService} from "../../service/quizCheckService/quiz-check-service.service";
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 
 @Component({
@@ -20,21 +23,78 @@ export class PendingQuizzesComponent implements OnInit {
   dataSource: MatTableDataSource<Quiz>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  public isCollapsed = true;
+  currentUserId: number;
+  length = 0;
+  pageIndex: number;
+  pageSize: number;
+  pageSizeOptions: number[] = [10, 20, 30, 40, 50];
+  selected = 'Pending';
+  currentTable: string;
 
+  public userRequest: string;
+  userQuestionUpdate = new Subject<string>();
   constructor(private quizService: PendingQuizzesService,
               private router: Router,
-              private shareId: ShareIdService) {
-
-    quizService.getPendingQuizzes().subscribe(resp => {
-
-      this.pendingQuizzes = resp;
-      this.dataSource = new MatTableDataSource(this.pendingQuizzes);
-      this.dataSource.paginator = this.paginator;
-    });
+              private shareId: ShareIdService,
+              private quizCheckService: QuizCheckServiceService) {
+    this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
   }
 
   ngOnInit(): void {
+    this.setPaginationParamDefault();
+    this.setCurrentTable('Pending');
+    this.userQuestionUpdate.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe(userSearch => {
+        this.setPaginationParamDefault();
+        userSearch.length ==0 ? this.getAllPendingQuizzes() : this.filterRequest(userSearch);
+      });
+    this.getAllPendingQuizzes();
+  }
+
+  onPageChanged(e) {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    if (this.currentTable != 'Pending' && this.currentTable != null) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.getAssignedQuizzes();
+    } else if (this.userRequest != undefined && this.userRequest) {
+      if (this.pageSize == undefined) {
+        this.setPaginationParamDefault();
+      }
+      this.filterRequest(this.userRequest);
+    } else {
+      this.getAllPendingQuizzes();
+    }
+  }
+
+  filterRequest(filterText: string) {
+    this.quizService.getFilteredPendingQuizzes(filterText, this.pageSize, this.pageIndex).subscribe(
+      resp => {
+        this.pendingQuizzes = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+      }
+    );
+  }
+  setPaginationParamDefault() {
+    this.pageIndex = 0;
+    this.pageSize = 10;
+  }
+  getAllPendingQuizzes(){
+      this.quizService.getPendingQuizzes(this.pageSize, this.pageIndex).subscribe(resp => {
+        this.pendingQuizzes = resp.responceList;
+        this.length = resp.totalNumberOfElement;
+    });
+  }
+
+  getAssignedQuizzes(){
+    this.quizService.getAssignedQuizzes(this.currentUserId, this.pageSize, this.pageIndex).subscribe(resp => {
+      this.pendingQuizzes = resp.responceList;
+      this.length = resp.totalNumberOfElement;
+    });
   }
 
   applyFilter(event: Event) {
@@ -48,12 +108,30 @@ export class PendingQuizzesComponent implements OnInit {
       this.router.navigate(['profile', id, {outlets: {profilenav: 'profinfo'}}]);
     });
   }
+
   checkQuiz(quiz: Quiz) {
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate(['checkquiz', quiz.id, {outlets: {quiznav: 'quizinfo'}}]);
-    });
-    console.log('quizId ' + quiz.id);
-    console.log('checkquiz' + JSON.stringify(quiz));
-    localStorage.setItem('currentQuiz', JSON.stringify(quiz));
+    if (this.currentTable === 'Pending') {
+      this.quizCheckService.assignQuiz(quiz.id, JSON.parse(localStorage.getItem('currentUser')).id).subscribe
+      ((resp: any) => {
+          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+            this.router.navigate(['checkquiz', quiz.id, {outlets: {quiznav: 'quizinfo'}}]);
+          });
+          localStorage.setItem('currentQuiz', JSON.stringify(quiz));
+        },
+        error => {
+          alert('Something wrong while assigning quiz');
+        }
+      );
+    }
+    else{
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate(['checkquiz', quiz.id, {outlets: {quiznav: 'quizinfo'}}]);
+      });
+      localStorage.setItem('currentQuiz', JSON.stringify(quiz));
+    }
+  }
+
+  setCurrentTable(type: string) {
+    this.currentTable = type;
   }
 }

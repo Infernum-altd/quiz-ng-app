@@ -36,7 +36,6 @@ export class UserInformationComponent implements OnInit {
     if (this.roleUs.toString() !== Role[Role.USER]){
       this.isAdmin = true;
     }
->>>>>>>>> Temporary merge branch 2
   }
 
   ngOnInit(): void {

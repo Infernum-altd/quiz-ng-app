@@ -22,15 +22,30 @@
     </div>
   </mat-card>
 </div>
-<br><div>
-  <mat-form-field class="form-field">
-    <mat-label>Leave comment</mat-label>
-    <textarea matInput class="form-control" formControlName="comment"
+<br><div fxLayout="column">
+      <mat-accordion >
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="reject-comment">
+            <mat-panel-title>
+              Reject
+            </mat-panel-title>
+            <mat-panel-description>
+              Leave a comment, why it was rejected
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+  <mat-form-field class="form-field" fxLayout="column" >
+    <textarea matInput row="5" class="form-control" formControlName="comment"
               placeholder="Comment"></textarea>
   </mat-form-field>
-  <button class = "mat-button-send" mat-flat-button type="submit">Send</button>
-  <button class = "mat-button-active" mat-flat-button *ngIf="allChecked()" (click)="activeQuiz()">Active</button>
-</div>
+          <div fxLayout="column">
+  <button class = "mat-button-send"  mat-flat-button type="submit">Send and reject</button>
+          </div>
+        </mat-expansion-panel>
+          </mat-accordion>
+    <button class = "mat-button-active" fxLayout="column" mat-flat-button *ngIf="allChecked()" (click)="activeQuiz()">Approve</button>
+    </div>
   </form>
+  <br>
+  <br>
 </div>
 

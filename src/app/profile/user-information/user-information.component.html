@@ -1,3 +1,4 @@
+<div *ngIf="profile">
 <div *ngIf="!isEditForm">
   <span>
     <p>Name: {{profile.name}}</p>
@@ -14,6 +15,7 @@
       <button mat-raised-button *ngIf="id==currentUserId">Edit profile</button>
     </div>
   </div>
+</div>
 </div>
 
 

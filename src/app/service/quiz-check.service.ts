@@ -25,7 +25,6 @@ export class QuizCheckService {
     return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'ACTIVE');
   }
   updateCommentQuiz(id, comment: string): Observable<any>{
-    console.log("comment " + comment.toString() );
     return this.http.post(this.UPDATE_MODERATOR_COMMENT_URL + id, JSON.stringify(comment));
   }
 }

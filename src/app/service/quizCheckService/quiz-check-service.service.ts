@@ -15,6 +15,8 @@ export class QuizCheckServiceService {
   private QUIZZES_URL = `${this.BASE_URL}\\quizzes\\quizCheck\\`;
   private UPDATE_ACTIVE_STATUS_URL = `${this.BASE_URL}\\quizzes\\updateActive\\`;
   private UPDATE_MODERATOR_COMMENT_URL = `${this.BASE_URL}\\quizzes\\updateComment\\`;
+  private ASSIGN_QUIZ = `${this.BASE_URL}\\quizzes\\assignment\\`;
+  private UNSIGN_QUIZ_URL = `${this.BASE_URL}\\quizzes\\unsign\\`;
 
   constructor(private http: HttpClient) {
   }
@@ -27,7 +29,12 @@ export class QuizCheckServiceService {
     return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'ACTIVE');
   }
   updateCommentQuiz(id, comment: string): Observable<any>{
-    console.log("comment " + comment.toString() );
-    return this.http.post(this.UPDATE_MODERATOR_COMMENT_URL + id, JSON.stringify(comment));
+    return this.http.post(this.UPDATE_MODERATOR_COMMENT_URL + id, comment);
+  }
+  assignQuiz(quizId, moderatorId): Observable<any> {
+    return this.http.post(this.ASSIGN_QUIZ + quizId, moderatorId);
+  }
+  unsignQuiz(currentQuizId: number) {
+    return this.http.delete(this.UNSIGN_QUIZ_URL + currentQuizId);
   }
 }
