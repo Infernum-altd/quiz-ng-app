@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Role} from '../../models/role.enum';
+import {ShareIdService} from '../../service/profileService/share-id.service';
 
 @Component({
   selector: 'app-quiz-check-nav',

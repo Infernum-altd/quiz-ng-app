@@ -33,6 +33,10 @@ export class ProfileService {
   constructor(private http: HttpClient,
               private currentUserService: CurrentUserService) { }
 
+  getAdminUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL);
+  }
+
   getProfile(userId: string): Observable<User> {
     return this.http.get<User>(this.PROFILE_URL + userId);
   }
@@ -46,13 +50,13 @@ export class ProfileService {
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
-  deleteAdminUsers(id): Observable<User>{
-    console.log(this.DELETE_ADMIN_URL + id);
-    return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
-  }
-  updateActiveStatusUser(id): Observable<any>{
-    return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
-  }
+    deleteAdminUsers(id): Observable<User>{
+      console.log(this.DELETE_ADMIN_URL + id);
+      return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
+    }
+    updateActiveStatusUser(id): Observable<any>{
+      return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
+    }
 
   updatePassword(newPassword: string): Observable<any>{
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);

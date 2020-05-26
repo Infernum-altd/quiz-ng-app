@@ -1,35 +1,36 @@
 <div *ngIf="quiz">
   <form [formGroup]="commentForm" (ngSubmit)="commentFormValidation()">
-    <div fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let q of quiz.questions; index as iq">
-      <mat-card class="example-card" >
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-subtitle> Id {{q.id}} type {{q.type}}</mat-card-subtitle>
-          <mat-card-title >Question {{iq+1}}: {{q.text}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div   *ngFor="let a of q.answers; index as ia">
-            <div class="true-answer-div" *ngIf="a.correct">
-              {{ia+1}}) {{a.text}}
-            </div>
-            <div class="false-answer-div" *ngIf="!a.correct">
-              {{ia+1}}) {{a.text}}
-            </div>
-          </div>
-        </mat-card-content>
-        <div class="checkBox">
-          <mat-checkbox [labelPosition]="labelPosition" class="example-checkbox" (change)="checkCount(q.id);">Checked</mat-checkbox>
+<div fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let q of quiz.questions; index as iq">
+  <mat-card class="example-card" >
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-subtitle> Id {{q.id}} type {{q.type}}</mat-card-subtitle>
+      <mat-card-title >Question {{iq+1}}: {{q.text}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div   *ngFor="let a of q.answers; index as ia">
+      <div class="true-answer-div" *ngIf="a.correct">
+        {{ia+1}}) {{a.text}}
+      </div>
+        <div class="false-answer-div" *ngIf="!a.correct">
+            {{ia+1}}) {{a.text}}
         </div>
-      </mat-card>
+      </div>
+    </mat-card-content>
+    <div class="checkBox">
+    <mat-checkbox [labelPosition]="labelPosition" class="example-checkbox" (change)="checkCount(q.id);">Checked</mat-checkbox>
     </div>
-    <br><div>
-    <mat-form-field class="form-field">
-      <mat-label>Leave comment</mat-label>
-      <textarea matInput class="form-control" formControlName="comment"
-                placeholder="Comment"></textarea>
-    </mat-form-field>
-    <button class = "mat-button-send" mat-flat-button type="submit">Send</button>
-    <button class = "mat-button-active" mat-flat-button *ngIf="allChecked()" (click)="activeQuiz()">Active</button>
-  </div>
+  </mat-card>
+</div>
+<br><div>
+  <mat-form-field class="form-field">
+    <mat-label>Leave comment</mat-label>
+    <textarea matInput class="form-control" formControlName="comment"
+              placeholder="Comment"></textarea>
+  </mat-form-field>
+  <button class = "mat-button-send" mat-flat-button type="submit">Send</button>
+  <button class = "mat-button-active" mat-flat-button *ngIf="allChecked()" (click)="activeQuiz()">Active</button>
+</div>
   </form>
 </div>
+

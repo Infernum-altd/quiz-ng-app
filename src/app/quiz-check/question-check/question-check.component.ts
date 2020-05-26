@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
-import {QuizCheckService} from "../../service/quiz-check.service";
-import {QuizCheckModel} from "../../models/quiz-check-model";
-
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Question} from '../../models/question.model';
+import {QuestionService} from '../../service/questionService/question.service';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatTableDataSource} from '@angular/material/table';
+import {QuizCheckServiceService} from '../../service/quizCheckService/quiz-check-service.service';
+import {QuizCheckModel} from '../../models/quiz-check.model';
+import {MustMatch} from "../../profile/change-password/change-password.component";
 @Component({
   selector: 'app-question-check',
   templateUrl: './question-check.component.html',
@@ -23,7 +26,7 @@ export class QuestionCheckComponent implements OnInit {
   labelPosition = 'before';
 
   constructor(private formBuilder: FormBuilder,
-              private quizService: QuizCheckService,
+              private quizService: QuizCheckServiceService,
               private activateRoute: ActivatedRoute,
               private router: Router) {
   }
@@ -107,4 +110,5 @@ export class QuestionCheckComponent implements OnInit {
     this.comment = this.commentForm.value.comment;
     this.leaveComment();
   }
+
 }

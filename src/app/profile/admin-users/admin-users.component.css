@@ -1,0 +1,10 @@
+.buttonsAction {
+  display: flex;
+  justify-content: center;
+}
+
+
+.buttonsAction button {
+  display:flex;
+  justify-content:center;
+}

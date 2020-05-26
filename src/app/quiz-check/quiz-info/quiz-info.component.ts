@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {QuizService} from "../../service/quizService/quiz.service";
+import {Subscription} from 'rxjs';
+import {Quiz} from '../../models/pending-quizzes.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {QuizService} from '../../service/quizService/quiz.service';
+import {FormControl} from "@angular/forms";
+import {User} from "../../models/user";
+import {Role} from "../../models/role.enum";
+import {ProfileService} from "../../service/profileService/profile.service";
 import {ShareIdService} from "../../service/profileService/share-id.service";
 import {PlatformLocation} from "@angular/common";
-import {Router} from "@angular/router";
-import {Quiz} from '../../models/pending-quizzes.model';
 
 @Component({
   selector: 'app-quiz-info',
@@ -48,5 +53,4 @@ export class QuizInfoComponent implements OnInit {
       }
     );
   }
-
 }

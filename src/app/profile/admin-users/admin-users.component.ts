@@ -58,7 +58,6 @@ export class AdminUsersComponent implements OnInit {
     this.roleUs = JSON.parse(localStorage.getItem('currentUser')).role;
 
     profileService.getAdminUsers().subscribe(resp => {
-
       this.adminUsers = resp;
       this.dataSource = new MatTableDataSource(this.adminUsers);
       this.dataSource.paginator = this.paginator;

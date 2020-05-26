@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<<<< Temporary merge branch 1
 import {ShareIdService} from "../../service/profileService/share-id.service";
-
+=========
+import {ShareIdService} from '../../service/profileService/share-id.service';
 import {Role} from '../../models/role.enum';
+>>>>>>>>> Temporary merge branch 2
 
 @Component({
   selector: 'app-profile-navigation',
@@ -24,7 +27,9 @@ export class ProfileNavigationComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    this.id = this.shareId.shareId();
     this.adminCheck();
+>>>>>>>>> Temporary merge branch 2
   }
 
 }
