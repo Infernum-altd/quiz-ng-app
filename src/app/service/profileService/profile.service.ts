@@ -32,6 +32,8 @@ export class ProfileService {
   private GET_FILTERED_USERS = `${this.BASE_URL}\\profile\\adminUsers\\filter\\`;
   private GET_USERS_BY_ROLE = `${this.BASE_URL}\\profile\\roleStatus\\`;
   private ADD_ADMIN_USER_URL = `${this.BASE_URL}\\api\\users\\addAdminUser`;
+  private GET_REJECTED_QUIZZES = `${this.BASE_URL}\\profile\\reject\\`;
+  private GET_REJECTED_MESSAGES = `${this.BASE_URL}\\profile\\rejectMessage\\`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
@@ -132,5 +134,13 @@ export class ProfileService {
 
   postRegisterInfo(user: User): Observable<User> {
     return this.http.post<User>(this.ADD_ADMIN_USER_URL, user);
+  }
+
+  getRejectedQuizzes(rejectedPageSize: number, rejectedPageIndex: number, rejectedSortDirection: any): Observable<any> {
+    return this.http.get(this.GET_REJECTED_QUIZZES + rejectedPageSize + '/' + rejectedPageIndex + '/' + this.userId +'?sort=' + (rejectedSortDirection==undefined? "": rejectedSortDirection.active + ' ' + rejectedSortDirection.direction));
+  }
+
+  getRejectMessages(quizId: number): Observable<any> {
+    return this.http.get(this.GET_REJECTED_MESSAGES + quizId);
   }
 }
