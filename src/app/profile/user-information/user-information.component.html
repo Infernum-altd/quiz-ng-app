@@ -8,7 +8,7 @@
   <p>Birthdate: {{profile?.birthdate | date}}</p>
   <p>City: {{profile?.city}}</p>
   <p>About me: {{profile?.about}}</p>
-
+  <p *ngIf="!isUser">Role: {{profile?.role}} </p>
   <div (click)="isEditForm=true">
     <div>
       <button mat-raised-button *ngIf="id==currentUserId">Edit profile</button>

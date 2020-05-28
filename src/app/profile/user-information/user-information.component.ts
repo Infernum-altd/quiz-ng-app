@@ -22,6 +22,9 @@ export class UserInformationComponent implements OnInit {
   id: string;
   roleUs: Role;
   public isAdmin = false;
+  public isModerator = false;
+  public isSuperAdmin = false;
+  public isUser = false;
 
   constructor(private profileService: ProfileService,
               private shareId: ShareIdService,
@@ -33,13 +36,25 @@ export class UserInformationComponent implements OnInit {
     this.roleUs = JSON.parse(localStorage.getItem('currentUser')).role;
   }
   adminCheck(){
-    if (this.roleUs.toString() !== Role[Role.USER]){
-      this.isAdmin = true;
+    switch (this.roleUs.toString()) {
+      case Role[Role.ADMIN]:
+        this.isAdmin = true;
+        break;
+      case Role[Role.MODERATOR]:
+        this.isModerator = true;
+        break;
+      case Role[Role.SUPER_ADMIN]:
+        this.isSuperAdmin = true;
+        break;
+      default:
+        this.isUser = true;
+        break;
     }
   }
 
   ngOnInit(): void {
     this.getProfile(this.id);
+    this.adminCheck();
     this.location.onPopState(() => {
       this.shareId.setId(this.currentUserId);
       this.shareId.setEmail(JSON.parse(localStorage.getItem('currentUser')).email);

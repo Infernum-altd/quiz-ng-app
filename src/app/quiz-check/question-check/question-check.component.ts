@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Question} from '../../models/question.model';
-import {QuestionService} from '../../service/questionService/question.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatTableDataSource} from '@angular/material/table';
-import {QuizCheckServiceService} from '../../service/quizCheckService/quiz-check-service.service';
 import {QuizCheckModel} from '../../models/quiz-check.model';
-import {MustMatch} from "../../profile/change-password/change-password.component";
+import {ModeratorComment} from "../../models/moderator-comment";
+import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
+import {StatusType} from "../../models/status-type.enum";
+
 @Component({
   selector: 'app-question-check',
   templateUrl: './question-check.component.html',
   styleUrls: ['./question-check.component.css']
 })
 export class QuestionCheckComponent implements OnInit {
+  public modComment: ModeratorComment;
   public commentForm: FormGroup;
   private subscription: Subscription;
   quiz: QuizCheckModel;
@@ -26,7 +26,7 @@ export class QuestionCheckComponent implements OnInit {
   labelPosition = 'before';
 
   constructor(private formBuilder: FormBuilder,
-              private quizService: QuizCheckServiceService,
+              private quizService: QuizCheckService,
               private activateRoute: ActivatedRoute,
               private router: Router) {
   }
@@ -52,7 +52,7 @@ export class QuestionCheckComponent implements OnInit {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
     this.unsignModeratorQuiz();
-    this.quizService.updateActiveStatusQuiz(this.currentQuizId).subscribe(
+    this.quizService.updateStatusQuiz(this.currentQuizId, StatusType.ACTIVE).subscribe(
       (resp: any) => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'pendingQuizzes'}}]);
@@ -80,7 +80,8 @@ export class QuestionCheckComponent implements OnInit {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
     this.unsignModeratorQuiz();
-    this.quizService.updateCommentQuiz(this.currentQuizId, this.comment).subscribe(
+    const com = new ModeratorComment(this.currentQuizId, this.currentUserId, this.comment, new Date());
+    this.quizService.addComment(com).subscribe(
       (resp: any) => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'pendingQuizzes'}}]);

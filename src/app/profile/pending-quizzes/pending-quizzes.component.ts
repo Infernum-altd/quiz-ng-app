@@ -1,15 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
-import {ProfileService} from '../../service/profileService/profile.service';
 import {Router} from '@angular/router';
-import {QuizService} from '../../service/quizService/quiz.service';
 import {Quiz} from '../../models/pending-quizzes.model';
 import {PendingQuizzesService} from '../../service/pendingQuizzesService/pending-quizzes.service';
 import {ShareIdService} from "../../service/profileService/share-id.service";
-import {QuizCheckServiceService} from "../../service/quizCheckService/quiz-check-service.service";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
 
 
 @Component({
@@ -36,7 +34,7 @@ export class PendingQuizzesComponent implements OnInit {
   constructor(private quizService: PendingQuizzesService,
               private router: Router,
               private shareId: ShareIdService,
-              private quizCheckService: QuizCheckServiceService) {
+              private quizCheckService: QuizCheckService) {
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
   }
 

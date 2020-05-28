@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class QuizComponent implements OnInit {
   @Input()
   quizData: Quiz;
-  quizImage : SafeResourceUrl;
+  quizImage: SafeResourceUrl;
 
   constructor(private sanitizer: DomSanitizer,
     public authenticationService: AuthenticationService,
