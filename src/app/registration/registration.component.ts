@@ -54,7 +54,7 @@ export class RegistrationComponent implements OnInit {
       birthdate: ['1973-01-01'],
       city: [''],
       about: [''],
-      password: ['', [Validators.required, Validators.pattern('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}')]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')

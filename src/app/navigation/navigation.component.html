@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <span class="spacer"></span>
-    <a mat-button routerLink="/register" *ngIf="!authService.logIn">Register</a>
+    <a mat-button routerLink="/registration" *ngIf="!authService.logIn">Register</a>
     <a mat-button routerLink="/login" *ngIf="!authService.logIn">Login</a>
     <a mat-button [routerLink]="['profile', id, {outlets: {profilenav: 'profinfo'}}]"
       *ngIf="authService.logIn">{{username}}</a>

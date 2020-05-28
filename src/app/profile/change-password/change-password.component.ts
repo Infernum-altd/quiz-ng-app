@@ -43,6 +43,7 @@ export class ChangePasswordComponent implements OnInit {
     this.profileService.updatePassword(this.newPassword).subscribe(
       (resp: any) => {
         alert("Password was changed")
+        this.router.navigate(['/'])
       },
       error => {
         alert("Something wrong while save password")
