@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs';
 import {Quiz} from '../../models/pending-quizzes.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {QuizService} from '../../service/quizService/quiz.service';
-import {FormControl} from "@angular/forms";
-import {User} from "../../models/user";
-import {Role} from "../../models/role.enum";
-import {ProfileService} from "../../service/profileService/profile.service";
+import {Router} from '@angular/router';
 import {ShareIdService} from "../../service/profileService/share-id.service";
 import {PlatformLocation} from "@angular/common";
+import {CommentHistory} from "../../models/comment-history";
+import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
 
 @Component({
   selector: 'app-quiz-info',
@@ -19,28 +15,34 @@ export class QuizInfoComponent implements OnInit {
   public quiz: Quiz;
   currentQuizId: string;
   id: string;
-  comment: boolean;
+  public comments: CommentHistory[];
 
-  constructor(private quizService: QuizService,
+  constructor(private quizService: QuizCheckService,
               private shareId: ShareIdService,
               private location: PlatformLocation,
               private router: Router){
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
   }
-  moderatorCheck(){
-    if (this.quiz.moderatorComment !== null){
-      this.comment = true;
-    }
-    else{this.comment = false; }
-  }
 
   ngOnInit(): void {
     this.getQuiz(this.currentQuizId);
+    this.getCommentHistory();
     this.location.onPopState(() => {
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate(['checkquiz', this.currentQuizId, {outlets: {quiznav: 'quizinfo'}}]);
       });
     });
+  }
+  public getCommentHistory(){
+    this.quizService.getCommentHistory(this.currentQuizId).subscribe(
+      (resp: any) => {
+        this.comments = resp;
+      },
+      error => {
+        console.log(error);
+        alert('Something wrong with downloading comment history');
+      }
+    );
   }
 
   ngSubmit(){}
@@ -55,5 +57,10 @@ export class QuizInfoComponent implements OnInit {
         alert('Something wrong with downloading quiz');
       }
     );
+  }
+  checkOut(id: number) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate(['profile', id, {outlets: {profilenav: 'profinfo'}}]);
+    });
   }
 }

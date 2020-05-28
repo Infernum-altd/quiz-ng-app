@@ -4,18 +4,15 @@ import {MatPaginator} from '@angular/material/paginator';
 import {ProfileService} from '../../service/profileService/profile.service';
 import {Router} from '@angular/router';
 import {ShareIdService} from '../../service/profileService/share-id.service';
-import {compareSegments} from '@angular/compiler-cli/ngcc/src/sourcemaps/segment_marker';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegistrationService} from '../../service/registrationService/registration.service';
-import {AuthenticationService} from '../../service/loginService/authentication.service';
-import {Role} from '../../models/role.enum';
+
 import {Gender} from '../../models/gender.enum';
 import {NotificationStatus} from '../../models/notification-status.enum';
-import {MustMatch} from '../../registration/registration.component';
 import {User} from "../../models/user";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {Subject} from "rxjs";
-import {stringify} from "querystring";
+import {Role} from "../../models/role.enum";
 
 @Component({
   selector: 'app-admin-users',
@@ -76,7 +73,7 @@ export class AdminUsersComponent implements OnInit {
     this.adminCheck();
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      role: ['']
+      role: ['MODERATOR']
     });
     this.setPaginationParamDefault();
     this.userQuestionUpdate.pipe(
@@ -142,21 +139,26 @@ export class AdminUsersComponent implements OnInit {
     }
     const input: User = JSON.parse(JSON.stringify(this.registerForm.value));
     this.model.email = input.email;
-    this.model.role = input.role;
+    if (this.roleUs === Role.ADMIN){
+      this.model.role = Role.MODERATOR;
+    }
+    else {
+      this.model.role = input.role;
+    }
     this.addNewUser();
   }
   addNewUser(): void{
     this.profileService.postRegisterInfo(this.model).subscribe(
       res => {
-        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-          this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'adminUsers'}}]);
-        });
-        alert('New user registrated');
+        alert('Activation code was sent');
       },
       error => {
         alert(error.error.message);
       }
     );
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'adminUsers'}}]);
+    });
   }
   adminCheck(){
     if (this.roleUs.toString() === Role[Role.SUPER_ADMIN]){
@@ -167,7 +169,6 @@ export class AdminUsersComponent implements OnInit {
     }
   }
   getAllAdminUsers() {
-    console.log("pagesize " + this.pageSize);
     this.profileService.getAdminUsers(this.pageSize, this.pageIndex).subscribe(
       resp => {
         this.currentUserRole = undefined;

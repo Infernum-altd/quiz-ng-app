@@ -34,6 +34,7 @@ export class ProfileService {
   private ADD_ADMIN_USER_URL = `${this.BASE_URL}\\api\\users\\addAdminUser`;
   private GET_REJECTED_QUIZZES = `${this.BASE_URL}\\profile\\reject\\`;
   private GET_REJECTED_MESSAGES = `${this.BASE_URL}\\profile\\rejectMessage\\`;
+  private ASSIGNED_QUIZZES_URL = `${this.BASE_URL}\\profile\\moderatorQuizzes\\`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
@@ -143,4 +144,8 @@ export class ProfileService {
   getRejectMessages(quizId: number): Observable<any> {
     return this.http.get(this.GET_REJECTED_MESSAGES + quizId);
   }
+  getAssignedQuizzes(moderatorId): Observable<any> {
+    return this.http.get(this.ASSIGNED_QUIZZES_URL  + moderatorId);
+  }
+
 }

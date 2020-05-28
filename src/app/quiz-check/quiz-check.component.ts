@@ -21,8 +21,6 @@ export class QuizCheckComponent implements OnInit {
         this.id = params.id;
       }
     );
-    // this.shareId.setId(this.id);
-    // this.router.navigate([{outlets: {quiznav: 'quizinfo'}}]);
   }
 
   ngOnInit(): void {

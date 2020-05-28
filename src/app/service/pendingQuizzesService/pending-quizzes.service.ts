@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
-
-import {Quiz} from '../../models/pending-quizzes.model';
 import {StatusType} from "../../models/quiz.model";
 import {AuthenticationService} from "../loginService/authentication.service";
 import {CurrentUserService} from "../current-user.service";
@@ -30,6 +28,7 @@ export class PendingQuizzesService {
   getAssignedQuizzes(moderatorId, pageSize: number, pageIndex: number): Observable<any> {
     return this.http.get(this.ASSIGNED_QUIZZES_URL  + moderatorId + '/' + pageSize + '/' + pageIndex);
   }
+
 
   getFilteredPendingQuizzes(searchText: string, pageSize: number, pageIndex: number): Observable<any> {
     return this.http.get(this.GET_FILTERED_PENDING_QUIZZES_URL + searchText + '/' + pageSize + '/' + pageIndex );
