@@ -112,8 +112,8 @@
             <div *ngFor = "let annon of announcement">
               <mat-card   style="border: 2px solid #ff0000" *ngIf="!annon.generated; else elseBlock">
                 <mat-card-header>
-                  <mat-card-title>{{annon.date | date:'shortTime'}}</mat-card-title>
-                  <mat-card-subtitle>{{annon.date | date}}</mat-card-subtitle>
+                  <mat-card-title>{{annon.date | date:'shortTime'}} </mat-card-title>
+                  <mat-card-subtitle>{{annon.date | date}}<br>Administrator announcement</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                   <p>
@@ -125,7 +125,7 @@
                 <mat-card   style="border: 2px solid #008000">
                   <mat-card-header>
                     <mat-card-title>{{annon.date | date:'shortTime'}}</mat-card-title>
-                    <mat-card-subtitle>{{annon.date | date}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{annon.date | date}}<br>Friends activities</mat-card-subtitle>
                   </mat-card-header>
                   <mat-card-content>
                     <p>
