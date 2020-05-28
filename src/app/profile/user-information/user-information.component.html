@@ -70,7 +70,7 @@
   <button mat-raised-button (click)="closeEditForm()" class="width-45">Cancel</button>
 </div>
 
-<div class="mat-elevation-z8 w-75" *ngIf="profile.role == 'MODERATOR' && assignedQuizzes!=null">
+<div class="mat-elevation-z8 w-75" *ngIf="profile.role.toString() == 'MODERATOR' && assignedQuizzes!=null">
   <h2 align="center">Moderator`s assignments</h2>
   <table mat-table [dataSource]="assignedQuizzes" class="mat-elevation-z8" width="100%">
     <ng-container matColumnDef="name">
