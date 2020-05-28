@@ -32,6 +32,7 @@ export class ProfileService {
   private GET_FILTERED_USERS = `${this.BASE_URL}\\profile\\adminUsers\\filter\\`;
   private GET_USERS_BY_ROLE = `${this.BASE_URL}\\profile\\roleStatus\\`;
   private ADD_ADMIN_USER_URL = `${this.BASE_URL}\\api\\users\\addAdminUser`;
+  private ASSIGNED_QUIZZES_URL = `${this.BASE_URL}\\profile\\moderatorQuizzes\\`;
   private userId = this.currentUserService.getCurrentUser().id;
 
   constructor(private http: HttpClient,
@@ -85,6 +86,7 @@ export class ProfileService {
     return this.http.get(this.GET_FILTERED_USERS + searchText + '/' + pageSize + '/' + pageIndex);
   }
 
+
   getCategoryName(categoryId: string): Observable<any>{
     return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
@@ -133,4 +135,8 @@ export class ProfileService {
   postRegisterInfo(user: User): Observable<User> {
     return this.http.post<User>(this.ADD_ADMIN_USER_URL, user);
   }
+  getAssignedQuizzes(moderatorId): Observable<any> {
+    return this.http.get(this.ASSIGNED_QUIZZES_URL  + moderatorId);
+  }
+
 }

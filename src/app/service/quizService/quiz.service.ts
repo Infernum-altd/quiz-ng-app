@@ -18,6 +18,7 @@ export class QuizService {
   private UNMARK_QUIZ_AS_FAVORITE = `${this.QUIZZES_URL}\\unmark\\`;
   private GET_RECOMMENDED_QUIZZES = `${this.QUIZZES_URL}\\recommendations\\`;
   private GET_POPULAR_QUIZZES = `${this.QUIZZES_URL}\\popular\\`;
+  private UNSIGN_ALL_MODERATOR_QUIZ_URL = `${this.QUIZZES_URL}\\unsignAll\\`;
 
   constructor(private http: HttpClient,
               private authService: AuthenticationService,
@@ -54,5 +55,8 @@ export class QuizService {
 
   RecommendationForAnonimus(limit: number): Observable<any> {
     return this.http.get<Quiz[]>(this.GET_POPULAR_QUIZZES + limit);
+  }
+  unsignAllQuiz(moderatorId: number) {
+    return this.http.delete(this.UNSIGN_ALL_MODERATOR_QUIZ_URL + moderatorId);
   }
 }

@@ -1,5 +1,5 @@
 <div fxLayout="column">
-  <mat-accordion>
+  <mat-accordion *ngIf="isAdmin || isSuperAdmin">
     <mat-expansion-panel>
       <mat-expansion-panel-header >
         <mat-panel-title *ngIf="roleUs.toString() == 'ADMIN'">
