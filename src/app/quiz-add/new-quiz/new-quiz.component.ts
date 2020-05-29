@@ -1,19 +1,16 @@
-import { CurrentUserService } from './../service/current-user.service';
-import { mergeMap, map, defaultIfEmpty } from 'rxjs/operators';
-import { TagService } from './../service/tagService/tag.service';
+import { CurrentUserService } from '../../service/current-user.service';
 import { Router } from '@angular/router';
-import { NewQuizService } from './../service/newQuizService/new-quiz.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CategoryService } from './../service/categoryService/category.service';
-import { Category } from './../models/category.model';
+import { CategoryService } from '../../service/categoryService/category.service';
+import { Category } from '../../models/category.model';
 import { FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Quiz } from '../models/add-quiz.model';
-import { StatusType } from '../models/quiz.model';
+import { Quiz } from '../../models/add-quiz.model';
+import { StatusType } from '../../models/quiz.model';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Tag } from '../models/tag.model';
-import { forkJoin, Observable } from 'rxjs';
+import { Tag } from '../../models/tag.model';
+import { ImageUploadComponent } from 'src/app/image-upload/image-upload.component';
 
 
 @Component({
@@ -23,6 +20,7 @@ import { forkJoin, Observable } from 'rxjs';
 })
 export class NewQuizComponent implements OnInit {
   @ViewChild('chipList') chipList: ElementRef<HTMLInputElement>;
+  @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
   visible = true;
   selectable = true;
@@ -35,6 +33,7 @@ export class NewQuizComponent implements OnInit {
   submitted: boolean = false;
   categories: Category[];
 
+
   quiz: Quiz = {
     id: 0,
     name: "",
@@ -43,13 +42,15 @@ export class NewQuizComponent implements OnInit {
     date: new Date().toISOString(),
     description: "",
     status: StatusType.PENDING.toString(),
-    modification_time: new Date().toISOString()
+    modification_time: new Date().toISOString(),
+    image: null,
+    questions: [],
+    tags: []
   };
+  image: File;
 
   constructor(
     private categoryService: CategoryService,
-    private newQuizService: NewQuizService,
-    private tagService: TagService,
     private formBuilder: FormBuilder,
     private currentUserService: CurrentUserService,
     private router: Router) { }
@@ -105,63 +106,24 @@ export class NewQuizComponent implements OnInit {
   }
 
   saveQuiz(): void {
-
-    this.newQuizService.postQuiz(this.quiz).pipe(
-      map(quiz =>
-        this.quiz.id = quiz.id),
-      mergeMap(
-        () => {
-          return this.saveTags();
-        }
-      ),
-      defaultIfEmpty([])
-    ).subscribe(
-      () => {
-        console.log('Quiz info added');
-        this.router.navigateByUrl('/add_questions', {
-          state: {
-            id: this.quiz.id,
-            name: this.quiz.name
-          }
-        });
-      },
-      err => {
-        alert(err.error['message']);
+    this.router.navigateByUrl('/add_questions', {
+      state: {
+        quiz: this.quiz,
+        image: this.image
       }
-    );
-  }
+    });
 
-  saveTags(): Observable<any> {
-    let observableBatch: Observable<any>[] = [];
-
-    this.tags.forEach(
-      (item, index) => {
-        observableBatch.push(this.tagService.postTag(item).pipe(
-          map(
-            tag => {
-              this.tags[index].id = tag.id;
-              return this.tags[index];
-            }
-          ),
-          mergeMap(
-            (tag) => {
-              return this.tagService.addTagToQuiz(this.quiz.id, tag.id);
-            }
-          )
-        ));
-      }
-    )
-
-    return forkJoin(observableBatch);
   }
 
   getData(): void {
     let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
-    console.log(input);
     this.quiz.name = input.name;
     let category = this.quizForm.get('category').value;
     this.quiz.category_id = this.categories.find(function (el) { return el.name === category; }).id;
     this.quiz.description = input.description;
     this.quiz.status = this.quiz.status.toUpperCase();
+    this.image = this.imageComponent.selectedFile?.file;
+    this.tags = this.tags;
+    console.log(this.quiz);
   }
 }

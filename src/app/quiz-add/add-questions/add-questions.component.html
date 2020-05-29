@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-around center">
     <mat-card fxLayout="column" fxLayoutAlign="start">
         <mat-card-title>
-            <h2>Quiz: {{name}}</h2>
+            <h2>Quiz: {{quiz.name}}</h2>
         </mat-card-title>
         <mat-card-content>
             <mat-accordion *ngFor="let question of questions; let i=index">

@@ -1,9 +1,9 @@
-import { Observable, forkJoin } from 'rxjs';
-import { Answer } from './../models/answer.model';
+import { ImageService } from './../../service/imageService/image.service';
+import { Answer } from '../../models/answer.model';
 import { Component, OnInit } from '@angular/core';
 import { ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
-import { mergeMap, map, defaultIfEmpty } from 'rxjs/operators';
-import { AnswerService } from '../service/answerService/answer.service';
+import { AnswerService } from '../../service/answerService/answer.service';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-answer',
@@ -18,7 +18,7 @@ export class AnswerComponent implements OnInit {
 
   questionId: number;
 
-  constructor(private answerService: AnswerService) { }
+  constructor(private imageService: ImageService) { }
 
   ngOnInit() {
   }
@@ -27,34 +27,12 @@ export class AnswerComponent implements OnInit {
     return true;
   }
 
-  save(): Observable<any> {
-    this.submitted = true;
-    this.getData();
-    this.getImages();
-
-    return this.saveAnswers().pipe(
-      mergeMap(
-        () => this.saveImages()
-      ),
-      defaultIfEmpty()
-    );
-
+  getData(): Observable<Answer[]> {
+    return null;
   }
 
-  saveAnswers(): Observable<any> {
-    let observableBatch = [];
+  getImages(): void {
 
-    this.answer.forEach(
-      (item) => {
-        if (item.text != null && item.text !== "") {
-          observableBatch.push(
-            this.answerService.postAnswer(item).pipe(map(response => item.id = response.id))
-          );
-        }
-      }
-    );
-
-    return forkJoin(observableBatch);
   }
 
   saveImages(): Observable<any> {
@@ -64,7 +42,7 @@ export class AnswerComponent implements OnInit {
       (item, index) => {
         if (item.text != null && item.text !== "" && this.images[index] != null) {
           observableBatch.push(
-            this.answerService.updateImage(item.id, this.images[index])
+            this.imageService.saveImage(this.images[index])
           );
         }
       }
@@ -72,15 +50,6 @@ export class AnswerComponent implements OnInit {
 
     return forkJoin(observableBatch);
   }
-
-  getData(): void {
-
-  }
-
-  getImages(): void {
-
-  }
-
 }
 
 export function SequenceValidator(): ValidatorFn {

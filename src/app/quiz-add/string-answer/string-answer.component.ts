@@ -1,9 +1,11 @@
+import { ImageService } from './../../service/imageService/image.service';
 import { Validators } from '@angular/forms';
-import { AnswerComponent } from './../answer/answer.component';
+import { AnswerComponent } from '../answer/answer.component';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Answer } from '../models/answer.model';
-import { AnswerService } from '../service/answerService/answer.service';
+import { Answer } from '../../models/answer.model';
+import { AnswerService } from '../../service/answerService/answer.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-string-answer',
@@ -13,8 +15,8 @@ import { AnswerService } from '../service/answerService/answer.service';
 export class StringAnswerComponent extends AnswerComponent implements OnInit {
   text: FormControl;
 
-  constructor(answerService: AnswerService) {
-    super(answerService);
+  constructor(imageService: ImageService) {
+    super(imageService);
   }
 
   ngOnInit(): void {
@@ -23,7 +25,8 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
       questionId: 0,
       text: "",
       correct: true,
-      nextAnswerId: null
+      nextAnswerId: null,
+      image: null
     };
     this.answer.push(result);
 
@@ -37,8 +40,9 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
     return this.text.valid;
   }
 
-  getData(): void {
-    this.answer[0].questionId = this.questionId;
+  getData(): Observable<Answer[]> {
     this.answer[0].text = this.text.value;
+
+    return of(this.answer);
   }
 }

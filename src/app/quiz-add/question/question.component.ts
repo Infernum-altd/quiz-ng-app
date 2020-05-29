@@ -1,17 +1,18 @@
+import { ImageService } from './../../service/imageService/image.service';
 import { Validators } from '@angular/forms';
 import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
 import { StringAnswerComponent } from './../string-answer/string-answer.component';
-import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
-import { OptionalAnswerComponent } from './../optional-answer/optional-answer.component';
-import { AnswerComponent } from './../answer/answer.component';
-import { QuestionService } from './../service/questionService/question.service';
-import { Question, QuestionType } from './../models/question.model';
+import { BooleanAnswerComponent } from '../boolean-answer/boolean-answer.component';
+import { OptionalAnswerComponent } from '../optional-answer/optional-answer.component';
+import { AnswerComponent } from '../answer/answer.component';
+import { QuestionService } from '../../service/questionService/question.service';
+import { Question, QuestionType } from '../../models/question.model';
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ImageUploadComponent } from '../image-upload/image-upload.component';
-import { map, mergeMap, defaultIfEmpty } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { ImageUploadComponent } from '../../image-upload/image-upload.component';
 import { TitleCasePipe } from '@angular/common';
+import { map, mergeMap } from 'rxjs/operators';
+import { forkJoin, of, Observable } from 'rxjs';
 
 interface QuestionTypeValue {
   value: string
@@ -37,7 +38,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     type: QuestionType.OPTION,
     text: "",
     active: true,
-    answerList: null
+    answerList: [],
+    image: null
   };
   image: File = null;
 
@@ -47,7 +49,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   constructor(public questionService: QuestionService,
     private formBuilder: FormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private imageService: ImageService) {
     Object.keys(QuestionType).forEach(
       value => this.questionTypes.push({ value })
     );
@@ -94,46 +97,20 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     return this.questionForm.valid && this.componentRef.instance.isValid();
   }
 
-  save(): Observable<any> {
-    if (this.questionForm.invalid) {
-      return;
-    }
-
-    this.submitted = true;
-    let answer = this.componentRef.instance;
-    if (answer.isValid()) {
-      this.getData();
-
-      return this.questionService.postQuestion(this.question).pipe(
-        map(result => {
-          this.question.id = result.id;
-          answer.questionId = result.id;
-          return this.question;
-        }),
-        mergeMap(
-          question => {
-            if (this.image != null) {
-              return this.questionService.updateImage(question.id, this.image);
-            }
-            return of(null)
-          }
-        ),
-        defaultIfEmpty(),
-        mergeMap(() =>
-          this.componentRef.instance.save()
-        )
-      );
-    }
-  }
-
-  getData(): void {
+  getData(): Observable<Question> {
     this.question.quizId = this.quizId;
     this.question.type = this.question.type.toUpperCase();
     this.question.text = this.questionForm.get('text').value;
     this.question.type = this.questionForm.get('type').value.value.toUpperCase();
+    this.question.answerList = this.componentRef.instance.answer;
 
-    if (this.imageComponent.selectedFile != null)
-      this.image = this.imageComponent.selectedFile.file;
+    return this.componentRef.instance.getData().pipe(
+      map(resp => { console.log(resp); this.question.answerList = resp; }),
+      mergeMap(_ => this.imageService.saveImage(this.imageComponent.selectedFile?.file).pipe(
+        map(resp => { if (resp != "") this.question.image = resp; }),
+        mergeMap(_ => of(this.question))
+      ))
+    );
   }
 
   onOptionSelected(value: QuestionTypeValue) {
