@@ -39,12 +39,10 @@ export class AnswerComponent implements OnInit {
     let observableBatch = [];
 
     this.answer.forEach(
-      (item, index) => {
-        if (item.text != null && item.text !== "" && this.images[index] != null) {
-          observableBatch.push(
-            this.imageService.saveImage(this.images[index])
-          );
-        }
+      (_, index) => {
+        observableBatch.push(
+          this.imageService.saveImage(this.images[index])
+        );
       }
     );
 

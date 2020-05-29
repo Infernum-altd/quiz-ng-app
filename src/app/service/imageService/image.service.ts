@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,9 @@ export class ImageService {
   }
 
   saveImage(image: File): Observable<any> {
+    if (image == null) {
+      return of("");
+    }
     const uploadImg = new FormData();
     uploadImg.append('image', image);
     return this.http.post(this.SAVE_IMAGE, uploadImg, { responseType: 'text' });

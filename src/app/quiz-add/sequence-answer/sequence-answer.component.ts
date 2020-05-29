@@ -73,8 +73,22 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
     }
 
     return this.saveImages().pipe(
-      map((resp, index) => { if (resp[index] != "") this.answer[index].image = resp[index]; }),
-      mergeMap(_ => of(this.answer))
+      map((resp) => {
+        for (let i in resp) {
+          if (resp[i] !== "") {
+            this.answer[i].image = resp[i];
+          }
+        }
+      }),
+      mergeMap(_ => {
+        const result = [];
+        for (let i of this.answer) {
+          if (i.text) {
+            result.push(i);
+          }
+        }
+        return of(result);
+      })
     );
   }
 

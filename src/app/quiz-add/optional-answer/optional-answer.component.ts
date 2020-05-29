@@ -78,7 +78,13 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
     }
 
     return this.saveImages().pipe(
-      map((resp, index) => { if (resp[index] != "") this.answer[index].image = resp[index]; }),
+      map((resp) => {
+        for (let i in resp) {
+          if (resp[i] !== "") {
+            this.answer[i].image = resp[i];
+          }
+        }
+      }),
       mergeMap(_ => of(this.answer))
     );
   }

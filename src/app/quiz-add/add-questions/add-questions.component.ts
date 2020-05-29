@@ -25,6 +25,10 @@ export class AddQuestionsComponent implements OnInit {
     private imageService: ImageService) {
     this.quiz = this.router.getCurrentNavigation().extras.state.quiz;
     this.image = this.router.getCurrentNavigation().extras.state.image;
+    this.questions = this.router.getCurrentNavigation().extras.state.questions;
+    if (this.questions == null) {
+      this.questions = [];
+    }
   }
 
   ngOnInit(): void {
@@ -75,7 +79,8 @@ export class AddQuestionsComponent implements OnInit {
         map(resp => this.quiz.questions = resp),
         mergeMap(
           _ => this.imageService.saveImage(this.image).pipe(
-            map(resp => { if (resp != "") this.quiz.image = resp; })
+            map(resp => { if (resp != "") this.quiz.image = resp; }),
+            mergeMap(_ => this.newQuizService.postQuiz(this.quiz))
           )
         )
       ).subscribe(
