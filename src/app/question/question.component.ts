@@ -37,7 +37,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     type: QuestionType.OPTION,
     text: "",
     active: true,
-    answerList: null
+    answerList: null,
+    image: null
   };
   image: File = null;
 

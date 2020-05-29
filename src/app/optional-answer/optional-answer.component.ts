@@ -34,7 +34,8 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
         questionId: 0,
         text: "",
         correct: false,
-        nextAnswerId: null
+        nextAnswerId: null,
+        image: null
       });
       let correctControl = new FormControl(this.answer[_i].correct, []);
       let textControl = new FormControl(this.answer[_i].text, []);

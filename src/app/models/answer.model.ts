@@ -4,5 +4,5 @@ export interface Answer {
     text: string,
     correct: boolean,
     nextAnswerId: number
-    //TODO: add image
+    image: string;
 }

@@ -26,7 +26,8 @@ export class GameAnswerComponent implements OnInit {
       questionId: null,
       text: null,
       correct: null,
-      nextAnswerId: null
+      nextAnswerId: null,
+      image: null
     };
   }
 }

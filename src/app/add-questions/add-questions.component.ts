@@ -30,7 +30,8 @@ export class AddQuestionsComponent implements OnInit {
       type: 'OPTION',
       text: '',
       active: true,
-      answerList: null
+      answerList: null,
+      image: null
     });
   }
 
@@ -41,7 +42,8 @@ export class AddQuestionsComponent implements OnInit {
       type: 'OPTION',
       text: '',
       active: true,
-      answerList: null
+      answerList: null,
+      image: null
     });
   }
 

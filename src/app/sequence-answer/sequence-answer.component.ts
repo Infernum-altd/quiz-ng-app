@@ -39,7 +39,8 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
         questionId: 0,
         text: "",
         correct: true,
-        nextAnswerId: null
+        nextAnswerId: null,
+        image: null
       });
       let formControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
