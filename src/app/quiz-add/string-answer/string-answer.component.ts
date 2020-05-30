@@ -26,7 +26,9 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
       text: "",
       correct: true,
       nextAnswerId: null,
-      image: null
+      image: null,
+      changed: true,
+      deleted: false
     };
     this.answer.push(result);
 
@@ -41,6 +43,9 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
   }
 
   getData(): Observable<Answer[]> {
+    if (this.answer[0].id != null && this.text.dirty) {
+      this.answer[0].changed = true;
+    }
     this.answer[0].text = this.text.value;
 
     return of(this.answer);

@@ -7,16 +7,12 @@ import { OptionalAnswerComponent } from '../optional-answer/optional-answer.comp
 import { AnswerComponent } from '../answer/answer.component';
 import { QuestionService } from '../../service/questionService/question.service';
 import { Question, QuestionType } from '../../models/question.model';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ImageUploadComponent } from '../../image-upload/image-upload.component';
 import { TitleCasePipe } from '@angular/common';
 import { map, mergeMap } from 'rxjs/operators';
 import { forkJoin, of, Observable } from 'rxjs';
-
-interface QuestionTypeValue {
-  value: string
-}
 
 @Component({
   selector: 'app-question',
@@ -29,22 +25,23 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   send: boolean = false;
 
   questionForm: FormGroup;
-  questionTypes: QuestionTypeValue[] = [];
+  questionTypes: string[] = [];
   componentRef: ComponentRef<AnswerComponent>
 
-  question: Question = {
+  @Input() question: Question = {
     id: null,
     quizId: null,
-    type: QuestionType.OPTION,
+    type: "Option",
     text: "",
     active: true,
     answerList: [],
-    image: null
+    image: null,
+    changed: true,
+    deleted: false
   };
   image: File = null;
 
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
-  @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
   @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
   constructor(public questionService: QuestionService,
@@ -52,7 +49,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     private imageService: ImageService) {
     Object.keys(QuestionType).forEach(
-      value => this.questionTypes.push({ value })
+      value => this.questionTypes.push(value)
     );
   }
 
@@ -64,7 +61,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.loadComponent(QuestionType.OPTION.toString());
+    this.questionForm.get('type').setValue(this.question.type);
+    this.loadComponent(this.question.type);
   }
 
   loadComponent(value: string) {
@@ -88,6 +86,23 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
     this.answerHost.clear();
     this.componentRef = this.answerHost.createComponent(componentFactory);
+    if (this.question.id) {
+      if (value === QuestionType.OPTION || value === QuestionType.SEQUENCE) {
+        while (this.question.answerList.length < 4) {
+          this.question.answerList.push({
+            id: null,
+            questionId: 0,
+            text: "",
+            correct: false,
+            nextAnswerId: null,
+            image: null,
+            changed: true,
+            deleted: true
+          });
+        }
+      }
+      this.componentRef.instance.answer = this.question.answerList;
+    }
     this.componentRef.changeDetectorRef.detectChanges();
   }
 
@@ -101,7 +116,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.question.quizId = this.quizId;
     this.question.type = this.question.type.toUpperCase();
     this.question.text = this.questionForm.get('text').value;
-    this.question.type = this.questionForm.get('type').value.value.toUpperCase();
+    this.question.type = this.questionForm.get('type').value.toUpperCase();
     this.question.answerList = this.componentRef.instance.answer;
 
     return this.componentRef.instance.getData().pipe(
@@ -113,8 +128,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onOptionSelected(value: QuestionTypeValue) {
-    this.loadComponent(new TitleCasePipe().transform(value.value));
+  onOptionSelected(value: string) {
+    console.log(value);
+    this.loadComponent(value);
   }
 
 }

@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ProfileService} from '../../service/profileService/profile.service';
-import {PageEvent} from "@angular/material/paginator";
-import {Quiz} from "../../models/quiz";
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import { Quiz } from './../../models/add-quiz.model';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../../service/profileService/profile.service';
+import { PageEvent } from "@angular/material/paginator";
+import { Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { NewQuizService } from 'src/app/service/newQuizService/new-quiz.service';
 
 
 @Component({
@@ -24,7 +26,9 @@ export class MyQuizzesComponent implements OnInit {
   pageSizeOptions: number[] = [8, 16, 24];
 
 
-  constructor(private profileService: ProfileService) {
+  constructor(private profileService: ProfileService,
+    private router: Router,
+    private quizService: NewQuizService) {
   }
 
   ngOnInit(): void {
@@ -35,7 +39,7 @@ export class MyQuizzesComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
-        if (userSearch.length ==0) {
+        if (userSearch.length == 0) {
           this.setPaginationParamDefault();
           this.getUserQuizzes();
         } else {
@@ -65,7 +69,7 @@ export class MyQuizzesComponent implements OnInit {
 
   filterQuizzes(userSearch: string) {
     this.profileService.filterQuizzesRequest(userSearch, this.pageSize, this.pageIndex, this.sortDirection).subscribe(
-      resp=>{
+      resp => {
         this.userQuizzes = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }
@@ -78,14 +82,29 @@ export class MyQuizzesComponent implements OnInit {
         this.setPaginationParamDefault();
       }
       this.filterQuizzes(this.userRequest);
-    }else {
+    } else {
       this.getUserQuizzes();
     }
   }
 
   sortQuizzes($event) {
-    this.sortDirection = $event.direction==''? undefined : $event;
+    this.sortDirection = $event.direction == '' ? undefined : $event;
     this.setPaginationParamDefault();
     this.choseRequest();
+  }
+
+  editQuiz(quiz: Quiz) {
+    this.quizService.getQuizInfo(quiz.id).subscribe(
+      resp => this.router.navigateByUrl('/new_quiz', {
+        state: {
+          quiz: resp
+        }
+      }),
+      err => {
+        console.log(err);
+        alert(err.message);
+      }
+    );
+
   }
 }

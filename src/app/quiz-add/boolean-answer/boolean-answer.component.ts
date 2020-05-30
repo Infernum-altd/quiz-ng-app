@@ -25,7 +25,9 @@ export class BooleanAnswerComponent extends AnswerComponent implements OnInit {
       text: "",
       correct: true,
       nextAnswerId: null,
-      image: null
+      image: null,
+      changed: true,
+      deleted: false
     };
     this.answer.push(result);
   }

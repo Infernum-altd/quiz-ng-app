@@ -1,8 +1,7 @@
 import { ImageService } from './../../service/imageService/image.service';
 import { Answer } from '../../models/answer.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ValidatorFn, ValidationErrors, FormArray } from '@angular/forms';
-import { AnswerService } from '../../service/answerService/answer.service';
 import { Observable, forkJoin } from 'rxjs';
 
 @Component({
@@ -13,7 +12,7 @@ import { Observable, forkJoin } from 'rxjs';
 export class AnswerComponent implements OnInit {
   submitted: boolean = false;
 
-  answer: Answer[] = [];
+  @Input() answer: Answer[] = [];
   images: File[] = [];
 
   questionId: number;

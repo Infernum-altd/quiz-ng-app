@@ -1,10 +1,9 @@
 import { ImageService } from './../../service/imageService/image.service';
-import { Observable, forkJoin, of } from 'rxjs';
-import { AnswerService } from '../../service/answerService/answer.service';
+import { Observable, of } from 'rxjs';
 import { ImageUploadComponent } from '../../image-upload/image-upload.component';
 import { Validators, FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AnswerComponent, SequenceValidator } from '../answer/answer.component';
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { mergeMap, map } from 'rxjs/operators';
 import { Answer } from 'src/app/models/answer.model';
 
@@ -40,9 +39,11 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
         text: "",
         correct: true,
         nextAnswerId: null,
-        image: null
+        image: null,
+        changed: true,
+        deleted: false
       });
-      let formControl = new FormControl(this.answer[_i].text, []);
+      const formControl = new FormControl(this.answer[_i].text, []);
       if (_i < this.minRequired) {
         formControl.setValidators([Validators.required, Validators.maxLength(30)]);
       }
@@ -65,8 +66,17 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
   getData(): Observable<Answer[]> {
     this.getImages();
     for (var i = 0; i < this.answer.length; i++) {
+      if (this.answer[i].id != null && (this.answerForm.get('items') as FormArray).at(i).dirty) {
+        this.answer[i].changed = true;
+      }
 
-      this.answer[i].text = (this.answerForm.get('items') as FormArray).at(i).get("text").value;
+      const newText = (this.answerForm.get('items') as FormArray).at(i).get("text").value;
+
+      if (this.answer[i].text != "" && newText == "") {
+        this.answer[i].deleted = true;
+      }
+
+      this.answer[i].text = newText;
 
       if (this.answer[i].text === "" || this.answer[i].text == null)
         break;
@@ -83,7 +93,7 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
       mergeMap(_ => {
         const result = [];
         for (let i of this.answer) {
-          if (i.text) {
+          if (i.text || i.deleted) {
             result.push(i);
           }
         }

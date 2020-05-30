@@ -18,7 +18,7 @@
             <mat-select id="type" formControlName="type" class="form-control"
                 (selectionChange)="onOptionSelected($event.value)">
                 <mat-option *ngFor='let type of questionTypes' [value]="type">
-                    {{type.value | titlecase}}
+                    {{type | titlecase}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

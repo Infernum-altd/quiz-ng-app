@@ -13,4 +13,5 @@ export interface Quiz {
     questions: Question[];
     image: string;
     tags: Tag[];
+    changed: boolean;
 }

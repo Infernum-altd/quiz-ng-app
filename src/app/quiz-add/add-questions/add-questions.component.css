@@ -22,3 +22,7 @@ h3 {
 .fab {
     margin: 1rem;
 }
+
+.hidden {
+    display: none !important;
+}

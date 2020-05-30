@@ -11,6 +11,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Tag } from '../../models/tag.model';
 import { ImageUploadComponent } from 'src/app/image-upload/image-upload.component';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -35,7 +37,7 @@ export class NewQuizComponent implements OnInit {
 
 
   quiz: Quiz = {
-    id: 0,
+    id: null,
     name: "",
     author: parseInt(this.currentUserService.getCurrentUser().id),
     category_id: 1,
@@ -45,7 +47,8 @@ export class NewQuizComponent implements OnInit {
     modification_time: new Date().toISOString(),
     image: null,
     questions: [],
-    tags: []
+    tags: [],
+    changed: true
   };
   image: File;
 
@@ -53,15 +56,21 @@ export class NewQuizComponent implements OnInit {
     private categoryService: CategoryService,
     private formBuilder: FormBuilder,
     private currentUserService: CurrentUserService,
-    private router: Router) { }
+    private router: Router) {
+    if (this.router.getCurrentNavigation().extras.state?.quiz)
+      this.quiz = this.router.getCurrentNavigation().extras.state.quiz;
+    this.tags = this.quiz.tags;
+  }
 
   ngOnInit(): void {
     this.loadCategories();
 
+    console.log(this.quiz);
+
     this.quizForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength]],
-      category: ['General'],
-      description: ['', [Validators.maxLength]]
+      name: [this.quiz.name, [Validators.required, Validators.maxLength]],
+      category: [],
+      description: [this.quiz.description, [Validators.maxLength]]
     });
   }
 
@@ -85,12 +94,25 @@ export class NewQuizComponent implements OnInit {
     }
   }
 
-  loadCategories() {
-    this.categoryService.getCategories().subscribe(
-      resp => { this.categories = resp },
-      err => console.error(err),
-      () => console.log('Done loading categories')
+  loadCategories(): Observable<Category[]> {
+    return this.categoryService.getCategories().pipe(
+      map(resp => {
+        this.categories = resp;
+        if (this.quiz.id != null)
+          this.getCategory();
+        return this.categories;
+      })
     );
+  }
+
+  getCategory() {
+    let category = null;
+    if (this.quiz.id) {
+      category = this.categories?.find(item => item.id == this.quiz.category_id);
+    } else {
+      category = this.categories[0];
+    }
+    this.quizForm.get('category').setValue(category);
   }
 
   onSubmit() {
@@ -119,11 +141,11 @@ export class NewQuizComponent implements OnInit {
     let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
     this.quiz.name = input.name;
     let category = this.quizForm.get('category').value;
-    this.quiz.category_id = this.categories.find(function (el) { return el.name === category; }).id;
+    this.quiz.category_id = category.id;
     this.quiz.description = input.description;
     this.quiz.status = this.quiz.status.toUpperCase();
     this.image = this.imageComponent.selectedFile?.file;
-    this.tags = this.tags;
+    this.quiz.tags = this.tags;
     console.log(this.quiz);
   }
 }

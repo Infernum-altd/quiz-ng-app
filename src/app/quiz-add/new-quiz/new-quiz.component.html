@@ -23,7 +23,8 @@
                     <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Select category</mat-label>
                         <mat-select formControlName="category" value="questionTypes[0]">
-                            <mat-option *ngFor='let category of categories' [value]='category.name'>
+                            <mat-option *ngFor='let category of categories?categories:(loadCategories() |async)'
+                                [value]="category">
                                 {{category.name | titlecase}}
                             </mat-option>
                         </mat-select>

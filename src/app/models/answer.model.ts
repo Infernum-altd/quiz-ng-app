@@ -4,5 +4,7 @@ export interface Answer {
     image: string;
     text: string,
     correct: boolean,
-    nextAnswerId: number
+    nextAnswerId: number,
+    changed: boolean,
+    deleted: boolean
 }

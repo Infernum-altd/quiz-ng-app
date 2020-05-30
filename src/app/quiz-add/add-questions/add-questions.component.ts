@@ -4,7 +4,7 @@ import { NewQuizService } from './../../service/newQuizService/new-quiz.service'
 import { QuestionComponent } from '../question/question.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { Question } from '../../models/question.model';
+import { Question, QuestionType } from '../../models/question.model';
 import { Quiz } from '../../models/add-quiz.model';
 import { mergeMap, map } from 'rxjs/operators';
 
@@ -25,39 +25,33 @@ export class AddQuestionsComponent implements OnInit {
     private imageService: ImageService) {
     this.quiz = this.router.getCurrentNavigation().extras.state.quiz;
     this.image = this.router.getCurrentNavigation().extras.state.image;
-    this.questions = this.router.getCurrentNavigation().extras.state.questions;
-    if (this.questions == null) {
-      this.questions = [];
-    }
+    this.questions = this.quiz.questions;
   }
 
   ngOnInit(): void {
-    this.questions.push({
-      id: null,
-      quizId: null,
-      type: 'OPTION',
-      text: '',
-      active: true,
-      answerList: null,
-      image: null
-    });
   }
 
   addQuestion() {
     this.questions.push({
       id: null,
       quizId: null,
-      type: 'OPTION',
+      type: "Option",
       text: '',
       active: true,
       answerList: null,
-      image: null
+      image: null,
+      changed: true,
+      deleted: false
     });
   }
 
   removeQuestion(i: number) {
-    if (this.questions.length > 1) {
-      this.questions.splice(i, 1);
+    if (this.questions.filter(item => !item.deleted).length > 1) {
+      if (this.questions[i].id != null) {
+        this.questions[i].deleted = true;
+      } else {
+        this.questions.splice(i, 1);
+      }
     }
     else {
       alert("Can't delete the only one question");
@@ -65,7 +59,7 @@ export class AddQuestionsComponent implements OnInit {
   }
 
   onSubmit() {
-    let observableBatch: Observable<Question>[] = [];
+    const observableBatch: Observable<Question>[] = [];
 
 
     if (this.isValid()) {
@@ -80,7 +74,10 @@ export class AddQuestionsComponent implements OnInit {
         mergeMap(
           _ => this.imageService.saveImage(this.image).pipe(
             map(resp => { if (resp != "") this.quiz.image = resp; }),
-            mergeMap(_ => this.newQuizService.postQuiz(this.quiz))
+            mergeMap(_ => {
+              console.log(this.quiz);
+              return this.newQuizService.postQuiz(this.quiz);
+            })
           )
         )
       ).subscribe(

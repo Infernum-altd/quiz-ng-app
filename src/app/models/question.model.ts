@@ -14,5 +14,7 @@ export interface Question {
     text: string,
     active: boolean,
     image: string,
-    answerList: Answer[]
+    answerList: Answer[],
+    changed: boolean,
+    deleted: boolean
 } 
