@@ -4,10 +4,10 @@ import {PageEvent} from "@angular/material/paginator";
 import {Quiz} from "../../models/quiz";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {GameResultDialogComponent} from "../played-game/game-result-dialog/game-result-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RejectMessagesDialogComponent} from "./reject-messages-dialog/reject-messages-dialog.component";
 import { NewQuizService } from 'src/app/service/newQuizService/new-quiz.service';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -37,7 +37,8 @@ export class MyQuizzesComponent implements OnInit {
 
   constructor(private profileService: ProfileService,
               public dialog: MatDialog,
-              private quizService: NewQuizService) {
+              private quizService: NewQuizService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
