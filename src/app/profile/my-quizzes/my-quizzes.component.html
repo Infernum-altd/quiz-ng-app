@@ -85,8 +85,16 @@
         <button mat-icon-button>
           <mat-icon>play_arrow</mat-icon>
         </button>
+        <button mat-icon-button (click)="editQuiz(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+<!--        <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>-->
       </mat-cell>
+
     </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -35,9 +35,9 @@ export class GameService {
     this.gameId = gameId;
     this.player = player;
 
-    let that = this;
+    const that = this;
 
-    let config = new RxStompConfig();
+    const config = new RxStompConfig();
     config.webSocketFactory = function () { return new SockJs(that.webSocketEndPoint); };
 
     this.client = new RxStomp();

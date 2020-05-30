@@ -27,7 +27,9 @@ export class GameAnswerComponent implements OnInit {
       text: null,
       correct: null,
       nextAnswerId: null,
-      image: null
+      image: null,
+      changed: false,
+      deleted: false
     };
   }
 }

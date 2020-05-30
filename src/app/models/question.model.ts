@@ -13,6 +13,8 @@ export interface Question {
     type: string,
     text: string,
     active: boolean,
+    image: string,
     answerList: Answer[],
-    image: string
-}
+    changed: boolean,
+    deleted: boolean
+} 

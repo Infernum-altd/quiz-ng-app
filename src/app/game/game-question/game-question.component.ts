@@ -116,6 +116,11 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked, CanCompo
 
   submitAnswer() {
     let answers = this.componentRef.instance.getSubmittedAnswers();
+
+    for (let answer of answers) {
+      answer.questionId = this.question.id;
+    }
+
     this.gameService.postAnswer(answers);
   }
 

@@ -1,21 +1,18 @@
+import { ImageService } from './../../service/imageService/image.service';
 import { Validators } from '@angular/forms';
 import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
 import { StringAnswerComponent } from './../string-answer/string-answer.component';
-import { BooleanAnswerComponent } from './../boolean-answer/boolean-answer.component';
-import { OptionalAnswerComponent } from './../optional-answer/optional-answer.component';
-import { AnswerComponent } from './../answer/answer.component';
-import { QuestionService } from './../service/questionService/question.service';
-import { Question, QuestionType } from './../models/question.model';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory } from '@angular/core';
+import { BooleanAnswerComponent } from '../boolean-answer/boolean-answer.component';
+import { OptionalAnswerComponent } from '../optional-answer/optional-answer.component';
+import { AnswerComponent } from '../answer/answer.component';
+import { QuestionService } from '../../service/questionService/question.service';
+import { Question, QuestionType } from '../../models/question.model';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ImageUploadComponent } from '../image-upload/image-upload.component';
-import { map, mergeMap, defaultIfEmpty } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { ImageUploadComponent } from '../../image-upload/image-upload.component';
 import { TitleCasePipe } from '@angular/common';
-
-interface QuestionTypeValue {
-  value: string
-}
+import { map, mergeMap } from 'rxjs/operators';
+import { forkJoin, of, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-question',
@@ -28,29 +25,31 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   send: boolean = false;
 
   questionForm: FormGroup;
-  questionTypes: QuestionTypeValue[] = [];
+  questionTypes: string[] = [];
   componentRef: ComponentRef<AnswerComponent>
 
-  question: Question = {
+  @Input() question: Question = {
     id: null,
     quizId: null,
-    type: QuestionType.OPTION,
+    type: "Option",
     text: "",
     active: true,
-    answerList: null,
-    image: null
+    answerList: [],
+    image: null,
+    changed: true,
+    deleted: false
   };
   image: File = null;
 
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
-  @ViewChild(AnswerComponent) answerComponent: AnswerComponent;
   @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
   constructor(public questionService: QuestionService,
     private formBuilder: FormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private imageService: ImageService) {
     Object.keys(QuestionType).forEach(
-      value => this.questionTypes.push({ value })
+      value => this.questionTypes.push(value)
     );
   }
 
@@ -62,7 +61,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.loadComponent(QuestionType.OPTION.toString());
+    this.questionForm.get('type').setValue(this.question.type);
+    this.loadComponent(this.question.type);
   }
 
   loadComponent(value: string) {
@@ -86,6 +86,23 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
     this.answerHost.clear();
     this.componentRef = this.answerHost.createComponent(componentFactory);
+    if (this.question.id) {
+      if (value === QuestionType.OPTION || value === QuestionType.SEQUENCE) {
+        while (this.question.answerList.length < 4) {
+          this.question.answerList.push({
+            id: null,
+            questionId: 0,
+            text: "",
+            correct: false,
+            nextAnswerId: null,
+            image: null,
+            changed: true,
+            deleted: true
+          });
+        }
+      }
+      this.componentRef.instance.answer = this.question.answerList;
+    }
     this.componentRef.changeDetectorRef.detectChanges();
   }
 
@@ -95,50 +112,25 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     return this.questionForm.valid && this.componentRef.instance.isValid();
   }
 
-  save(): Observable<any> {
-    if (this.questionForm.invalid) {
-      return;
-    }
-
-    this.submitted = true;
-    let answer = this.componentRef.instance;
-    if (answer.isValid()) {
-      this.getData();
-
-      return this.questionService.postQuestion(this.question).pipe(
-        map(result => {
-          this.question.id = result.id;
-          answer.questionId = result.id;
-          return this.question;
-        }),
-        mergeMap(
-          question => {
-            if (this.image != null) {
-              return this.questionService.updateImage(question.id, this.image);
-            }
-            return of(null)
-          }
-        ),
-        defaultIfEmpty(),
-        mergeMap(() =>
-          this.componentRef.instance.save()
-        )
-      );
-    }
-  }
-
-  getData(): void {
+  getData(): Observable<Question> {
     this.question.quizId = this.quizId;
     this.question.type = this.question.type.toUpperCase();
     this.question.text = this.questionForm.get('text').value;
-    this.question.type = this.questionForm.get('type').value.value.toUpperCase();
+    this.question.type = this.questionForm.get('type').value.toUpperCase();
+    this.question.answerList = this.componentRef.instance.answer;
 
-    if (this.imageComponent.selectedFile != null)
-      this.image = this.imageComponent.selectedFile.file;
+    return this.componentRef.instance.getData().pipe(
+      map(resp => { console.log(resp); this.question.answerList = resp; }),
+      mergeMap(_ => this.imageService.saveImage(this.imageComponent.selectedFile?.file).pipe(
+        map(resp => { if (resp != "") this.question.image = resp; }),
+        mergeMap(_ => of(this.question))
+      ))
+    );
   }
 
-  onOptionSelected(value: QuestionTypeValue) {
-    this.loadComponent(new TitleCasePipe().transform(value.value));
+  onOptionSelected(value: string) {
+    console.log(value);
+    this.loadComponent(value);
   }
 
 }

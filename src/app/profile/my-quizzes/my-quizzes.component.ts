@@ -7,6 +7,7 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {GameResultDialogComponent} from "../played-game/game-result-dialog/game-result-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RejectMessagesDialogComponent} from "./reject-messages-dialog/reject-messages-dialog.component";
+import { NewQuizService } from 'src/app/service/newQuizService/new-quiz.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class MyQuizzesComponent implements OnInit {
 
 
   constructor(private profileService: ProfileService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private quizService: NewQuizService) {
   }
 
   ngOnInit(): void {
@@ -139,5 +141,20 @@ export class MyQuizzesComponent implements OnInit {
     this.dialog.open(RejectMessagesDialogComponent, {
       data: id
     });
+  }
+
+  editQuiz(quiz: Quiz) {
+    this.quizService.getQuizInfo(quiz.id).subscribe(
+      resp => this.router.navigateByUrl('/new_quiz', {
+        state: {
+          quiz: resp
+        }
+      }),
+      err => {
+        console.log(err);
+        alert(err.message);
+      }
+    );
+
   }
 }
