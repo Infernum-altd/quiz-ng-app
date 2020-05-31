@@ -902,7 +902,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   /***/
   function node_modulesAngularLocalizeFesm2015InitJs(module, exports) {
     /**
-     * @license Angular v9.1.3
+     * @license Angular v9.1.6
      * (c) 2010-2020 Google LLC. https://angular.io/
      * License: MIT
      */
@@ -19040,23 +19040,27 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony import */
 
 
-    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! zone.js/dist/zone */
-    "./node_modules/zone.js/dist/zone-evergreen.js");
-    /* harmony import */
-
-
-    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0__);
-    /* harmony import */
-
-
-    var _angular_localize_init__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    var _angular_localize_init__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
     /*! @angular/localize/init */
     "./node_modules/@angular/localize/fesm2015/init.js");
     /* harmony import */
 
 
-    var _angular_localize_init__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_angular_localize_init__WEBPACK_IMPORTED_MODULE_1__);
+    var _angular_localize_init__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_angular_localize_init__WEBPACK_IMPORTED_MODULE_0__);
+    /* harmony import */
+
+
+    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! zone.js/dist/zone */
+    "./node_modules/zone.js/dist/zone-evergreen.js");
+    /* harmony import */
+
+
+    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1__);
+    /***************************************************************************************************
+     * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
+     */
+
     /**
      * This file includes polyfills needed by Angular and is loaded before the app.
      * You can add your own extra polyfills to this file.
@@ -19120,8 +19124,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
      * APPLICATION IMPORTS
      */
 
-    /***/
 
+    window.global = window;
+    /***/
   },
 
   /***/
