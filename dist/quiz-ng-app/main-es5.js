@@ -4545,7 +4545,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "h1");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, " Game Start");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -4568,6 +4568,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+      }
+
+      if (rf & 2) {
+        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate1"](" Game Start ", ctx_r2.gameId, "");
       }
     }
 
@@ -4595,7 +4603,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "mat-card");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, GameStartComponent_div_0_mat_card_header_2_Template, 6, 0, "mat-card-header", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, GameStartComponent_div_0_mat_card_header_2_Template, 6, 1, "mat-card-header", 2);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "mat-card-content", 3);
 
@@ -4675,8 +4683,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             _this12.connectToGame();
           }, function (err) {
             return console.log("Error loading page: " + err);
-          } //FIXME
-          );
+          });
         }
       }, {
         key: "connectToGame",
@@ -19392,7 +19399,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(PendingQuizzesService, [{
         key: "getPendingQuizzes",
         value: function getPendingQuizzes(pageSize, pageIndex) {
-          return this.http.get(this.PENDING_QUIZZES_URL + _models_quiz_model__WEBPACK_IMPORTED_MODULE_1__["StatusType"].PENDING + '/' + pageSize + '/' + pageIndex);
+          return this.http.get(this.PENDING_QUIZZES_URL + _models_quiz_model__WEBPACK_IMPORTED_MODULE_1__["StatusType"].PENDING.toUpperCase() + '/' + pageSize + '/' + pageIndex);
         }
       }, {
         key: "getAssignedQuizzes",
