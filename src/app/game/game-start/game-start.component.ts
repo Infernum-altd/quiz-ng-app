@@ -45,7 +45,7 @@ export class GameStartComponent implements OnInit, CanComponentDeactivate {
       this.gameId = +params['gameId'];
       this.connectToGame();
     },
-      err => console.log("Error loading page: " + err)  //FIXME
+      err => console.log("Error loading page: " + err)
     );
   }
 

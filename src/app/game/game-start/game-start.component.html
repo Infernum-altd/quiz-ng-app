@@ -1,7 +1,7 @@
 <div class="container" *ngIf="(game$|async) as game">
     <mat-card>
         <mat-card-header fxLayout="row" fxLayoutAlign="space-between" *ngIf="game.hostId==player.userId">
-            <h1> Game Start</h1>
+            <h1> Game Start  {{gameId}}</h1>
             <div>
                 <button mat-raised-button class="start-button" color="accent" (click)="startGame()">Start
                 </button>

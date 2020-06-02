@@ -21,7 +21,7 @@ export class PendingQuizzesService {
               private currentUserService: CurrentUserService) { }
 
   getPendingQuizzes(pageSize: number, pageIndex: number): Observable<any> {
-    return this.http.get(this.PENDING_QUIZZES_URL + StatusType.PENDING + '/' + pageSize + '/' + pageIndex);
+    return this.http.get(this.PENDING_QUIZZES_URL + StatusType.PENDING.toUpperCase() + '/' + pageSize + '/' + pageIndex);
   }
 
 
