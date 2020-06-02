@@ -70,7 +70,7 @@ export class ProfileService {
   }
 
   getUserQuizzes(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+     return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
   }
 
   getFavoriteGames(pageSize: number, pageNumber: number): Observable<any>{

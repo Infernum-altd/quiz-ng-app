@@ -4,6 +4,7 @@ export interface Quiz {
   id: number;
   name: string;
   author: number;
+  image: String;
   category: string;
   date: string;
   description: string;

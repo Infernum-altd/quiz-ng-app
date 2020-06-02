@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {StatusType} from "../../models/quiz.model";
 import {AuthenticationService} from "../loginService/authentication.service";
 import {CurrentUserService} from "../current-user.service";
+import {StatusType} from "../../models/status-type.enum";
 
 
 @Injectable({
