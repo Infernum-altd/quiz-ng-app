@@ -19,7 +19,7 @@ mat-selection-list {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 0;
   background: transparent;
 }
 
@@ -36,8 +36,8 @@ mat-selection-list {
   margin-left: 536px;
   max-width: 350px;
   width: 100%;
-  margin-bottom: 0px;
-  padding-bottom: 0px;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 

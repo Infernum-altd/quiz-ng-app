@@ -1,18 +1,17 @@
-import { CurrentUserService } from '../../service/current-user.service';
-import { Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
-import { CategoryService } from '../../service/categoryService/category.service';
-import { Category } from '../../models/category.model';
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Quiz } from '../../models/add-quiz.model';
-import { StatusType } from '../../models/quiz.model';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Tag } from '../../models/tag.model';
-import { ImageUploadComponent } from 'src/app/image-upload/image-upload.component';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import {CurrentUserService} from '../../service/current-user.service';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CategoryService} from '../../service/categoryService/category.service';
+import {Category} from '../../models/category.model';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Quiz} from '../../models/add-quiz.model';
+import {StatusType} from '../../models/quiz.model';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Tag} from '../../models/tag.model';
+import {ImageUploadComponent} from 'src/app/image-upload/image-upload.component';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 
 @Component({
@@ -32,17 +31,17 @@ export class NewQuizComponent implements OnInit {
   tags: Tag[] = [];
 
   quizForm: FormGroup;
-  submitted: boolean = false;
+  submitted = false;
   categories: Category[];
 
 
   quiz: Quiz = {
     id: null,
-    name: "",
-    author: parseInt(this.currentUserService.getCurrentUser().id),
+    name: '',
+    author: parseInt(this.currentUserService.getCurrentUser().id, 10),
     category_id: 1,
     date: new Date().toISOString(),
-    description: "",
+    description: '',
     status: StatusType.PENDING.toString(),
     modification_time: new Date().toISOString(),
     image: null,
@@ -57,8 +56,9 @@ export class NewQuizComponent implements OnInit {
     private formBuilder: FormBuilder,
     private currentUserService: CurrentUserService,
     private router: Router) {
-    if (this.router.getCurrentNavigation().extras.state?.quiz)
+    if (this.router.getCurrentNavigation().extras.state?.quiz) {
       this.quiz = this.router.getCurrentNavigation().extras.state.quiz;
+    }
     this.tags = this.quiz.tags;
   }
 
@@ -78,8 +78,8 @@ export class NewQuizComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    if ((value || '').trim() && !(this.tags.find(element => element.name == value.trim()))) {
-      this.tags.push({ id: null, name: value.trim() });
+    if ((value || '').trim() && !(this.tags.find(element => element.name === value.trim()))) {
+      this.tags.push({id: null, name: value.trim()});
       if (input) {
         input.value = '';
       }
@@ -98,8 +98,9 @@ export class NewQuizComponent implements OnInit {
     return this.categoryService.getCategories().pipe(
       map(resp => {
         this.categories = resp;
-        if (this.quiz.id != null)
+        if (this.quiz.id != null) {
           this.getCategory();
+        }
         return this.categories;
       })
     );
@@ -108,7 +109,7 @@ export class NewQuizComponent implements OnInit {
   getCategory() {
     let category = null;
     if (this.quiz.id) {
-      category = this.categories?.find(item => item.id == this.quiz.category_id);
+      category = this.categories?.find(item => item.id === this.quiz.category_id);
     } else {
       category = this.categories[0];
     }
@@ -122,7 +123,7 @@ export class NewQuizComponent implements OnInit {
       return;
     }
 
-    this.getData()
+    this.getData();
 
     this.saveQuiz();
   }
@@ -138,9 +139,9 @@ export class NewQuizComponent implements OnInit {
   }
 
   getData(): void {
-    let input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
+    const input: Quiz = JSON.parse(JSON.stringify(this.quizForm.value));
     this.quiz.name = input.name;
-    let category = this.quizForm.get('category').value;
+    const category = this.quizForm.get('category').value;
     this.quiz.category_id = category.id;
     this.quiz.description = input.description;
     this.quiz.status = this.quiz.status.toUpperCase();

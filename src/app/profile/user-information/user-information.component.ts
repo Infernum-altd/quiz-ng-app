@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import { User } from "../../models/user";
-import { ProfileService } from "../../service/profileService/profile.service";
-import { ShareIdService } from "../../service/profileService/share-id.service";
-import { PlatformLocation } from "@angular/common";
-import { Router } from "@angular/router";
-import { FormControl } from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {User} from '../../models/user';
+import {ProfileService} from '../../service/profileService/profile.service';
+import {ShareIdService} from '../../service/profileService/share-id.service';
+import {PlatformLocation} from '@angular/common';
+import {Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
 import {Role} from '../../models/role.enum';
-import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
-import {Quiz} from "../../models/pending-quizzes.model";
-import {MatTableDataSource} from "@angular/material/table";
-import {QuizService} from "../../service/quizService/quiz.service";
+import {QuizCheckService} from '../../service/quizCheckService/quiz-check.service';
+import {Quiz} from '../../models/pending-quizzes.model';
+import {MatTableDataSource} from '@angular/material/table';
+import {QuizService} from '../../service/quizService/quiz.service';
 
 
 @Component({
@@ -131,6 +131,7 @@ export class UserInformationComponent implements OnInit {
       this.assignedQuizzes = resp;
     });
   }
+
   unsignModeratorQuiz(id) {
     this.quizCheckService.unsignQuiz(id).subscribe(
       (resp: any) => {
@@ -143,18 +144,19 @@ export class UserInformationComponent implements OnInit {
       }
     );
   }
+
   unsignAllModeratorQuiz(id) {
-      this.quizService.unsignAllQuiz(id).subscribe(
-        (resp: any) => {
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            this.router.navigate(['profile', this.id, {outlets: {profilenav: 'profinfo'}}]);
-          });
-        },
-        error => {
-          alert('Something wrong while unsign');
-        }
-      );
-    }
+    this.quizService.unsignAllQuiz(id).subscribe(
+      (resp: any) => {
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate(['profile', this.id, {outlets: {profilenav: 'profinfo'}}]);
+        });
+      },
+      error => {
+        alert('Something wrong while unsign');
+      }
+    );
+  }
 
 }
 

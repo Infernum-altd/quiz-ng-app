@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProfileService} from '../service/profileService/profile.service';
 import {AuthenticationService} from '../service/loginService/authentication.service';
 import {switchMap} from 'rxjs/operators';
-import {UserActive} from '../models/user-active';
-import {User} from "../models/user";
+import {User} from '../models/user';
 
 @Component({
   selector: 'app-set-password',
@@ -23,7 +21,8 @@ export class SetPasswordComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthenticationService,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -41,14 +40,17 @@ export class SetPasswordComponent implements OnInit {
     }
     this.getUser();
   }
-  get f() { return this.changePasswordForm.controls; }
+
+  get f() {
+    return this.changePasswordForm.controls;
+  }
 
   logout() {
     localStorage.removeItem('currentUser');
-    window.location.replace('/activate/'  + this.code);
+    window.location.replace('/activate/' + this.code);
   }
 
-  public changingPassFormValidation(){
+  public changingPassFormValidation() {
     this.submitted = true;
 
     if (this.changePasswordForm.invalid) {
@@ -69,7 +71,8 @@ export class SetPasswordComponent implements OnInit {
       }
     );
   }
-  getUser(){
+
+  getUser() {
     this.authService.getUserbyCode(this.code).subscribe(
       (resp: any) => {
         this.user = resp;
@@ -83,19 +86,19 @@ export class SetPasswordComponent implements OnInit {
 }
 
 export function MustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
 
-      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-        return;
-      }
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      return;
+    }
 
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({mustMatch: true});
+    } else {
+      matchingControl.setErrors(null);
+    }
   };
 }
 

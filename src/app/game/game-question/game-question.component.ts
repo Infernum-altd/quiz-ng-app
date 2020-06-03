@@ -1,17 +1,26 @@
-import { Player } from './../../models/game.model';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { GameService } from './../../service/gameService/game.service';
-import { GameStringAnswerComponent } from './../game-string-answer/game-string-answer.component';
-import { GameBooleanAnswerComponent } from './../game-boolean-answer/game-boolean-answer.component';
-import { GameOptionalAnswerComponent } from './../game-optional-answer/game-optional-answer.component';
-import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef, AfterViewInit, EventEmitter, HostListener, AfterViewChecked } from '@angular/core';
-import { Question, QuestionType } from 'src/app/models/question.model';
-import { GameSequenceAnswerComponent } from '../game-sequence-answer/game-sequence-answer.component';
-import { Answer } from 'src/app/models/answer.model';
-import { TitleCasePipe } from '@angular/common';
-import { CanComponentDeactivate } from 'src/app/service/canDeactivateGuardService/can-deactivate-guard.service';
-import { Observable } from 'rxjs';
+import {Player} from '../../models/game.model';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {GameService} from '../../service/gameService/game.service';
+import {GameStringAnswerComponent} from '../game-string-answer/game-string-answer.component';
+import {GameBooleanAnswerComponent} from '../game-boolean-answer/game-boolean-answer.component';
+import {GameOptionalAnswerComponent} from '../game-optional-answer/game-optional-answer.component';
+import {GameAnswerComponent} from '../game-answer/game-answer.component';
+import {
+  AfterViewChecked,
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {Question, QuestionType} from 'src/app/models/question.model';
+import {GameSequenceAnswerComponent} from '../game-sequence-answer/game-sequence-answer.component';
+import {Answer} from 'src/app/models/answer.model';
+import {TitleCasePipe} from '@angular/common';
+import {CanComponentDeactivate} from 'src/app/service/canDeactivateGuardService/can-deactivate-guard.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-game-question',
@@ -19,24 +28,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./game-question.component.css']
 })
 export class GameQuestionComponent implements OnInit, AfterViewChecked, CanComponentDeactivate {
-  @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
-
-  gameId: number;
-
-  initTime: number;
-  questionTimer: number;
-
-  question: Question;
-  questionNumber: number;
-  player: Player; //FIXME: set user
-  answers: Answer[];
-
-  image: string = null;
-
-  componentRef: ComponentRef<GameAnswerComponent>;
-
-  navigationSubscription: any;
-  initialized: boolean = false;
 
 
   constructor(
@@ -51,9 +42,29 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked, CanCompo
       }
     });
   }
+  @ViewChild('dynamicComponent', {read: ViewContainerRef}) answerHost;
+
+  gameId: number;
+
+  initTime: number;
+  questionTimer: number;
+
+  question: Question;
+  questionNumber: number;
+  player: Player;
+  answers: Answer[];
+
+  image: string = null;
+
+  componentRef: ComponentRef<GameAnswerComponent>;
+
+  navigationSubscription: any;
+  initialized = false;
+
+  interval: NodeJS.Timeout;
 
   ngOnInit(): void {
-    this.gameId = this.activatedRoute.snapshot.params['gameId'];
+    this.gameId = this.activatedRoute.snapshot.params.gameId;
 
     this.player = history.state.player;
     this.questionNumber = history.state.questionNumber + 1;
@@ -72,9 +83,10 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked, CanCompo
   }
 
   loadComponent() {
-    while (!this.answerHost) { }
-    let titleCasePipe = new TitleCasePipe();
-    var componentFactory: ComponentFactory<GameAnswerComponent>;
+    while (!this.answerHost) {
+    }
+    const titleCasePipe = new TitleCasePipe();
+    let componentFactory: ComponentFactory<GameAnswerComponent>;
     switch (titleCasePipe.transform(this.question.type)) {
       case QuestionType.OPTION:
         componentFactory = this.componentFactoryResolver.resolveComponentFactory(GameOptionalAnswerComponent);
@@ -99,14 +111,12 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked, CanCompo
     this.componentRef.changeDetectorRef.detectChanges();
   }
 
-  interval: NodeJS.Timeout;
-
   startTimer() {
     this.questionTimer = this.initTime;
 
     this.interval = setInterval(() => {
       if (this.questionTimer > 0) {
-        this.questionTimer--
+        this.questionTimer--;
       } else {
         clearInterval(this.interval);
         this.submitAnswer();
@@ -115,9 +125,9 @@ export class GameQuestionComponent implements OnInit, AfterViewChecked, CanCompo
   }
 
   submitAnswer() {
-    let answers = this.componentRef.instance.getSubmittedAnswers();
+    const answers = this.componentRef.instance.getSubmittedAnswers();
 
-    for (let answer of answers) {
+    for (const answer of answers) {
       answer.questionId = this.question.id;
     }
 

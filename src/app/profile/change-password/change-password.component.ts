@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ProfileService} from "../../service/profileService/profile.service";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {ProfileService} from '../../service/profileService/profile.service';
 
 @Component({
   selector: 'app-change-password',
@@ -15,7 +15,8 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private profileService: ProfileService) { }
+              private profileService: ProfileService) {
+  }
 
   ngOnInit(): void {
     this.changePasswordForm = this.formBuilder.group({
@@ -26,10 +27,12 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  get f() { return this.changePasswordForm.controls; }
+  get f() {
+    return this.changePasswordForm.controls;
+  }
 
 
-  public changingPassFormValidation(){
+  public changingPassFormValidation() {
     this.submitted = true;
 
     if (this.changePasswordForm.invalid) {
@@ -42,11 +45,11 @@ export class ChangePasswordComponent implements OnInit {
   changePassword() {
     this.profileService.updatePassword(this.newPassword).subscribe(
       (resp: any) => {
-        alert("Password was changed")
-        this.router.navigate(['/'])
+        alert('Password was changed');
+        this.router.navigate(['/']);
       },
       error => {
-        alert("Something wrong while save password")
+        alert('Something wrong while save password');
       }
     );
   }
@@ -62,7 +65,7 @@ export function MustMatch(controlName: string, matchingControlName: string) {
     }
 
     if (control.value !== matchingControl.value) {
-      matchingControl.setErrors({ mustMatch: true });
+      matchingControl.setErrors({mustMatch: true});
     } else {
       matchingControl.setErrors(null);
     }

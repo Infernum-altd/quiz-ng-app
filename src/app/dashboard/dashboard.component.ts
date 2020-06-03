@@ -1,17 +1,17 @@
 import {DomSanitizer} from '@angular/platform-browser';
-import {ProfileService} from './../service/profileService/profile.service';
+import {ProfileService} from '../service/profileService/profile.service';
 import {Observable} from 'rxjs';
-import {CategoryService} from './../service/categoryService/category.service';
-import {DashboardService} from './../service/dashboardService/dashboard.service';
+import {CategoryService} from '../service/categoryService/category.service';
+import {DashboardService} from '../service/dashboardService/dashboard.service';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Quiz} from '../models/quiz.model';
 import {Category} from '../models/category.model';
 import {MatSidenav} from '@angular/material/sidenav';
-import {map} from 'rxjs/operators'
-import {CurrentUserService} from "../service/current-user.service";
-import {Announcement} from "../models/announcement";
-import {AnnouncementService} from "../service/announcementService/announcement.service";
-import {Router} from "@angular/router";
+import {map} from 'rxjs/operators';
+import {CurrentUserService} from '../service/current-user.service';
+import {Announcement} from '../models/announcement';
+import {AnnouncementService} from '../service/announcementService/announcement.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,12 +22,12 @@ export class DashboardComponent implements OnInit {
   @ViewChild('ratingNavbar') ratingNavbar: MatSidenav;
   @ViewChild('achievementsNavbar') achievementsNavbar: MatSidenav;
 
-  ratingIsOpen: boolean = false;
-  achievementIsOpen: boolean = false;
+  ratingIsOpen = false;
+  achievementIsOpen = false;
 
 
-  maxCards: number = 5;
-  userId: number = parseInt(this.currentUserService.getCurrentUser().id);
+  maxCards = 5;
+  userId: number = parseInt(this.currentUserService.getCurrentUser().id, 10);
 
   profileImage: Observable<any>;
 
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
   imageMap = new Map<number, Observable<any>>();
 
   categories: Observable<Category[]> = this.categoryService.getCategories();
-  quizCategory: number = -1;
+  quizCategory = -1;
 
   rating: Observable<number>;
 

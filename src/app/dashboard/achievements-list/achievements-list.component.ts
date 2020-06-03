@@ -1,8 +1,8 @@
-import { Achievement } from './../../models/achievement.model';
-import { AchievementsService } from '../../service/achievementsService/achievements.service';
-import { Category } from './../../models/category.model';
-import { Observable } from 'rxjs';
-import { Component, OnInit, Input } from '@angular/core';
+import {Achievement} from '../../models/achievement.model';
+import {AchievementsService} from '../../service/achievementsService/achievements.service';
+import {Category} from '../../models/category.model';
+import {Observable} from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-achievements-list',

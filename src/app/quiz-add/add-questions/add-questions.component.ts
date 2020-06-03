@@ -1,12 +1,12 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { Observable, forkJoin } from 'rxjs';
-import { NewQuizService } from './../../service/newQuizService/new-quiz.service';
-import { QuestionComponent } from '../question/question.component';
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { Router } from '@angular/router';
-import { Question, QuestionType } from '../../models/question.model';
-import { Quiz } from '../../models/add-quiz.model';
-import { mergeMap, map } from 'rxjs/operators';
+import {ImageService} from '../../service/imageService/image.service';
+import {forkJoin, Observable} from 'rxjs';
+import {NewQuizService} from '../../service/newQuizService/new-quiz.service';
+import {QuestionComponent} from '../question/question.component';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Router} from '@angular/router';
+import {Question} from '../../models/question.model';
+import {Quiz} from '../../models/add-quiz.model';
+import {map, mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-questions',
@@ -21,8 +21,8 @@ export class AddQuestionsComponent implements OnInit {
   questions: Question[] = [];
 
   constructor(private router: Router,
-    private newQuizService: NewQuizService,
-    private imageService: ImageService) {
+              private newQuizService: NewQuizService,
+              private imageService: ImageService) {
     this.quiz = this.router.getCurrentNavigation().extras.state.quiz;
     this.image = this.router.getCurrentNavigation().extras.state.image;
     this.questions = this.quiz.questions;
@@ -35,7 +35,7 @@ export class AddQuestionsComponent implements OnInit {
     this.questions.push({
       id: null,
       quizId: null,
-      type: "Option",
+      type: 'Option',
       text: '',
       active: true,
       answerList: null,
@@ -52,9 +52,8 @@ export class AddQuestionsComponent implements OnInit {
       } else {
         this.questions.splice(i, 1);
       }
-    }
-    else {
-      alert("Can't delete the only one question");
+    } else {
+      alert('Can\'t delete the only one question');
     }
   }
 
@@ -63,7 +62,7 @@ export class AddQuestionsComponent implements OnInit {
 
 
     if (this.isValid()) {
-      console.log("submit");
+      console.log('submit');
       this.questionComponents.toArray().forEach(el => {
         console.log(el.question);
         observableBatch.push(el.getData());
@@ -73,8 +72,12 @@ export class AddQuestionsComponent implements OnInit {
         map(resp => this.quiz.questions = resp),
         mergeMap(
           _ => this.imageService.saveImage(this.image).pipe(
-            map(resp => { if (resp != "") this.quiz.image = resp; }),
-            mergeMap(_ => {
+            map(resp => {
+              if (resp !== '') {
+                this.quiz.image = resp;
+              }
+            }),
+            mergeMap(() => {
               console.log(this.quiz);
               return this.newQuizService.postQuiz(this.quiz);
             })
@@ -84,12 +87,11 @@ export class AddQuestionsComponent implements OnInit {
         _ => this.router.navigateByUrl('/submitted_quiz'),
         err => {
           alert(err.message);
-          console.log(err)
+          console.log(err);
         }
       );
-    }
-    else {
-      alert("Error. Check your questions");
+    } else {
+      alert('Error. Check your questions');
     }
   }
 

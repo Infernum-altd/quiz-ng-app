@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RejectMessagesDialogComponent } from './reject-messages-dialog.component';
+import {RejectMessagesDialogComponent} from './reject-messages-dialog.component';
 
 describe('RejectMessagesDialogComponent', () => {
   let component: RejectMessagesDialogComponent;

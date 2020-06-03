@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {CurrentUserService} from "../../service/current-user.service";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CurrentUserService} from '../../service/current-user.service';
 
 @Component({
   selector: 'app-submitted-quiz',
@@ -10,7 +10,8 @@ import {CurrentUserService} from "../../service/current-user.service";
 export class SubmittedQuizComponent implements OnInit {
 
   constructor(private router: Router,
-              private currentUserService: CurrentUserService) { }
+              private currentUserService: CurrentUserService) {
+  }
 
   ngOnInit(): void {
   }

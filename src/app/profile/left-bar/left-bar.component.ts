@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ProfileService} from "../../service/profileService/profile.service";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {NotificationStatus} from "../../models/notification-status.enum";
-import {ShareIdService} from "../../service/profileService/share-id.service";
+import {Component, OnInit} from '@angular/core';
+import {ProfileService} from '../../service/profileService/profile.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {NotificationStatus} from '../../models/notification-status.enum';
+import {ShareIdService} from '../../service/profileService/share-id.service';
 
 @Component({
   selector: 'app-left-bar',
@@ -16,12 +16,13 @@ export class LeftBarComponent implements OnInit {
   progressImage: any;
   imageUrl: string;
   id: string;
+
   constructor(private profileService: ProfileService,
               private sanitizer: DomSanitizer,
               private shareId: ShareIdService) {
     this.id = shareId.shareId();
 
-    if (shareId.shareEmail() != undefined){
+    if (shareId.shareEmail() !== undefined) {
       this.username = shareId.shareEmail();
     }
   }
@@ -31,8 +32,8 @@ export class LeftBarComponent implements OnInit {
     this.getNotification();
   }
 
-  fileProgress(imageInput: any){
-    this.progressImage = <File>imageInput.target.files[0];
+  fileProgress(imageInput: any) {
+    this.progressImage = (imageInput.target.files[0] as File);
     this.changeImg();
   }
 
@@ -40,15 +41,15 @@ export class LeftBarComponent implements OnInit {
     this.profileService.updateImage(this.progressImage).subscribe(
       resp => {
         this.uploadFile();
-        alert("Icon was changed")
+        alert('Icon was changed');
       },
       error => {
-        alert("Error while updating icon")
+        alert('Error while updating icon');
       }
-    )
+    );
   }
 
-  uploadFile(){
+  uploadFile() {
     this.profileService.getProfileImage(this.id).subscribe(
       resp => {
         this.imageUrl = resp.text;
@@ -59,20 +60,20 @@ export class LeftBarComponent implements OnInit {
     );
   }
 
-  change(){
+  change() {
     this.profileService.updateNotificationStatus(this.notificationStatus).subscribe(
-      resp =>{
-        alert("Notification status was changed")
+      resp => {
+        alert('Notification status was changed');
       },
       error => {
-        alert("Error while change notification status")
+        alert('Error while change notification status');
       }
     );
   }
 
   getNotification() {
     this.profileService.getUserNotificationStatus().subscribe(
-      resp =>{
+      resp => {
         this.notificationStatus = resp;
       }
     );

@@ -1,4 +1,4 @@
-import { GameDto } from './game-dto';
+import {GameDto} from './game-dto';
 
 describe('GameDto', () => {
   it('should create an instance', () => {

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BooleanAnswerComponent } from './boolean-answer.component';
+import {BooleanAnswerComponent} from './boolean-answer.component';
 
 describe('BooleanAnswerComponent', () => {
   let component: BooleanAnswerComponent;

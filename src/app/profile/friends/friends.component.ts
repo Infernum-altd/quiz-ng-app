@@ -2,11 +2,10 @@ import {ProfileService} from '../../service/profileService/profile.service';
 import {ShareIdService} from '../../service/profileService/share-id.service';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {User} from "../../models/user";
-import {PageEvent} from "@angular/material/paginator";
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-
+import {User} from '../../models/user';
+import {PageEvent} from '@angular/material/paginator';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 
 @Component({
@@ -42,9 +41,10 @@ export class FriendsComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
+        // tslint:disable-next-line:triple-equals
         if (userSearch.length == 0) {
           this.setPaginationParamDefault();
-          this.uploadFriends()
+          this.uploadFriends();
         } else {
           this.filterFriends(userSearch);
         }
@@ -63,7 +63,7 @@ export class FriendsComponent implements OnInit {
     this.pageSize = 9;
   }
 
-  uploadFriends(){
+  uploadFriends() {
     this.profileService.getFriends(this.pageSize, this.pageIndex, this.sortDirection).subscribe(resp => {
       this.friends = resp.responceList;
       this.length = resp.totalNumberOfElement;
@@ -86,14 +86,14 @@ export class FriendsComponent implements OnInit {
   }
 
   sortFriends($event) {
-    this.sortDirection = $event.direction==''? undefined : $event;
+    this.sortDirection = $event.direction === '' ? undefined : $event;
     this.setPaginationParamDefault();
     this.choseRequest();
   }
 
-  choseRequest(){
-    if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+  choseRequest() {
+    if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterFriends(this.userRequest);

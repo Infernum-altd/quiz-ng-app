@@ -4,10 +4,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {Router} from '@angular/router';
 import {Quiz} from '../../models/pending-quizzes.model';
 import {PendingQuizzesService} from '../../service/pendingQuizzesService/pending-quizzes.service';
-import {ShareIdService} from "../../service/profileService/share-id.service";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {Subject} from "rxjs";
-import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
+import {ShareIdService} from '../../service/profileService/share-id.service';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {QuizCheckService} from '../../service/quizCheckService/quiz-check.service';
 
 
 @Component({
@@ -31,6 +31,7 @@ export class PendingQuizzesComponent implements OnInit {
 
   public userRequest: string;
   userQuestionUpdate = new Subject<string>();
+
   constructor(private quizService: PendingQuizzesService,
               private router: Router,
               private shareId: ShareIdService,
@@ -46,7 +47,7 @@ export class PendingQuizzesComponent implements OnInit {
       distinctUntilChanged())
       .subscribe(userSearch => {
         this.setPaginationParamDefault();
-        userSearch.length ==0 ? this.getAllPendingQuizzes() : this.filterRequest(userSearch);
+        userSearch.length === 0 ? this.getAllPendingQuizzes() : this.filterRequest(userSearch);
       });
     this.getAllPendingQuizzes();
   }
@@ -54,13 +55,13 @@ export class PendingQuizzesComponent implements OnInit {
   onPageChanged(e) {
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
-    if (this.currentTable != 'Pending' && this.currentTable != null) {
-      if (this.pageSize == undefined) {
+    if (this.currentTable !== 'Pending' && this.currentTable != null) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.getAssignedQuizzes();
-    } else if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+    } else if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterRequest(this.userRequest);
@@ -77,18 +78,20 @@ export class PendingQuizzesComponent implements OnInit {
       }
     );
   }
+
   setPaginationParamDefault() {
     this.pageIndex = 0;
     this.pageSize = 10;
   }
-  getAllPendingQuizzes(){
-      this.quizService.getPendingQuizzes(this.pageSize, this.pageIndex).subscribe(resp => {
-        this.pendingQuizzes = resp.responceList;
-        this.length = resp.totalNumberOfElement;
+
+  getAllPendingQuizzes() {
+    this.quizService.getPendingQuizzes(this.pageSize, this.pageIndex).subscribe(resp => {
+      this.pendingQuizzes = resp.responceList;
+      this.length = resp.totalNumberOfElement;
     });
   }
 
-  getAssignedQuizzes(){
+  getAssignedQuizzes() {
     this.quizService.getAssignedQuizzes(this.currentUserId, this.pageSize, this.pageIndex).subscribe(resp => {
       this.pendingQuizzes = resp.responceList;
       this.length = resp.totalNumberOfElement;
@@ -120,8 +123,7 @@ export class PendingQuizzesComponent implements OnInit {
           alert('Something wrong while assigning quiz');
         }
       );
-    }
-    else{
+    } else {
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate(['checkquiz', quiz.id, {outlets: {quiznav: 'quizinfo'}}]);
       });

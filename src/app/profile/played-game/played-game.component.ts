@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {PageEvent} from "@angular/material/paginator";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {Subject} from "rxjs";
-import {ProfileService} from "../../service/profileService/profile.service";
-import {GameDto} from "../../models/game-dto";
-import {MatDialog} from "@angular/material/dialog";
-import {GameResultDialogComponent} from "./game-result-dialog/game-result-dialog.component";
+import {Component, OnInit} from '@angular/core';
+import {PageEvent} from '@angular/material/paginator';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {ProfileService} from '../../service/profileService/profile.service';
+import {GameDto} from '../../models/game-dto';
+import {MatDialog} from '@angular/material/dialog';
+import {GameResultDialogComponent} from './game-result-dialog/game-result-dialog.component';
 
 
 @Component({
@@ -27,7 +27,8 @@ export class PlayedGameComponent implements OnInit {
   pageSizeOptions: number[] = [9, 18, 27];
 
   constructor(private profileService: ProfileService,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.setPaginationParamDefault();
@@ -38,11 +39,11 @@ export class PlayedGameComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
-        if (userSearch.length == 0) {
+        if (userSearch.length === 0) {
           this.setPaginationParamDefault();
-          this.uploadPlayedGames()
+          this.uploadPlayedGames();
         } else {
-          userSearch.length ==0 ? this.uploadPlayedGames() : this.uploadPlayedGames(userSearch);
+          userSearch.length === 0 ? this.uploadPlayedGames() : this.uploadPlayedGames(userSearch);
         }
       });
   }
@@ -52,7 +53,7 @@ export class PlayedGameComponent implements OnInit {
     this.pageSize = 9;
   }
 
-  uploadPlayedGames(userSearch?: string){
+  uploadPlayedGames(userSearch?: string) {
     this.profileService.getPlayedGames(this.pageSize, this.pageIndex, this.sortDirection, userSearch).subscribe(resp => {
       this.playedGame = resp.responceList;
       this.length = resp.totalNumberOfElement;
@@ -66,18 +67,18 @@ export class PlayedGameComponent implements OnInit {
   }
 
   choseRequest() {
-    if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+    if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.uploadPlayedGames(this.userRequest);
-    }else {
+    } else {
       this.uploadPlayedGames();
     }
   }
 
   sortPlayedGames($event) {
-    this.sortDirection = $event.direction==''? undefined : $event;
+    this.sortDirection = $event.direction === '' ? undefined : $event;
     this.setPaginationParamDefault();
     this.choseRequest();
   }

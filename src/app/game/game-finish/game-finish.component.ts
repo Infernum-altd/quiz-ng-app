@@ -1,8 +1,8 @@
-import { Router } from '@angular/router';
-import { GameService } from './../../service/gameService/game.service';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Player } from 'src/app/models/game.model';
+import {Router} from '@angular/router';
+import {GameService} from '../../service/gameService/game.service';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Player} from 'src/app/models/game.model';
 
 @Component({
   selector: 'app-game-finish',

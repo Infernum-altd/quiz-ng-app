@@ -1,11 +1,9 @@
-import { FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
-import { mergeMap, defaultIfEmpty } from 'rxjs/operators';
-import { GameService } from './../../service/gameService/game.service';
-import { CurrentUserService } from './../../service/current-user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Game } from './../../models/game.model';
-import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {GameService} from '../../service/gameService/game.service';
+import {CurrentUserService} from '../../service/current-user.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Game} from '../../models/game.model';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-game-settings',
@@ -14,8 +12,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameSettingsComponent implements OnInit {
   gameSettingsForm = new FormGroup({
-    maxUserNumberControl: new FormControl("10", [Validators.min(2), Validators.max(50)]),
-    questionTimerControl: new FormControl("10", [Validators.min(5), Validators.max(50)])
+    maxUserNumberControl: new FormControl('10', [Validators.min(2), Validators.max(50)]),
+    questionTimerControl: new FormControl('10', [Validators.min(5), Validators.max(50)])
   });
 
   game: Game = {
@@ -25,19 +23,19 @@ export class GameSettingsComponent implements OnInit {
     questionTimer: 10,
     maxUsersNumber: 10,
     players: null
-  }
+  };
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
-    private currentUserService: CurrentUserService,
-    private gameService: GameService) {
+              private router: Router,
+              private currentUserService: CurrentUserService,
+              private gameService: GameService) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.game.quizId = +params['quizId'];
+      this.game.quizId = +params.quizId;
     });
-    this.game.hostId = parseInt(this.currentUserService.getCurrentUser().id);
+    this.game.hostId = parseInt(this.currentUserService.getCurrentUser().id, 10);
   }
 
   createGame(): void {
@@ -49,9 +47,9 @@ export class GameSettingsComponent implements OnInit {
         response => this.router.navigate(['/game/start', response]),
 
         err => {
-          console.log("Error creating game: " + err)
-        }  //FIXME: handle errors
-      )
+          console.log('Error creating game: ' + err);
+        }
+      );
     }
   }
 

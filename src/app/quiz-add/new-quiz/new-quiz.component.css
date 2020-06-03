@@ -1,23 +1,22 @@
 mat-card {
-    align-self: center;
-    width: 60%;
-    margin: 3em;
+  align-self: center;
+  width: 60%;
+  margin: 3em;
 }
 
 mat-card-content {
-    text-align: center;
+  text-align: center;
 }
 
 mat-card-actions {
-    text-align: end;
+  text-align: end;
 }
 
 .form-container {
-    width: 400 px;
-    margin: 0 px auto;
-    margin-top: 200 px
+  width: 400px;
+  margin: 200px auto 0;
 }
 
 .form-field {
-    display: block
+  display: block
 }

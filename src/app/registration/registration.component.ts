@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../service/registrationService/registration.service';
 import {User} from '../models/user';
 import {AuthenticationService} from '../service/loginService/authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
-export enum Gender{
+export enum Gender {
   MALE,
   FEMALE,
   NOT_MENTIONED
@@ -26,23 +26,23 @@ export class RegistrationComponent implements OnInit {
     notificationStatus: undefined,
     about: '',
     birthdate: undefined,
-    city: "",
-    countryId: "",
+    city: '',
+    countryId: '',
     gender: undefined,
-    name: "",
-    rating: "",
+    name: '',
+    rating: '',
     role: undefined,
-    surname: "",
-    id:null,
-    email:'',
-    password:''
+    surname: '',
+    id: null,
+    email: '',
+    password: ''
   };
 
   constructor(
     public service: RegistrationService,
     public authService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private router: Router){
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -80,21 +80,23 @@ export class RegistrationComponent implements OnInit {
   }
 
 
-  register(): void{
+  register(): void {
     this.service.postRegisterInfo(this.model).subscribe(
-      res =>{
+      res => {
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['/']);
         });
-        alert("You registered");
+        alert('You registered');
       },
       error => {
-        alert(error.error['message']);
+        alert(error.error.message);
       }
     );
   }
 
-  get f() { return this.registerForm.controls; }
+  get f() {
+    return this.registerForm.controls;
+  }
 }
 
 export function MustMatch(controlName: string, matchingControlName: string) {
@@ -107,7 +109,7 @@ export function MustMatch(controlName: string, matchingControlName: string) {
     }
 
     if (control.value !== matchingControl.value) {
-      matchingControl.setErrors({ mustMatch: true });
+      matchingControl.setErrors({mustMatch: true});
     } else {
       matchingControl.setErrors(null);
     }

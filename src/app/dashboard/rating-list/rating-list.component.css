@@ -1,18 +1,18 @@
 table {
-    margin-left: 2rem;
+  margin-left: 2rem;
 }
 
 .ng-star-inserted {
-    width: 20rem;
+  width: 20rem;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 mat-icon {
-    width: 100%;
-    height: 3rem;
-    text-align: center;
-    font-size: 3rem;
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  font-size: 3rem;
 }

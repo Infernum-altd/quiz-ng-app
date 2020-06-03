@@ -1,7 +1,7 @@
-import { FormControl, Validators } from '@angular/forms';
-import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit } from '@angular/core';
-import { Answer } from 'src/app/models/answer.model';
+import {FormControl, Validators} from '@angular/forms';
+import {GameAnswerComponent} from '../game-answer/game-answer.component';
+import {Component} from '@angular/core';
+import {Answer} from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-string-answer',
@@ -16,7 +16,7 @@ export class GameStringAnswerComponent extends GameAnswerComponent {
   }
 
   getSubmittedAnswers(): Answer[] {
-    let answer = this.getEmptyAnswer();
+    const answer = this.getEmptyAnswer();
 
     answer.text = this.stringAnswer.value;
 

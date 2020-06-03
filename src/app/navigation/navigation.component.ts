@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../service/loginService/authentication.service';
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../service/loginService/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -8,13 +8,13 @@ import { Router } from "@angular/router";
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  isOpen: boolean = true;
+  isOpen = true;
   currentUser: any;
   username: string;
   id: string;
 
   constructor(public authService: AuthenticationService,
-    private router: Router) {
+              private router: Router) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (this.currentUser != null) {
       this.username = this.currentUser.email;
@@ -22,11 +22,12 @@ export class NavigationComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   toProfile() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['profile', this.id, { outlets: { profilenav: 'profinfo' } }]);
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate(['profile', this.id, {outlets: {profilenav: 'profinfo'}}]);
     });
   }
 

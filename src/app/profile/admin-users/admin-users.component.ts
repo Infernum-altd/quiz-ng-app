@@ -9,10 +9,10 @@ import {RegistrationService} from '../../service/registrationService/registratio
 
 import {Gender} from '../../models/gender.enum';
 import {NotificationStatus} from '../../models/notification-status.enum';
-import {User} from "../../models/user";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {Subject} from "rxjs";
-import {Role} from "../../models/role.enum";
+import {User} from '../../models/user';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {Role} from '../../models/role.enum';
 
 @Component({
   selector: 'app-admin-users',
@@ -81,20 +81,21 @@ export class AdminUsersComponent implements OnInit {
       distinctUntilChanged())
       .subscribe(userSearch => {
         this.setPaginationParamDefault();
-        userSearch.length ==0 ? this.getAllAdminUsers() : this.filterRequest(userSearch);
+        userSearch.length === 0 ? this.getAllAdminUsers() : this.filterRequest(userSearch);
       });
     this.searchByRoleStatus(this.currentUserRole, this.currentUserStatus);
   }
+
   onPageChanged(e) {
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
-    if (this.currentUserRole != undefined && this.currentUserStatus != undefined) {
-      if (this.pageSize == undefined) {
+    if (this.currentUserRole !== undefined && this.currentUserStatus !== undefined) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.searchByRoleStatus(this.currentUserRole, this.currentUserStatus);
-    } else if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+    } else if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterRequest(this.userRequest);
@@ -126,12 +127,15 @@ export class AdminUsersComponent implements OnInit {
     this.pageIndex = 0;
     this.pageSize = 10;
   }
+
   setCurrentRole(role: string) {
     this.currentUserRole = role;
   }
+
   setCurrentStatus(status: string) {
     this.currentUserStatus = status;
   }
+
   onSubmit() {
     this.submitted = true;
     if (this.registerForm.invalid) {
@@ -139,15 +143,15 @@ export class AdminUsersComponent implements OnInit {
     }
     const input: User = JSON.parse(JSON.stringify(this.registerForm.value));
     this.model.email = input.email;
-    if (this.roleUs === Role.ADMIN){
+    if (this.roleUs === Role.ADMIN) {
       this.model.role = Role.MODERATOR;
-    }
-    else {
+    } else {
       this.model.role = input.role;
     }
     this.addNewUser();
   }
-  addNewUser(): void{
+
+  addNewUser(): void {
     this.profileService.postRegisterInfo(this.model).subscribe(
       res => {
         alert('Activation code was sent');
@@ -160,14 +164,16 @@ export class AdminUsersComponent implements OnInit {
       this.router.navigate(['profile', this.currentUserId, {outlets: {profilenav: 'adminUsers'}}]);
     });
   }
-  adminCheck(){
-    if (this.roleUs.toString() === Role[Role.SUPER_ADMIN]){
+
+  adminCheck() {
+    if (this.roleUs.toString() === Role[Role.SUPER_ADMIN]) {
       this.isSuperAdmin = true;
     }
-    if (this.roleUs.toString() === Role[Role.ADMIN]){
+    if (this.roleUs.toString() === Role[Role.ADMIN]) {
       this.isAdmin = true;
     }
   }
+
   getAllAdminUsers() {
     this.profileService.getAdminUsers(this.pageSize, this.pageIndex).subscribe(
       resp => {
@@ -189,6 +195,7 @@ export class AdminUsersComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
   deleteAdminUser(id) {
     this.profileService.deleteAdminUsers(id).subscribe(
       (resp: any) => {
@@ -201,6 +208,7 @@ export class AdminUsersComponent implements OnInit {
       }
     );
   }
+
   updateActiveStatusUser(id) {
     this.profileService.updateActiveStatusUser(id).subscribe(
       (resp: any) => {
@@ -213,5 +221,8 @@ export class AdminUsersComponent implements OnInit {
       }
     );
   }
-  get f() { return this.registerForm.controls; }
+
+  get f() {
+    return this.registerForm.controls;
+  }
 }

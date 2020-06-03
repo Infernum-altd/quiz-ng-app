@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Role} from '../../models/role.enum';
-import {ShareIdService} from '../../service/profileService/share-id.service';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-quiz-check-nav',
@@ -11,6 +9,7 @@ export class QuizCheckNavComponent implements OnInit {
 
   currentQuiz = JSON.parse(localStorage.getItem('currentQuiz'));
   id: any;
+
   constructor() {
     this.id = this.currentQuiz.id;
   }

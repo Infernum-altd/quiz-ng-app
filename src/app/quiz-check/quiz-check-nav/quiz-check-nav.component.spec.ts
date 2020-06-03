@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { QuizCheckNavComponent } from './quiz-check-nav.component';
+import {QuizCheckNavComponent} from './quiz-check-nav.component';
 
 describe('QuizCheckNavComponent', () => {
   let component: QuizCheckNavComponent;

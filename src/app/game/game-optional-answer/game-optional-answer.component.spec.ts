@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GameOptionalAnswerComponent } from './game-optional-answer.component';
+import {GameOptionalAnswerComponent} from './game-optional-answer.component';
 
 describe('GameOptionalAnswerComponent', () => {
   let component: GameOptionalAnswerComponent;

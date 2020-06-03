@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { Answer } from 'src/app/models/answer.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {Answer} from 'src/app/models/answer.model';
+
 @Component({
   selector: 'app-game-answer',
   templateUrl: './game-answer.component.html',
   styleUrls: ['./game-answer.component.css']
 })
 export class GameAnswerComponent implements OnInit {
-  maxAnswerSize: number = 4;
+  maxAnswerSize = 4;
   @Input() answers: Answer[] = [];
   @Input() questionId: number;
 

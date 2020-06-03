@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProfileNavigationComponent } from './profile-navigation.component';
+import {ProfileNavigationComponent} from './profile-navigation.component';
 
 describe('ProfileNavigationComponent', () => {
   let component: ProfileNavigationComponent;

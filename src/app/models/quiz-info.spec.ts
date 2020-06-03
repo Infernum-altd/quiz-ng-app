@@ -1,4 +1,4 @@
-import { QuizInfo } from './quiz-info';
+import {QuizInfo} from './quiz-info';
 
 describe('QuizInfo', () => {
   it('should create an instance', () => {

@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStateService {
 
-  constructor() { }
+  constructor() {
+  }
 
   setGameState(gameId: number, active: boolean) {
     sessionStorage.setItem(gameId.toString(), String(active));

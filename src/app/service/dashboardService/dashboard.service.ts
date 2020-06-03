@@ -1,7 +1,7 @@
-import { Quiz } from './../../models/quiz.model';
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Quiz} from '../../models/quiz.model';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,21 +17,22 @@ export class DashboardService {
   private GET_QUIZ_IMAGE = `${this.BASE_URL}\\quizzes\\get_image\\`;
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getTopQuizzes(limit: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(this.TOP_QUIZZES + "?limit=" + limit);
+    return this.http.get<Quiz[]>(this.TOP_QUIZZES + '?limit=' + limit);
   }
 
   getTopQuizzesByCategory(categoryId: number, limit: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(this.TOP_QUIZZES + '/' + categoryId + "?limit=" + limit);
+    return this.http.get<Quiz[]>(this.TOP_QUIZZES + '/' + categoryId + '?limit=' + limit);
   }
 
   getRecentQuizzes(userId: number, limit: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(this.RECENT_QUIZZES + '/' + userId + "?limit=" + limit);
+    return this.http.get<Quiz[]>(this.RECENT_QUIZZES + '/' + userId + '?limit=' + limit);
   }
 
-  getRating(userId: Number): Observable<number> {
+  getRating(userId: number): Observable<number> {
     return this.http.get<number>(this.GET_RATING + userId);
   }
 
@@ -44,7 +45,7 @@ export class DashboardService {
   }
 
   getRecommendations(userId: number, limit: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(this.GET_RECOMMENDATIONS + userId + "?limit=" + limit);
+    return this.http.get<Quiz[]>(this.GET_RECOMMENDATIONS + userId + '?limit=' + limit);
   }
 
   getQuizImage(quizId: number): Observable<any> {

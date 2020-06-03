@@ -1,6 +1,6 @@
-import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component } from '@angular/core';
-import { Answer } from 'src/app/models/answer.model';
+import {GameAnswerComponent} from '../game-answer/game-answer.component';
+import {Component} from '@angular/core';
+import {Answer} from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-boolean-answer',
@@ -8,7 +8,7 @@ import { Answer } from 'src/app/models/answer.model';
   styleUrls: ['./game-boolean-answer.component.css']
 })
 export class GameBooleanAnswerComponent extends GameAnswerComponent {
-  options: string[] = ["true", "false"];
+  options: string[] = ['true', 'false'];
   currentAnswer: string = null;
 
   constructor() {
@@ -20,7 +20,7 @@ export class GameBooleanAnswerComponent extends GameAnswerComponent {
   }
 
   getSubmittedAnswers(): Answer[] {
-    let answer = this.getEmptyAnswer();
+    const answer = this.getEmptyAnswer();
     answer.text = this.currentAnswer;
     return [answer];
   }

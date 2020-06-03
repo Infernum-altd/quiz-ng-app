@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router, RoutesRecognized} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {ShareIdService} from '../service/profileService/share-id.service';
 
@@ -11,6 +11,7 @@ import {ShareIdService} from '../service/profileService/share-id.service';
 export class ProfileComponent implements OnInit {
   private subscription: Subscription;
   id: string;
+
   constructor(private activateRoute: ActivatedRoute,
               private router: Router,
               private shareId: ShareIdService) {

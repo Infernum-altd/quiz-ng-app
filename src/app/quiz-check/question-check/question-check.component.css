@@ -5,22 +5,25 @@
   background-color: ghostwhite;
 }
 
-.true-answer-div{
+.true-answer-div {
   border-radius: 3px;
   margin: 5px;
   padding: 10px;
   background-color: lightgreen;
 }
-.false-answer-div{
+
+.false-answer-div {
   border-radius: 3px;
   margin: 5px;
   padding: 10px;
   background-color: lightgrey;
 }
-.checkBox{
+
+.checkBox {
   padding-left: 6px;
 }
-.mat-button-send{
+
+.mat-button-send {
   margin: 10px;
   background-color: lightgrey;
   border-radius: 3px;
@@ -28,7 +31,8 @@
   display: flex;
   justify-content: center;
 }
-.mat-button-active{
+
+.mat-button-active {
   background-color: lightgreen;
   border-radius: 3px;
   border-color: darkgrey;
@@ -38,13 +42,16 @@
 .example-header-image {
   background-size: cover;
 }
-.reject-comment{
+
+.reject-comment {
   background-color: lightsalmon;
 }
-.reject-comment:hover{
+
+.reject-comment:hover {
   background-color: salmon !important;
 }
-.form-field{
+
+.form-field {
   display: flex;
   justify-content: center;
 }

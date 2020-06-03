@@ -1,18 +1,17 @@
 form {
-    align-self: center;
-    width: 80%;
+  align-self: center;
+  width: 80%;
 }
 
 h3 {
-    margin: 0;
+  margin: 0;
 }
 
 .form-container {
-    width: 400 px;
-    margin: 0 px auto;
-    margin-top: 200 px
+  width: 400px;
+  margin: 200px auto 0;
 }
 
 .form-field {
-    display: block
+  display: block
 }

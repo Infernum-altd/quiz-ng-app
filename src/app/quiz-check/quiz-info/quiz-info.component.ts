@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Quiz} from '../../models/pending-quizzes.model';
 import {Router} from '@angular/router';
-import {ShareIdService} from "../../service/profileService/share-id.service";
-import {PlatformLocation} from "@angular/common";
-import {CommentHistory} from "../../models/comment-history";
-import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
+import {ShareIdService} from '../../service/profileService/share-id.service';
+import {PlatformLocation} from '@angular/common';
+import {CommentHistory} from '../../models/comment-history';
+import {QuizCheckService} from '../../service/quizCheckService/quiz-check.service';
 
 @Component({
   selector: 'app-quiz-info',
@@ -20,7 +20,7 @@ export class QuizInfoComponent implements OnInit {
   constructor(private quizService: QuizCheckService,
               private shareId: ShareIdService,
               private location: PlatformLocation,
-              private router: Router){
+              private router: Router) {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
   }
 
@@ -33,7 +33,8 @@ export class QuizInfoComponent implements OnInit {
       });
     });
   }
-  public getCommentHistory(){
+
+  public getCommentHistory() {
     this.quizService.getCommentHistory(this.currentQuizId).subscribe(
       (resp: any) => {
         this.comments = resp;
@@ -45,9 +46,10 @@ export class QuizInfoComponent implements OnInit {
     );
   }
 
-  ngSubmit(){}
+  ngSubmit() {
+  }
 
-  public getQuiz(id: string){
+  public getQuiz(id: string) {
     this.quizService.getQuizInfoById(id).subscribe(
       (resp: any) => {
         this.quiz = resp;
@@ -58,6 +60,7 @@ export class QuizInfoComponent implements OnInit {
       }
     );
   }
+
   checkOut(id: number) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate(['profile', id, {outlets: {profilenav: 'profinfo'}}]);

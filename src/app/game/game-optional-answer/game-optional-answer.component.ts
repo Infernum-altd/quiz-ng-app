@@ -1,6 +1,6 @@
-import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Answer } from 'src/app/models/answer.model';
+import {GameAnswerComponent} from '../game-answer/game-answer.component';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Answer} from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-optional-answer',
@@ -23,7 +23,7 @@ export class GameOptionalAnswerComponent extends GameAnswerComponent implements 
   }
 
   getSubmittedAnswers(): Answer[] {
-    let submittedAnswer: Answer[] = [];
+    const submittedAnswer: Answer[] = [];
     this.answers.forEach(
       (value, index) => {
         if (this.checked[index]) {

@@ -1,4 +1,4 @@
-import { RejectMessage } from './reject-message';
+import {RejectMessage} from './reject-message';
 
 describe('RejectMessage', () => {
   it('should create an instance', () => {

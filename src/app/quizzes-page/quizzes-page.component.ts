@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Category} from "../models/category.model";
-import {CategoryService} from "../service/categoryService/category.service";
-import {Quiz} from "../models/quiz";
-import {QuizService} from "../service/quizService/quiz.service";
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {AuthenticationService} from "../service/loginService/authentication.service";
+import {Category} from '../models/category.model';
+import {CategoryService} from '../service/categoryService/category.service';
+import {Quiz} from '../models/quiz';
+import {QuizService} from '../service/quizService/quiz.service';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {AuthenticationService} from '../service/loginService/authentication.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class QuizzesPageComponent implements OnInit {
   pageSize: number;
   pageSizeOptions: number[] = [10, 20, 30, 40, 50];
   currentQuizCategory: number;
-  recommendationLimit: number = 20;
+  recommendationLimit = 20;
 
   public userRequest: string;
   userQuestionUpdate = new Subject<string>();
@@ -40,14 +40,14 @@ export class QuizzesPageComponent implements OnInit {
     this.setPaginationParamDefault();
     this.getAllQuizzes();
 
-    this.authService.logIn ? this.getRecommendationForAuthUser(): this.getRecommendationForAnonimus();
+    this.authService.logIn ? this.getRecommendationForAuthUser() : this.getRecommendationForAnonimus();
 
     this.userQuestionUpdate.pipe(
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
         this.setPaginationParamDefault();
-        userSearch.length ==0 ? this.getAllQuizzes() : this.filterRequest(userSearch);
+        userSearch.length === 0 ? this.getAllQuizzes() : this.filterRequest(userSearch);
       });
   }
 
@@ -63,13 +63,13 @@ export class QuizzesPageComponent implements OnInit {
   onPageChanged(e) {
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
-    if (this.currentQuizCategory != undefined) {
-      if (this.pageSize == undefined) {
+    if (this.currentQuizCategory !== undefined) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.searchByCategory(this.currentQuizCategory);
-    } else if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+    } else if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterRequest(this.userRequest);
@@ -84,7 +84,7 @@ export class QuizzesPageComponent implements OnInit {
   }
 
   getAllQuizzes() {
-    console.log("pagesize " + this.pageSize );
+    console.log('pagesize ' + this.pageSize);
     this.quizService.getQuizzes(this.pageSize, this.pageIndex).subscribe(
       resp => {
         this.currentQuizCategory = undefined;

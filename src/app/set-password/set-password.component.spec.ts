@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SetPasswordComponent } from './set-password.component';
+import {SetPasswordComponent} from './set-password.component';
 
 describe('SetPasswordComponent', () => {
   let component: SetPasswordComponent;

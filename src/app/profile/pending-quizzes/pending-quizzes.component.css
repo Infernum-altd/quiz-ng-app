@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
 }
+
 .buttonsAction button {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }

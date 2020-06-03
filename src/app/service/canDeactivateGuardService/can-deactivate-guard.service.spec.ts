@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CanDeactivateGuardService } from './can-deactivate-guard.service';
+import {CanDeactivateGuardService} from './can-deactivate-guard.service';
 
 describe('CanDeactivateGuardService', () => {
   let service: CanDeactivateGuardService;

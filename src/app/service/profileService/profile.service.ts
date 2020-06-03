@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../../models/user';
 import {Quiz} from '../../models/quiz';
 import {NotificationStatus} from '../../models/notification-status.enum';
-import {CurrentUserService} from "../current-user.service";
-import {AuthenticationService} from "../loginService/authentication.service";
-
+import {CurrentUserService} from '../current-user.service';
+import {AuthenticationService} from '../loginService/authentication.service';
 
 
 @Injectable({
@@ -39,7 +38,8 @@ export class ProfileService {
 
   constructor(private http: HttpClient,
               private authService: AuthenticationService,
-              private currentUserService: CurrentUserService) { }
+              private currentUserService: CurrentUserService) {
+  }
 
   getProfile(userId: string): Observable<User> {
     return this.http.get<User>(this.PROFILE_URL + userId);
@@ -50,45 +50,60 @@ export class ProfileService {
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
-  updateAdminUser(user: User): Observable<User>{
+  updateAdminUser(user: User): Observable<User> {
     return this.http.post<User>(this.UPDATE_PROFILE_URL, user);
   }
 
-    deleteAdminUsers(id): Observable<User>{
-      return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
-    }
-    updateActiveStatusUser(id): Observable<any>{
-      return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
-    }
+  deleteAdminUsers(id): Observable<User> {
+    return this.http.delete<User>(this.DELETE_ADMIN_URL + id);
+  }
 
-  updatePassword(newPassword: string): Observable<any>{
+  updateActiveStatusUser(id): Observable<any> {
+    return this.http.post(this.UPDATE_ACTIVE_STATUS_URL + id, 'Change active status');
+  }
+
+  updatePassword(newPassword: string): Observable<any> {
     return this.http.post(this.UPDATE_PASSWORD_URL + this.userId, newPassword);
   }
 
-  getFriends(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
-    return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' + pageNumber + '/' + this.userId + '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));  //active direction
+  getFriends(pageSize: number, pageNumber: number, sortDirection: any): Observable<any> {
+    return this.http.get<User[]>(this.FRIEND_LIST_URL + pageSize + '/' +
+      pageNumber + '/' +
+      this.userId + '?sort=' +
+      (sortDirection === undefined ? '' : sortDirection.active + ' ' + sortDirection.direction));
   }
 
-  getUserQuizzes(pageSize: number, pageNumber: number, sortDirection: any): Observable<any>{
-    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/' + pageNumber + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+  getUserQuizzes(pageSize: number, pageNumber: number, sortDirection: any): Observable<any> {
+    return this.http.get<Quiz[]>(this.GET_QUIZZES_URL + pageSize + '/'
+      + pageNumber + '/'
+      + this.userId + '?sort=' + (sortDirection === undefined ? '' : sortDirection.active + ' ' + sortDirection.direction));
   }
 
-  getFavoriteGames(pageSize: number, pageNumber: number): Observable<any>{
+  getFavoriteGames(pageSize: number, pageNumber: number): Observable<any> {
     return this.http.get<Quiz[]>(this.GET_FAVORITE_URL + this.userId + '/' + pageSize + '/' + pageNumber);
   }
-  getAdminUsers(pageSize: number, pageIndex: number): Observable<any>{
-    if (!pageIndex){ pageIndex = 0;}
-    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
+
+  getAdminUsers(pageSize: number, pageIndex: number): Observable<any> {
+    if (!pageIndex) {
+      pageIndex = 0;
+    }
+    return this.http.get<User[]>(this.ADMIN_USERS_LIST_URL + '/' +
+      pageSize + '/' +
+      pageIndex + '/' + (this.authService.logIn ? this.currentUserService.getCurrentUser().id : 0));
   }
+
   getUsersByRoleStatus(userRole: string, userStatus: string, pageSize: number, pageIndex: number): Observable<any> {
-    return this.http.get(this.GET_USERS_BY_ROLE + userRole + '/' + userStatus + '/' + pageSize + '/' + pageIndex + '/' + (this.authService.logIn? this.currentUserService.getCurrentUser().id : 0));
+    return this.http.get(this.GET_USERS_BY_ROLE + userRole + '/' +
+      userStatus + '/' +
+      pageSize + '/' +
+      pageIndex + '/' + (this.authService.logIn ? this.currentUserService.getCurrentUser().id : 0));
   }
 
   getFilteredUsers(searchText: string, pageSize: number, pageIndex: number): Observable<any> {
     return this.http.get(this.GET_FILTERED_USERS + searchText + '/' + pageSize + '/' + pageIndex);
   }
 
-  getCategoryName(categoryId: string): Observable<any>{
+  getCategoryName(categoryId: string): Observable<any> {
     return this.http.get(this.GET_CATEGORY_NAME + categoryId);
   }
 
@@ -111,22 +126,28 @@ export class ProfileService {
   }
 
   filterFriendsRequest(userSearch: string, pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
-    return this.http.get(this.FRIEND_LIST_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+    return this.http.get(this.FRIEND_LIST_URL + userSearch + '/' +
+      pageSize + '/' +
+      pageIndex + '/' +
+      this.userId + '?sort=' + (sortDirection === undefined ? '' : sortDirection.active + ' ' + sortDirection.direction));
   }
 
   filterQuizzesRequest(userSearch: string, pageSize: number, pageIndex: number, sortDirection: any): Observable<any> {
-    return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId +'?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction));
+    return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' +
+      pageSize + '/' +
+      pageIndex + '/' +
+      this.userId + '?sort=' + (sortDirection === undefined ? '' : sortDirection.active + ' ' + sortDirection.direction));
   }
 
-  filterFavoriteRequest(userSearch: string, pageSize: number, pageIndex: number): Observable<any>{
+  filterFavoriteRequest(userSearch: string, pageSize: number, pageIndex: number): Observable<any> {
     return this.http.get(this.GET_QUIZZES_URL + userSearch + '/' + pageSize + '/' + pageIndex + '/' + this.userId);
   }
 
   getPlayedGames(pageSize: number, pageIndex: number, sortDirection: any, userSearch?: string): Observable<any> {
     console.log(userSearch);
-    return this.http.get(this.GET_PLAYED_GAMES  + pageSize + '/' + pageIndex + '/' + this.userId +
-      '?sort=' + (sortDirection==undefined? "": sortDirection.active + ' ' + sortDirection.direction) + '&' +
-      'search=' + (userSearch==undefined? "": userSearch));
+    return this.http.get(this.GET_PLAYED_GAMES + pageSize + '/' + pageIndex + '/' + this.userId +
+      '?sort=' + (sortDirection === undefined ? '' : sortDirection.active + ' ' + sortDirection.direction) + '&' +
+      'search=' + (userSearch === undefined ? '' : userSearch));
   }
 
   getGamesResult(gameId: number): Observable<any> {
@@ -138,14 +159,18 @@ export class ProfileService {
   }
 
   getRejectedQuizzes(rejectedPageSize: number, rejectedPageIndex: number, rejectedSortDirection: any): Observable<any> {
-    return this.http.get(this.GET_REJECTED_QUIZZES + rejectedPageSize + '/' + rejectedPageIndex + '/' + this.userId +'?sort=' + (rejectedSortDirection==undefined? "": rejectedSortDirection.active + ' ' + rejectedSortDirection.direction));
+    return this.http.get(this.GET_REJECTED_QUIZZES + rejectedPageSize + '/' +
+      rejectedPageIndex + '/' +
+      this.userId + '?sort=' +
+      (rejectedSortDirection === undefined ? '' : rejectedSortDirection.active + ' ' + rejectedSortDirection.direction));
   }
 
   getRejectMessages(quizId: number): Observable<any> {
     return this.http.get(this.GET_REJECTED_MESSAGES + quizId);
   }
+
   getAssignedQuizzes(moderatorId): Observable<any> {
-    return this.http.get(this.ASSIGNED_QUIZZES_URL  + moderatorId);
+    return this.http.get(this.ASSIGNED_QUIZZES_URL + moderatorId);
   }
 
 }

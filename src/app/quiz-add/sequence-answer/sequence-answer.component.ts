@@ -1,11 +1,11 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { Observable, of } from 'rxjs';
-import { ImageUploadComponent } from '../../image-upload/image-upload.component';
-import { Validators, FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { AnswerComponent, SequenceValidator } from '../answer/answer.component';
-import { Component, OnInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
-import { mergeMap, map } from 'rxjs/operators';
-import { Answer } from 'src/app/models/answer.model';
+import {ImageService} from '../../service/imageService/image.service';
+import {Observable, of} from 'rxjs';
+import {ImageUploadComponent} from '../../image-upload/image-upload.component';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AnswerComponent, SequenceValidator} from '../answer/answer.component';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {map, mergeMap} from 'rxjs/operators';
+import {Answer} from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-sequence-answer',
@@ -23,7 +23,7 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-    imageService: ImageService) {
+              imageService: ImageService) {
     super(imageService);
   }
 
@@ -32,19 +32,19 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
       items: this.formBuilder.array([])
     });
     this.items = this.answerForm.get('items') as FormArray;
-    for (var _i = 0; _i < this.maxAnswer; _i++) {
+    for (let i = 0; i < this.maxAnswer; i++) {
       this.answer.push({
         id: null,
         questionId: 0,
-        text: "",
+        text: '',
         correct: true,
         nextAnswerId: null,
         image: null,
         changed: true,
         deleted: false
       });
-      const formControl = new FormControl(this.answer[_i].text, []);
-      if (_i < this.minRequired) {
+      const formControl = new FormControl(this.answer[i].text, []);
+      if (i < this.minRequired) {
         formControl.setValidators([Validators.required, Validators.maxLength(30)]);
       }
       this.items = this.answerForm.get('items') as FormArray;
@@ -52,7 +52,7 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
         this.formBuilder.group({
           text: formControl
         })
-      )
+      );
     }
     this.answerForm.get('items').setValidators([SequenceValidator()]);
   }
@@ -65,34 +65,35 @@ export class SequenceAnswerComponent extends AnswerComponent implements OnInit {
 
   getData(): Observable<Answer[]> {
     this.getImages();
-    for (var i = 0; i < this.answer.length; i++) {
+    for (let i = 0; i < this.answer.length; i++) {
       if (this.answer[i].id != null && (this.answerForm.get('items') as FormArray).at(i).dirty) {
         this.answer[i].changed = true;
       }
 
-      const newText = (this.answerForm.get('items') as FormArray).at(i).get("text").value;
+      const newText = (this.answerForm.get('items') as FormArray).at(i).get('text').value;
 
-      if (this.answer[i].text != "" && newText == "") {
+      if (this.answer[i].text !== '' && newText === '') {
         this.answer[i].deleted = true;
       }
 
       this.answer[i].text = newText;
 
-      if (this.answer[i].text === "" || this.answer[i].text == null)
+      if (this.answer[i].text === '' || this.answer[i].text == null) {
         break;
+      }
     }
 
     return this.saveImages().pipe(
       map((resp) => {
-        for (let i in resp) {
-          if (resp[i] !== "") {
+        for (const i in resp) {
+          if (resp[i] !== '') {
             this.answer[i].image = resp[i];
           }
         }
       }),
       mergeMap(_ => {
         const result = [];
-        for (let i of this.answer) {
+        for (const i of this.answer) {
           if (i.text || i.deleted) {
             result.push(i);
           }

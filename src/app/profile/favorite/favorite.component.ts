@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {Quiz} from "../../models/quiz";
-import {ProfileService} from "../../service/profileService/profile.service";
-import {PageEvent} from "@angular/material/paginator";
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import {Component, OnInit} from '@angular/core';
+import {Quiz} from '../../models/quiz';
+import {ProfileService} from '../../service/profileService/profile.service';
+import {PageEvent} from '@angular/material/paginator';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorite',
@@ -11,8 +11,10 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   styleUrls: ['./favorite.component.css']
 })
 export class FavoriteComponent implements OnInit {
-  constructor(private profileService: ProfileService) { }
-  quizzes:Quiz[];
+  constructor(private profileService: ProfileService) {
+  }
+
+  quizzes: Quiz[];
   public userRequest: string;
   userQuestionUpdate = new Subject<string>();
 
@@ -29,18 +31,18 @@ export class FavoriteComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
-        if (userSearch.length == 0) {
+        if (userSearch.length === 0) {
           this.setPaginationParamDefault();
-          this.uploadFavoriteQuizzes()
+          this.uploadFavoriteQuizzes();
         } else {
           this.filterFavoriteQuizzes(userSearch);
         }
       });
   }
 
-  uploadFavoriteQuizzes(){
+  uploadFavoriteQuizzes() {
     this.profileService.getFavoriteGames(this.pageSize, this.pageIndex).subscribe(
-      resp=>{
+      resp => {
         this.quizzes = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }
@@ -58,9 +60,9 @@ export class FavoriteComponent implements OnInit {
     this.choseRequest();
   }
 
-  filterFavoriteQuizzes(userSearch: string){
+  filterFavoriteQuizzes(userSearch: string) {
     this.profileService.filterFavoriteRequest(userSearch, this.pageSize, this.pageIndex).subscribe(
-      resp=>{
+      resp => {
         this.quizzes = resp.responceList;
         this.length = resp.totalNumberOfElement;
       }
@@ -68,9 +70,9 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-  choseRequest(){
-    if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+  choseRequest() {
+    if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterFavoriteQuizzes(this.userRequest);

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GameFinishComponent } from './game-finish.component';
+import {GameFinishComponent} from './game-finish.component';
 
 describe('GameFinishComponent', () => {
   let component: GameFinishComponent;

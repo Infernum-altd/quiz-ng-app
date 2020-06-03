@@ -1,9 +1,8 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { AnswerService } from '../../service/answerService/answer.service';
-import { AnswerComponent } from '../answer/answer.component';
-import { Component, OnInit } from '@angular/core';
-import { Answer } from '../../models/answer.model';
-import { Observable, of } from 'rxjs';
+import {ImageService} from '../../service/imageService/image.service';
+import {AnswerComponent} from '../answer/answer.component';
+import {Component, OnInit} from '@angular/core';
+import {Answer} from '../../models/answer.model';
+import {Observable, of} from 'rxjs';
 
 
 @Component({
@@ -12,17 +11,17 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./boolean-answer.component.css']
 })
 export class BooleanAnswerComponent extends AnswerComponent implements OnInit {
-  checkBox: boolean = false;
+  checkBox = false;
 
   constructor(imageService: ImageService) {
     super(imageService);
   }
 
   ngOnInit(): void {
-    let result: Answer = {
+    const result: Answer = {
       id: null,
       questionId: 0,
-      text: "",
+      text: '',
       correct: true,
       nextAnswerId: null,
       image: null,
@@ -34,7 +33,7 @@ export class BooleanAnswerComponent extends AnswerComponent implements OnInit {
 
   getData(): Observable<Answer[]> {
     this.answer[0].questionId = this.questionId;
-    this.answer[0].text = this.checkBox ? "true" : "false";
+    this.answer[0].text = this.checkBox ? 'true' : 'false';
 
     return of(this.answer);
   }

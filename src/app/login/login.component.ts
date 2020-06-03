@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {User} from "../models/user";
-import {AuthenticationService} from "../service/loginService/authentication.service";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {User} from '../models/user';
+import {AuthenticationService} from '../service/loginService/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +11,15 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   model: User = {
     image: undefined, notificationStatus: undefined,
-    about: "",
+    about: '',
     birthdate: undefined,
-    city: "",
-    countryId: "",
+    city: '',
+    countryId: '',
     gender: undefined,
-    name: "",
-    rating: "",
+    name: '',
+    rating: '',
     role: undefined,
-    surname: "",
+    surname: '',
     id: null,
     email: '',
     password: ''

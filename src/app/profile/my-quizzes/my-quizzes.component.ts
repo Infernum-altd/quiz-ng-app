@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../service/profileService/profile.service';
-import {PageEvent} from "@angular/material/paginator";
-import {Quiz} from "../../models/quiz";
-import {Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {MatDialog} from "@angular/material/dialog";
-import {RejectMessagesDialogComponent} from "./reject-messages-dialog/reject-messages-dialog.component";
-import { NewQuizService } from 'src/app/service/newQuizService/new-quiz.service';
-import {Router} from "@angular/router";
+import {PageEvent} from '@angular/material/paginator';
+import {Quiz} from '../../models/quiz';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {MatDialog} from '@angular/material/dialog';
+import {RejectMessagesDialogComponent} from './reject-messages-dialog/reject-messages-dialog.component';
+import {NewQuizService} from 'src/app/service/newQuizService/new-quiz.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class MyQuizzesComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(userSearch => {
-        if (userSearch.length == 0) {
+        if (userSearch.length === 0) {
           this.setPaginationParamDefault();
           this.getUserQuizzes();
         } else {
@@ -90,8 +90,8 @@ export class MyQuizzesComponent implements OnInit {
   }
 
   choseRequest() {
-    if (this.userRequest != undefined && this.userRequest) {
-      if (this.pageSize == undefined) {
+    if (this.userRequest !== undefined && this.userRequest) {
+      if (this.pageSize === undefined) {
         this.setPaginationParamDefault();
       }
       this.filterQuizzes(this.userRequest);
@@ -101,7 +101,7 @@ export class MyQuizzesComponent implements OnInit {
   }
 
   sortQuizzes($event) {
-    this.sortDirection = $event.direction == '' ? undefined : $event;
+    this.sortDirection = $event.direction === '' ? undefined : $event;
     this.setPaginationParamDefault();
     this.choseRequest();
   }
@@ -126,14 +126,14 @@ export class MyQuizzesComponent implements OnInit {
   }
 
   choseRejectedRequest() {
-      if (this.rejectedPageSize == undefined) {
-        this.setPaginationParamDefault();
-      }
-      this.getUserRejectedQuizzes();
+    if (this.rejectedPageSize === undefined) {
+      this.setPaginationParamDefault();
+    }
+    this.getUserRejectedQuizzes();
   }
 
   sortRejectedQuizzes($event) {
-    this.rejectedSortDirection = $event.direction == '' ? undefined : $event;
+    this.rejectedSortDirection = $event.direction === '' ? undefined : $event;
     this.setPaginationRejectedParamDefault();
     this.choseRejectedRequest();
   }

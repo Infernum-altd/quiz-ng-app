@@ -3,9 +3,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuizCheckModel} from '../../models/quiz-check.model';
-import {ModeratorComment} from "../../models/moderator-comment";
-import {QuizCheckService} from "../../service/quizCheckService/quiz-check.service";
-import {StatusType} from "../../models/status-type.enum";
+import {ModeratorComment} from '../../models/moderator-comment';
+import {QuizCheckService} from '../../service/quizCheckService/quiz-check.service';
+import {StatusType} from '../../models/status-type.enum';
 
 @Component({
   selector: 'app-question-check',
@@ -37,7 +37,8 @@ export class QuestionCheckComponent implements OnInit {
       comment: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
-  public getQuiz(id: string){
+
+  public getQuiz(id: string) {
     this.quizService.getQuizById(id).subscribe(
       (resp: any) => {
         this.quiz = resp;
@@ -48,6 +49,7 @@ export class QuestionCheckComponent implements OnInit {
       }
     );
   }
+
   activeQuiz() {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
@@ -63,19 +65,21 @@ export class QuestionCheckComponent implements OnInit {
       }
     );
   }
+
   checkCount(i: number) {
-    if (!this.checkedQuestions.includes(i)){
+    if (!this.checkedQuestions.includes(i)) {
       this.checkedQuestions.push(i);
-    }
-    else {
+    } else {
       this.checkedQuestions.splice(this.checkedQuestions.indexOf(i), i);
     }
   }
-  allChecked(){
-    if ( this.checkedQuestions.length - 1  === this.quiz.questions.length){
+
+  allChecked() {
+    if (this.checkedQuestions.length - 1 === this.quiz.questions.length) {
       return true;
     }
   }
+
   leaveComment() {
     this.currentQuizId = JSON.parse(localStorage.getItem('currentQuiz')).id;
     this.currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
@@ -93,19 +97,23 @@ export class QuestionCheckComponent implements OnInit {
       }
     );
   }
+
   unsignModeratorQuiz() {
     this.quizService.unsignQuiz(this.currentQuizId).subscribe(
       (resp: any) => {
       },
-    error => {
-      alert('Something wrong while unsign');
-    }
+      error => {
+        alert('Something wrong while unsign');
+      }
     );
   }
-  get f() { return this.commentForm.controls; }
+
+  get f() {
+    return this.commentForm.controls;
+  }
 
 
-  public commentFormValidation(){
+  public commentFormValidation() {
     this.submitted = true;
 
     if (this.commentForm.invalid) {

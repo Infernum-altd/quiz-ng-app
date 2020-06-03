@@ -1,6 +1,6 @@
-.mat-menu-item{
-  line-height:35px;
-  height:35px;
+.mat-menu-item {
+  line-height: 35px;
+  height: 35px;
 }
 
 .spacer {
@@ -8,12 +8,12 @@
 }
 
 .input {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 mat-form-field.mat-form-field {
   font-size: 12px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .connect-button {

@@ -1,7 +1,7 @@
-import { GameAnswerComponent } from './../game-answer/game-answer.component';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Answer } from 'src/app/models/answer.model';
+import {GameAnswerComponent} from '../game-answer/game-answer.component';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {Answer} from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-game-sequence-answer',

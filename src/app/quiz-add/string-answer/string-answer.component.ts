@@ -1,11 +1,9 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { Validators } from '@angular/forms';
-import { AnswerComponent } from '../answer/answer.component';
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Answer } from '../../models/answer.model';
-import { AnswerService } from '../../service/answerService/answer.service';
-import { Observable, of } from 'rxjs';
+import {ImageService} from '../../service/imageService/image.service';
+import {FormControl, Validators} from '@angular/forms';
+import {AnswerComponent} from '../answer/answer.component';
+import {Component, OnInit} from '@angular/core';
+import {Answer} from '../../models/answer.model';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-string-answer',
@@ -20,10 +18,10 @@ export class StringAnswerComponent extends AnswerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let result: Answer = {
+    const result: Answer = {
       id: null,
       questionId: 0,
-      text: "",
+      text: '',
       correct: true,
       nextAnswerId: null,
       image: null,

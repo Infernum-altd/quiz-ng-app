@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {ProfileService} from "../../../service/profileService/profile.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {PlayedGameComponent} from "../../played-game/played-game.component";
-import {RejectMessage} from "../../../models/reject-message";
+import {ProfileService} from '../../../service/profileService/profile.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {PlayedGameComponent} from '../../played-game/played-game.component';
+import {RejectMessage} from '../../../models/reject-message';
 
 @Component({
   selector: 'app-reject-messages-dialog',
@@ -11,9 +11,11 @@ import {RejectMessage} from "../../../models/reject-message";
 })
 export class RejectMessagesDialogComponent implements OnInit {
   messages: RejectMessage[];
+
   constructor(private profileService: ProfileService,
               public dialogRef: MatDialogRef<PlayedGameComponent>,
-              @Inject(MAT_DIALOG_DATA) public quizId: number) {}
+              @Inject(MAT_DIALOG_DATA) public quizId: number) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -21,9 +23,10 @@ export class RejectMessagesDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.profileService.getRejectMessages(this.quizId).subscribe(
-      resp =>{
+      resp => {
         this.messages = resp;
-      console.log(resp);}
+        console.log(resp);
+      }
     );
   }
 

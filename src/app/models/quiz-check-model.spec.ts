@@ -1,4 +1,4 @@
-import { QuizCheckModel } from './quiz-check-model';
+import {QuizCheckModel} from './quiz-check-model';
 
 describe('QuizCheckModel', () => {
   it('should create an instance', () => {

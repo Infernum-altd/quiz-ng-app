@@ -1,28 +1,28 @@
 mat-card {
-    align-self: center;
-    width: 60%;
+  align-self: center;
+  width: 60%;
 }
 
 mat-card-actions {
-    text-align: end;
+  text-align: end;
 }
 
 mat-expansion-panel {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .delete-button {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 h3 {
-    margin: 0;
+  margin: 0;
 }
 
 .fab {
-    margin: 1rem;
+  margin: 1rem;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }

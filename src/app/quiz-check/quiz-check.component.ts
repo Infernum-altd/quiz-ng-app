@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Quiz} from '../models/pending-quizzes.model';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {QuizService} from '../service/quizService/quiz.service';
 import {Subscription} from 'rxjs';
 import {ShareIdService} from '../service/profileService/share-id.service';
 
@@ -13,6 +11,7 @@ import {ShareIdService} from '../service/profileService/share-id.service';
 export class QuizCheckComponent implements OnInit {
   private subscription: Subscription;
   id: string;
+
   constructor(private activateRoute: ActivatedRoute,
               private router: Router,
               private shareId: ShareIdService) {

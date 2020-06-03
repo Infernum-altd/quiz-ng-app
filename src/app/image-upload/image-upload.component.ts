@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -11,21 +11,22 @@ class ImageSnippet {
 })
 export class ImageUploadComponent implements OnInit {
   selectedFile: ImageSnippet;
+  // tslint:disable-next-line:ban-types
   name: String;
 
   constructor() { }
   ngOnInit(): void {
-    this.name = "Choose file";
+    this.name = 'Choose file';
   }
 
   processFile(imageInput: any) {
-    const file: File = imageInput.files[0]
+    const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
       this.name = file.name;
-    })
+    });
 
     reader.readAsDataURL(file);
   }

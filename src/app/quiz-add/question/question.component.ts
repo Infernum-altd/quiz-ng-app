@@ -1,18 +1,27 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { Validators } from '@angular/forms';
-import { SequenceAnswerComponent } from './../sequence-answer/sequence-answer.component';
-import { StringAnswerComponent } from './../string-answer/string-answer.component';
-import { BooleanAnswerComponent } from '../boolean-answer/boolean-answer.component';
-import { OptionalAnswerComponent } from '../optional-answer/optional-answer.component';
-import { AnswerComponent } from '../answer/answer.component';
-import { QuestionService } from '../../service/questionService/question.service';
-import { Question, QuestionType } from '../../models/question.model';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ComponentFactory, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { ImageUploadComponent } from '../../image-upload/image-upload.component';
-import { TitleCasePipe } from '@angular/common';
-import { map, mergeMap } from 'rxjs/operators';
-import { forkJoin, of, Observable } from 'rxjs';
+import {ImageService} from './../../service/imageService/image.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SequenceAnswerComponent} from './../sequence-answer/sequence-answer.component';
+import {StringAnswerComponent} from './../string-answer/string-answer.component';
+import {BooleanAnswerComponent} from '../boolean-answer/boolean-answer.component';
+import {OptionalAnswerComponent} from '../optional-answer/optional-answer.component';
+import {AnswerComponent} from '../answer/answer.component';
+import {QuestionService} from '../../service/questionService/question.service';
+import {Question, QuestionType} from '../../models/question.model';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {ImageUploadComponent} from '../../image-upload/image-upload.component';
+import {TitleCasePipe} from '@angular/common';
+import {map, mergeMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-question',
@@ -21,18 +30,18 @@ import { forkJoin, of, Observable } from 'rxjs';
 })
 export class QuestionComponent implements OnInit, AfterViewInit {
   quizId: number;
-  submitted: boolean = false;
-  send: boolean = false;
+  submitted = false;
+  send = false;
 
   questionForm: FormGroup;
   questionTypes: string[] = [];
-  componentRef: ComponentRef<AnswerComponent>
+  componentRef: ComponentRef<AnswerComponent>;
 
   @Input() question: Question = {
     id: null,
     quizId: null,
-    type: "Option",
-    text: "",
+    type: 'Option',
+    text: '',
     active: true,
     answerList: [],
     image: null,
@@ -41,13 +50,13 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   };
   image: File = null;
 
-  @ViewChild('dynamicComponent', { read: ViewContainerRef }) answerHost;
+  @ViewChild('dynamicComponent', {read: ViewContainerRef}) answerHost;
   @ViewChild(ImageUploadComponent) imageComponent: ImageUploadComponent;
 
   constructor(public questionService: QuestionService,
-    private formBuilder: FormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private imageService: ImageService) {
+              private formBuilder: FormBuilder,
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private imageService: ImageService) {
     Object.keys(QuestionType).forEach(
       value => this.questionTypes.push(value)
     );
@@ -66,9 +75,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   }
 
   loadComponent(value: string) {
-    let titleCasePipe = new TitleCasePipe();
+    const titleCasePipe = new TitleCasePipe();
     value = titleCasePipe.transform(value);
-    var componentFactory: ComponentFactory<AnswerComponent>;
+    let componentFactory: ComponentFactory<AnswerComponent>;
     switch (value) {
       case QuestionType.OPTION:
         componentFactory = this.componentFactoryResolver.resolveComponentFactory(OptionalAnswerComponent);
@@ -92,7 +101,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
           this.question.answerList.push({
             id: null,
             questionId: 0,
-            text: "",
+            text: '',
             correct: false,
             nextAnswerId: null,
             image: null,
@@ -120,10 +129,17 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.question.answerList = this.componentRef.instance.answer;
 
     return this.componentRef.instance.getData().pipe(
-      map(resp => { console.log(resp); this.question.answerList = resp; }),
+      map(resp => {
+        console.log(resp);
+        this.question.answerList = resp;
+      }),
       mergeMap(_ => this.imageService.saveImage(this.imageComponent.selectedFile?.file).pipe(
-        map(resp => { if (resp != "") this.question.image = resp; }),
-        mergeMap(_ => of(this.question))
+        map(resp => {
+          if (resp !== '') {
+            this.question.image = resp;
+          }
+        }),
+        mergeMap(() => of(this.question))
       ))
     );
   }

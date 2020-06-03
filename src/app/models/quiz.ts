@@ -1,18 +1,17 @@
-import { StatusType } from "./status-type.enum";
-import { Question } from './question.model';
+import {StatusType} from './status-type.enum';
+import {Question} from './question.model';
 
 export class Quiz {
   id: string;
   name: string;
   author: string;
-  category_id: string;
+  categoryId: string;
   date: Date;
-  image: String;//byte array
+  image: string;
   description: string;
   status: StatusType;
-  modificationTime: Date;
   category: string;
-  modification_time: Date;
+  modificationTime: Date;
   favorite: boolean;
   tags: string[];
   questions: Question[];

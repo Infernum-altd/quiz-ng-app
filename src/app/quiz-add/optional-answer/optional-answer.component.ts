@@ -1,11 +1,11 @@
-import { ImageService } from './../../service/imageService/image.service';
-import { AnswerComponent, SequenceValidator } from '../answer/answer.component';
-import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormArray, Validators, FormControl, FormBuilder } from '@angular/forms';
-import { ImageUploadComponent } from '../../image-upload/image-upload.component';
-import { Answer } from 'src/app/models/answer.model';
-import { Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import {ImageService} from '../../service/imageService/image.service';
+import {AnswerComponent, SequenceValidator} from '../answer/answer.component';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ImageUploadComponent} from '../../image-upload/image-upload.component';
+import {Answer} from 'src/app/models/answer.model';
+import {Observable, of} from 'rxjs';
+import {map, mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-optional-answer',
@@ -22,7 +22,7 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
   minRequired = 2;
 
   constructor(private formBuilder: FormBuilder,
-    imageService: ImageService) {
+              imageService: ImageService) {
     super(imageService);
   }
 
@@ -30,20 +30,20 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
     this.answerForm = new FormGroup({
       items: this.formBuilder.array([])
     });
-    for (var _i = 0; _i < this.maxAnswer; _i++) {
+    for (let i = 0; i < this.maxAnswer; i++) {
       this.answer.push({
         id: null,
         questionId: 0,
-        text: "",
+        text: '',
         correct: false,
         nextAnswerId: null,
         image: null,
         changed: true,
         deleted: false
       });
-      const correctControl = new FormControl(this.answer[_i].correct, []);
-      const textControl = new FormControl(this.answer[_i].text, []);
-      if (_i < this.minRequired) {
+      const correctControl = new FormControl(this.answer[i].correct, []);
+      const textControl = new FormControl(this.answer[i].text, []);
+      if (i < this.minRequired) {
         textControl.setValidators([Validators.required, Validators.maxLength(30)]);
       }
       this.items = this.answerForm.get('items') as FormArray;
@@ -52,7 +52,7 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
           isCorrect: correctControl,
           text: textControl
         })
-      )
+      );
     }
     this.answerForm.get('items').setValidators([SequenceValidator()]);
   }
@@ -68,7 +68,7 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
     this.getImages();
 
     const items = this.answerForm.get('items') as FormArray;
-    for (var i = 0; i < this.answer.length; i++) {
+    for (let i = 0; i < this.answer.length; i++) {
       const current = items.at(i);
       if (this.answer[i].id != null && current.dirty) {
         this.answer[i].changed = true;
@@ -76,28 +76,29 @@ export class OptionalAnswerComponent extends AnswerComponent implements OnInit {
 
       const newText = current.get('text').value;
 
-      if (this.answer[i].text != "" && newText == "") {
+      if (this.answer[i].text !== '' && newText === '') {
         this.answer[i].deleted = true;
       }
 
       this.answer[i].correct = current.get('isCorrect').value;
       this.answer[i].text = newText;
 
-      if (this.answer[i].text === "" || this.answer[i].text == null)
+      if (this.answer[i].text === '' || this.answer[i].text == null) {
         break;
+      }
     }
 
     return this.saveImages().pipe(
       map((resp) => {
-        for (let i in resp) {
-          if (resp[i] !== "") {
+        for (const i in resp) {
+          if (resp[i] !== '') {
             this.answer[i].image = resp[i];
           }
         }
       }),
       mergeMap(_ => {
         const result = [];
-        for (let i of this.answer) {
+        for (const i of this.answer) {
           if (i.text || i.deleted) {
             result.push(i);
           }

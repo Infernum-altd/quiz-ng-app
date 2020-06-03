@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PendingQuizzesComponent } from './pending-quizzes.component';
+import {PendingQuizzesComponent} from './pending-quizzes.component';
 
 describe('NotCheckedQuizzesComponent', () => {
   let component: PendingQuizzesComponent;

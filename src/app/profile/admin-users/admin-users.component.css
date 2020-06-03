@@ -5,10 +5,10 @@
 
 
 .buttonsAction button {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }
 
-.mat-select{
- padding: 5px;
+.mat-select {
+  padding: 5px;
 }

@@ -1,13 +1,13 @@
-import { map } from 'rxjs/operators';
-import { AuthenticationService } from './../../service/loginService/authentication.service';
-import { Player } from './../../models/game.model';
-import { Observable } from 'rxjs';
-import { GameService } from './../../service/gameService/game.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CurrentUserService } from 'src/app/service/current-user.service';
-import { Game } from 'src/app/models/game.model';
-import { CanComponentDeactivate } from 'src/app/service/canDeactivateGuardService/can-deactivate-guard.service';
+import {map} from 'rxjs/operators';
+import {AuthenticationService} from '../../service/loginService/authentication.service';
+import {Player} from '../../models/game.model';
+import {Observable} from 'rxjs';
+import {GameService} from '../../service/gameService/game.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {CurrentUserService} from 'src/app/service/current-user.service';
+import {Game} from 'src/app/models/game.model';
+import {CanComponentDeactivate} from 'src/app/service/canDeactivateGuardService/can-deactivate-guard.service';
 
 @Component({
   selector: 'app-game-start',
@@ -22,30 +22,31 @@ export class GameStartComponent implements OnInit, CanComponentDeactivate {
     userScore: 0,
     userName: null,
     authorize: false
-  }
+  };
 
   game$: Observable<Game>;
 
   constructor(private route: ActivatedRoute,
-    private gameService: GameService,
-    private authenticationService: AuthenticationService,
-    private currentUserService: CurrentUserService) {
+              private gameService: GameService,
+              private authenticationService: AuthenticationService,
+              private currentUserService: CurrentUserService) {
 
   }
+
   ngOnInit(): void {
     if (this.authenticationService.logIn) {
-      this.player.userId = parseInt(this.currentUserService.getCurrentUser().id);
+      this.player.userId = parseInt(this.currentUserService.getCurrentUser().id,10);
       this.player.authorize = true;
     } else {
       this.player.userId = new Date().getMilliseconds();
-      this.player.userName = "Player " + this.player.userId;
+      this.player.userName = 'Player ' + this.player.userId;
       this.player.authorize = false;
     }
     this.route.params.subscribe(params => {
-      this.gameId = +params['gameId'];
-      this.connectToGame();
-    },
-      err => console.log("Error loading page: " + err)
+        this.gameId = +params.gameId;
+        this.connectToGame();
+      },
+      err => console.log('Error loading page: ' + err)
     );
   }
 

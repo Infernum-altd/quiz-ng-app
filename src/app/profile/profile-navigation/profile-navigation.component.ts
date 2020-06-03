@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ShareIdService} from "../../service/profileService/share-id.service";
+import {Component, OnInit} from '@angular/core';
+import {ShareIdService} from '../../service/profileService/share-id.service';
 import {Role} from '../../models/role.enum';
 
 
@@ -18,11 +18,13 @@ export class ProfileNavigationComponent implements OnInit {
     this.id = shareId.shareId();
     this.roleUs = JSON.parse(localStorage.getItem('currentUser')).role;
   }
-  adminCheck(){
-    if (this.roleUs.toString() !== Role[Role.USER]){
+
+  adminCheck() {
+    if (this.roleUs.toString() !== Role[Role.USER]) {
       this.isAdmin = true;
     }
   }
+
   ngOnInit(): void {
     this.id = this.shareId.shareId();
     this.adminCheck();
