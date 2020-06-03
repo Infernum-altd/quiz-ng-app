@@ -97,8 +97,8 @@
       <th  mat-header-cell  *matHeaderCellDef> Acting</th>
       <td  mat-cell  *matCellDef="let row; let element;">
         <div class="buttonsAction">
-          <button mat-stroked-button *ngIf="isAdmin && element.active"  (click)="updateActiveStatusUser(element.id)">Deactive</button>
-          <button mat-stroked-button *ngIf="isAdmin && !element.active" (click)="updateActiveStatusUser(element.id)">Active</button>
+          <button mat-stroked-button *ngIf="(isAdmin || isSuperAdmin) && element.active"  (click)="updateActiveStatusUser(element.id)">Deactive</button>
+          <button mat-stroked-button *ngIf="(isAdmin || isSuperAdmin) && !element.active" (click)="updateActiveStatusUser(element.id)">Active</button>
         </div>
       </td>
     </ng-container>
